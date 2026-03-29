@@ -1,0 +1,57 @@
+services:
+  php:
+    build:
+      context: ./docker/php
+    volumes:
+      - ./app/laravel:/var/www/laravel
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  nginx:
+    image: nginx:1.27
+    ports:
+      - "80:80"
+    depends_on:
+      - php
+    volumes:
+      - ./static:/var/www/static                          # 静的サイト
+      - ./app/laravel:/var/www/laravel                    # Laravel
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d           # 複数conf対応に変更（default.confから変更）
+
+  mysql:
+    image: mysql:8.4
+    volumes:
+      - db-data:/var/lib/mysql
+      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d  # 複数DB初期化用を追加
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=study_logs_db
+      - MYSQL_USER=laravel_user
+      - MYSQL_PASSWORD=laravel_pass
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+  redis:                                  # セッション・キャッシュ用に追加
+      image: redis:7-alpine
+      volumes:
+        - redis-data:/data
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8080:80"
+    environment:
+      - PMA_HOST=mysql
+      - PMA_USER=root
+      - PMA_PASSWORD=root
+      - PMA_ARBITRARY=1
+    depends_on:
+      - mysql
+
+volumes:
+  db-data:
+  redis-data:

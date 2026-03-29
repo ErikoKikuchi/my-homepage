@@ -1,0 +1,15 @@
+# 環境変数（ルート）
+.env
+.env.*
+!.env.example
+
+# Docker
+docker/mysql/data/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
