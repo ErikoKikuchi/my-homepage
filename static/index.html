@@ -1,13 +1,44 @@
 <!doctype html>
-<html lang="en">
+<html lang="ja">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>static</title>
+    <title>からだ散歩</title>
+    <link rel="stylesheet" href="/src/top/style.css" />
   </head>
   <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
+    <div class="scene">
+      <h1 class="title">からだ散歩</h1>
+      <p class="subtitle">Body and Code</p>
+      <p class="concept" id="concept"></p>
+
+      <ul class="leaf-menu" id="leaf-menu">
+        <li class="leaf" data-page="about" data-description="からだ散歩について。理学療法士×ピラティス×エンジニアとして伝えたいこと">About</li>
+        <li class="leaf" data-page="pilates" data-description="自分の体を知るピラティス。予約・記録はこちらから。">Pilates</li>
+        <li class="leaf" data-page="thinkMotion" data-description="学びの記録。日々の気づきをストックする場所。">ThinkMotion</li>
+        <li class="leaf" data-page="code" data-description="ITを学び始めて。子供に伝えたいことをまとめた場所">Code</li>
+      </ul>
+    </div>
+
+    <div class="leaf-description" id="leaf-description">
+      <p id="description-text"></p>
+    </div>
+
+    <nav class="bottom-nav">
+      <a href="#about">About</a>
+      <a href="#pilates">Pilates</a>
+      <a href="#thinkMotion">ThinkMotion</a>
+      <a href="#code">Code</a>
+      <a href="#starthere">初めての方はこちらから</a>
+    </nav>
+
+    <footer class="site-footer">
+      <a href="/privacy">個人情報保護方針</a>
+      <a href="/tokusho">特定商取引法に基づく表記</a>
+      <a href="/contact">お問い合わせ</a>
+      <p class="copyright">© 2026 からだ散歩</p>
+    </footer>
+
+    <script type="module" src="/src/top/index.ts"></script>
   </body>
 </html>
