@@ -2,10 +2,10 @@
 :root {
   --color-accent: #B8DC24;
   --color-paper: #FFF6EF;
-  --color-text: #545454;
-  --color-forest: #2F4F3A;
+  --color-text: #797878;
+  --color-forest: #2f5c3f;
   --color-forest-dark: #1F3D2B;
-  --color-overlay: rgba(31, 61, 43, 0.45);
+  --color-overlay: rgba(31, 61, 43, 0.3);
 }
 
 /* ===== リセット・ベース ===== */
@@ -28,7 +28,7 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 60px 20px 200px;
+  padding: 100px 20px 200px;
   background-image: url('/images/IMG_7034.JPG');
   background-size: cover;
   background-position: center;
@@ -58,10 +58,10 @@ html, body {
   font-weight: 400;
   letter-spacing: 0.25em;
   color: var(--color-paper);
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   opacity: 0;
-  animation: fadeIn 1s ease forwards;
-  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.4);
+  animation: fadeIn 2s ease forwards;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
 }
 
 .subtitle {
@@ -70,19 +70,20 @@ html, body {
   letter-spacing: 0.35em;
   color: var(--color-accent);
   opacity: 0;
-  animation: fadeIn 1s ease 0.5s forwards;
+  animation: fadeIn 1.5s ease 1.3s forwards;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
 }
 
 /* ===== コンセプトワード ===== */
 .concept {
   font-family: 'Hiragino Mincho ProN', 'Noto Serif JP', serif;
-  margin-top: 40px;
-  font-size: clamp(1rem, 4vw, 1.3rem);
+  margin-top: 100px;
+  font-size: clamp(1rem, 5vw, 1.3rem);
   letter-spacing: 0.2em;
   min-height: 2em;
   text-align: center;
   color: var(--color-paper);
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
 }
 
 /* ===== 葉っぱメニュー ===== */
@@ -161,7 +162,7 @@ html, body {
 /* ===== 説明文エリア ===== */
 .leaf-description {
   position: fixed;
-  bottom: 80px;
+  bottom: 60px;
   left: 0;
   right: 0;
   padding: 14px 32px;
@@ -223,7 +224,7 @@ html, body {
 
 /* ===== フッター ===== */
 .site-footer {
-  padding: 40px 20px 20px;
+  padding: 40px 20px 160px;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -246,6 +247,6 @@ html, body {
 
 .copyright {
   font-size: 0.68rem;
-  color: var(--color-forest);
+  color: var(--color-text);
   margin-top: 8px;
 }
