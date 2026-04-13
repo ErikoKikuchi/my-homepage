@@ -12,7 +12,14 @@ const delay = (ms: number): Promise<void> =>
   new Promise(resolve => setTimeout(resolve, ms))
 
 // ===== コンセプトワード制御 =====
-const conceptWords = ['自分と向き合う', '一歩ずつ', '今日の自分に出会う']
+const conceptWords = [
+  'あなたの身体には、理由がある。',
+  'その痛み、どこから来ていますか？',
+  'ここから、一緒に読み解く。',
+  '身体を知ることは、自分を知ること。',
+  '身体の声を、言葉にする場所。',
+  'からだ散歩、はじめましょう。',
+]
 
 async function showConceptWords(el: HTMLElement): Promise<void> {
   for (const word of conceptWords) {
@@ -20,8 +27,8 @@ async function showConceptWords(el: HTMLElement): Promise<void> {
     el.style.animation = 'none'
 
     void el.offsetHeight
-    el.style.animation = 'conceptFadeIn 1s ease forwards'
-    await delay(2000)
+    el.style.animation = 'conceptFadeIn 1.5s ease forwards'
+    await delay(3500)
     el.style.animation = 'conceptFadeOut 0.8s ease forwards'
     await delay(800)
     el.textContent = ''
