@@ -38,10 +38,13 @@ async function showConceptWords(el: HTMLElement): Promise<void> {
 // ===== 葉っぱ落下制御 =====
 async function dropLeaves(leaves: LeafData[]): Promise<void> {
   for (const leaf of leaves) {
-    leaf.element.style.animation = 'fall 2.0s ease forwards'
+    const outer = leaf.element.closest('.leaf-outer') as HTMLElement
+    if (outer) {
+      outer.style.animation = 'fall 5.0s ease forwards'
+    }
     await delay(200)
   }
-  // 全葉っぱが落ちるまで待つ
+  // 葉っぱは落ちながら揺れる
   await delay(800)
 }
 
@@ -49,7 +52,7 @@ async function dropLeaves(leaves: LeafData[]): Promise<void> {
 function settleLeaves(leaves: LeafData[]): void {
   leaves.forEach(leaf => {
     leaf.state = 'settled'
-    leaf.element.classList.add('settled')
+    leaf.element.closest('.leaf-outer')!.classList.add('settled')
   })
 }
 
@@ -104,7 +107,7 @@ function setupLeafEvents(leaves: LeafData[]): void {
 // ===== メイン =====
 async function main(): Promise<void> {
   const conceptEl = document.getElementById('concept')
-  const leafEls = document.querySelectorAll<HTMLLIElement>('.leaf')
+  const leafEls = document.querySelectorAll<HTMLLIElement>('.leaf-inner')
 
   if (!conceptEl) return
 

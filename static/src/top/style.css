@@ -115,15 +115,18 @@ html, body {
   font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
   font-size: clamp(0.85rem, 3vw, 1rem);
   letter-spacing: 0.1em;
-  opacity: 0;
-  transform: translateY(-120px);
   user-select: none;
   border: 1px solid transparent;
   transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
-.leaf.settled {
-  animation: sway 4s ease-in-out infinite;
+.leaf-outer {
+  opacity: 0;
+  transform: translateY(-120px);
+}
+
+.leaf-outer.settled .leaf-inner {
+  animation: sway 2.5s ease-in-out infinite;
 }
 
 .leaf.active {
@@ -230,6 +233,33 @@ html, body {
 .bottom-nav a:hover {
   color: var(--color-accent);
   opacity: 1;
+}
+/* ===== 動線 ===== */
+.start-here{
+  margin: 50px auto 30px;
+  display: flex;
+  flex-direction: column;
+}
+.guide{
+  text-align: center;
+  color: var(--color-text);
+  margin: 8px 0;
+}
+.entrance-button{
+  display: inline-block;
+  align-self: center;
+  text-align: center;
+  text-decoration: none;
+  background-color: var(--color-forest);
+  color:var(--color-paper);
+  letter-spacing: 0.05em;
+  border:1px solid var(--color-accent);
+  border-radius: 20px;
+  padding:10px 20px;
+  margin-top:20px
+}
+.entrance-button:hover{
+  opacity: 0.8;
 }
 
 /* ===== フッター ===== */
