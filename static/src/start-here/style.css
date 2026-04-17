@@ -21,8 +21,50 @@
       font-weight: 300;
       line-height: 1.9;
       font-size: 15px;
+      position: relative;
+      min-height: 100vh;
+      margin: 0;
+      padding-bottom: 50px;
     }
-
+    /* ── ナビ（骨格のみ） ── */
+    .site-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: rgba(255,246,239,0.92);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid rgba(47,92,63,0.1);
+    }
+ 
+    .site-nav .logo {
+      font-family: var(--font-serif);
+      font-size: 1rem;
+      color: var(--color-forest);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+    }
+ 
+    .site-nav .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+ 
+    .site-nav .nav-links a {
+      font-family: var(--font-gothic);
+      font-size: 0.8rem;
+      color: var(--color-text);
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      transition: color 0.2s;
+    }
+ 
+    .site-nav .nav-links a:hover { color: var(--color-forest); }
+ 
     /* ===== ヘッダー ===== */
     .site-header {
       padding: 32px 40px 24px;
@@ -40,7 +82,7 @@
 
     /* ===== メインコンテンツ ===== */
     .main {
-      max-width: 680px;
+      max-width: 720px;
       margin: 0 auto;
       padding: 80px 40px 120px;
     }
@@ -149,6 +191,14 @@
       color: #a09890;
       letter-spacing: 0.05em;
     }
+    .bottom-image {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 20%;
+        height:10%
+    }
+
 
     /* ===== アニメーション ===== */
     @keyframes fadeUp {

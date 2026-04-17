@@ -1,0 +1,351 @@
+ /* ── Design tokens（トップページ引き継ぎ） ── */
+    :root {
+      --color-accent:      #B8DC24;
+      --color-paper:       #FFF6EF;
+      --color-text:        #545454;
+      --color-forest:      #2f5c3f;
+      --color-forest-dark: #1F3D2B;
+      --color-muted:       #9a9a8a;
+      --font-serif:        'Noto Serif JP', 'Hiragino Mincho ProN', serif;
+      --font-gothic:       'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+    }
+ 
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+    html { scroll-behavior: smooth; }
+ 
+    body {
+      background-color: var(--color-paper);
+      color: var(--color-text);
+      font-family: var(--font-serif);
+      font-size: 16px;
+      line-height: 1.9;
+      position: relative;
+      min-height: 100vh;
+      margin: 0;
+      padding-bottom: 50px;
+    }
+ 
+    /* ── ナビ（骨格のみ） ── */
+    .site-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: rgba(255,246,239,0.92);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid rgba(47,92,63,0.1);
+    }
+ 
+    .site-nav .logo {
+      font-family: var(--font-serif);
+      font-size: 1rem;
+      color: var(--color-forest);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+    }
+ 
+    .site-nav .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+ 
+    .site-nav .nav-links a {
+      font-family: var(--font-gothic);
+      font-size: 0.8rem;
+      color: var(--color-text);
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      transition: color 0.2s;
+    }
+ 
+    .site-nav .nav-links a:hover { color: var(--color-forest); }
+ 
+    /* ── ページヘッダー ── */
+    .page-header {
+      padding: 8rem 2rem 4rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+ 
+    .page-header .section-label {
+      font-family: var(--font-gothic);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      color: var(--color-accent);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      /* アクセントカラーが薄い背景で見えにくい場合はforestに切り替え */
+      color: var(--color-forest);
+    }
+ 
+    .page-header h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 300;
+      color: var(--color-forest-dark);
+      line-height: 1.4;
+      letter-spacing: 0.04em;
+    }
+ 
+    .page-header .lead {
+      margin-top: 1.5rem;
+      font-size: 0.95rem;
+      color: var(--color-muted);
+      font-family: var(--font-gothic);
+    }
+ 
+    /* ── セクション共通 ── */
+    .section {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+      border-top: 1px solid rgba(47,92,63,0.12);
+    }
+ 
+    .section-title {
+      font-family: var(--font-gothic);
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-forest);
+      margin-bottom: 2.5rem;
+    }
+ 
+    /* ── きっかけ：3つのブロック ── */
+    .origin-block {
+      margin-bottom: 3.5rem;
+    }
+ 
+    .origin-block:last-child { margin-bottom: 0; }
+ 
+    .origin-block .number {
+      font-family: var(--font-gothic);
+      font-size: 0.65rem;
+      color: var(--color-accent);
+      letter-spacing: 0.1em;
+      margin-bottom: 0.6rem;
+      /* 視認性のため調整 */
+      color: var(--color-forest);
+      opacity: 0.5;
+    }
+ 
+    .origin-block .catchcopy {
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: var(--color-forest-dark);
+      line-height: 1.7;
+      margin-bottom: 1rem;
+      border-left: 2px solid var(--color-accent);
+      padding-left: 1rem;
+    }
+ 
+    .origin-block .body-text {
+      font-size: 0.9rem;
+      color: var(--color-text);
+      line-height: 2;
+      /* ここにErikoが本文を入れる */
+    }
+ 
+    /* ── プロフィール ── */
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 2rem;
+      align-items: start;
+    }
+ 
+    @media (max-width: 600px) {
+      .profile-grid { grid-template-columns: 1fr; }
+    }
+ 
+    .profile-image-placeholder {
+      aspect-ratio: 1;
+      background: rgba(47,92,63,0.06);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-gothic);
+      font-size: 0.7rem;
+      color: var(--color-muted);
+    }
+ 
+    .profile-text .name {
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: var(--color-forest-dark);
+      margin-bottom: 0.3rem;
+    }
+ 
+    .profile-text .name-en {
+      font-family: var(--font-gothic);
+      font-size: 0.75rem;
+      color: var(--color-muted);
+      letter-spacing: 0.1em;
+      margin-bottom: 1.2rem;
+    }
+ 
+    .profile-text .credentials {
+      list-style: none;
+      font-family: var(--font-gothic);
+      font-size: 0.82rem;
+      color: var(--color-text);
+      line-height: 2;
+    }
+ 
+    .profile-text .credentials li::before {
+      content: '—  ';
+      color: var(--color-forest);
+      opacity: 0.5;
+    }
+ 
+    .profile-bio {
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+      line-height: 2;
+      /* Erikoが自己紹介文を入れる */
+    }
+ 
+    /* ── 外部リンク ── */
+    .link-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+ 
+    .link-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 1.5rem;
+      border: 1px solid rgba(47,92,63,0.15);
+      border-radius: 4px;
+      text-decoration: none;
+      color: var(--color-text);
+      font-family: var(--font-gothic);
+      font-size: 0.85rem;
+      transition: border-color 0.2s, background 0.2s;
+    }
+ 
+    .link-item:hover {
+      border-color: var(--color-forest);
+      background: rgba(47,92,63,0.03);
+    }
+ 
+    .link-item .link-label {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+ 
+    .link-item .link-name {
+      font-weight: 500;
+      color: var(--color-forest-dark);
+    }
+ 
+    .link-item .link-desc {
+      font-size: 0.75rem;
+      color: var(--color-muted);
+    }
+ 
+    .link-item .arrow {
+      font-size: 0.8rem;
+      color: var(--color-forest);
+      opacity: 0.6;
+    }
+ 
+    /* ── ポートフォリオ ── */
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+ 
+    .portfolio-card {
+      border: 1px solid rgba(47,92,63,0.15);
+      border-radius: 4px;
+      padding: 1.5rem;
+      text-decoration: none;
+      color: var(--color-text);
+      transition: border-color 0.2s;
+      display: block;
+    }
+ 
+    .portfolio-card:hover { border-color: var(--color-forest); }
+ 
+    .portfolio-card .card-tag {
+      font-family: var(--font-gothic);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-forest);
+      opacity: 0.7;
+      margin-bottom: 0.6rem;
+    }
+ 
+    .portfolio-card .card-title {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--color-forest-dark);
+      margin-bottom: 0.5rem;
+    }
+ 
+    .portfolio-card .card-desc {
+      font-family: var(--font-gothic);
+      font-size: 0.78rem;
+      color: var(--color-muted);
+      line-height: 1.7;
+    }
+ 
+    .portfolio-card .card-stack {
+      margin-top: 1rem;
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+ 
+    .stack-tag {
+      font-family: var(--font-gothic);
+      font-size: 0.65rem;
+      background: rgba(47,92,63,0.08);
+      color: var(--color-forest);
+      padding: 0.2rem 0.6rem;
+      border-radius: 2px;
+    }
+ 
+    /* ── フッター（骨格） ── */
+    .site-footer {
+      margin-top: 6rem;
+      padding: 2rem;
+      text-align: center;
+      font-family: var(--font-gothic);
+      font-size: 0.72rem;
+      color: var(--color-muted);
+      border-top: 1px solid rgba(47,92,63,0.1);
+    }
+    .bottom-image {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 20%;
+        height:10%
+    }
+ 
+    /* ── フェードイン（シンプル） ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fadeUp 0.7s ease forwards;
+    }
+ 
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+ 
+    .fade-in:nth-child(1) { animation-delay: 0.1s; }
+    .fade-in:nth-child(2) { animation-delay: 0.25s; }
+    .fade-in:nth-child(3) { animation-delay: 0.4s; }
