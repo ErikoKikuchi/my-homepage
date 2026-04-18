@@ -1,45 +1,40 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Privacy – からだ散歩</title>
-  <link rel="icon" href="/images/122060.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500&display=swap" rel="stylesheet"></head>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy – からだ散歩</title>
+    <link rel="icon" href="/images/122060.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../shared/style.css">
+    <script type="module" src="../shared/components/site-nav.ts"></script>
+    <script type="module" src="../shared/components/site-footer.ts"></script>
+</head>
 <body>
- 
-  <!-- ナビ -->
-  <nav class="site-nav">
-    <a href="/" class="logo">からだ散歩</a>
-    <ul class="nav-links">
-      <li><a href="../about/index.html">About</a></li>
-      <li><a href="../pilates/index.html">Pilates</a></li>
-      <li><a href="../think-motion/index.html">ThinkMotion</a></li>
-      <li><a href="../code/index.html">Code</a></li>
-      <li><a href="../contact/index.html">Contact</a></li>
-    </ul>
-  </nav>
- 
-  <!-- ページヘッダー -->
-  <header class="page-header">
+
+<!-- ナビコンポーネントより -->
+<site-nav></site-nav>
+
+<!-- ページヘッダー -->
+<header class="page-header">
     <p class="section-label">Privacy</p>
-    <h1></h1>
-    <p class="lead"></p>
-  </header>
- 
-  <!-- セクション共通 -->
-  <section>
-    <p class="section-title">個人情報の取り扱いについて</p>
-  </section>
- 
-  <!-- フッター -->
-  <footer class="site-footer">
-    <p>&copy; 2026 からだ散歩 / Eriko</p>
-    <img src="/images/122060.png" alt="最下部の画像" class="bottom-image">
-  </footer>
- 
+    <h1>個人情報の取り扱いについて</h1>
+</header>
+
+<!-- メイン -->
+<main class="main">
+
+    <!-- セクション共通 -->
+    <section>
+      <p class="section-title">個人情報</p>
+    </section>
+
+</main>
+
+<!-- フッターコンポーネントより -->
+<site-footer></site-footer>
+
 </body>
 </html>
