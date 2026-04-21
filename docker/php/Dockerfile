@@ -21,7 +21,9 @@ RUN apt-get update \
     opcache \
     bcmath \
     pcntl \
-    intl 
+    intl \
+    && pecl install redis \
+    && docker-php-ext-enable redis
 
     # Node.js 20（Inertia.js / Vite ビルド用）
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \

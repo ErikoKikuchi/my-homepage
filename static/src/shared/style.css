@@ -1,11 +1,11 @@
  /* ── Design tokens（トップページ引き継ぎ） ── */
     :root {
       --color-accent:      #B8DC24;
-      --color-paper:       #FFF6EF;
-      --color-text:        #545454;
-      --color-forest:      #2f5c3f;
-      --color-forest-dark: #1F3D2B;
-      --color-muted:       #9a9a8a;
+      --color-paper:       #FAF6F0;
+      --color-text:        #846f63;
+      --color-forest:      #8FAF6A;
+      --color-forest-dark: #FAF6F0;
+      --color-muted:       #5C6B50;
       --font-serif:        'Noto Serif JP', 'Hiragino Mincho ProN', serif;
       --font-gothic:       'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
     }
@@ -43,7 +43,7 @@
     .site-nav .logo {
       font-family: var(--font-serif);
       font-size: 1rem;
-      color: var(--color-forest);
+      color: var(--color-muted);
       text-decoration: none;
       letter-spacing: 0.08em;
     }
@@ -86,7 +86,7 @@
     .page-header h1 {
       font-size: clamp(2rem, 5vw, 3.2rem);
       font-weight: 300;
-      color: var(--color-forest-dark);
+      color: var(--color-forest);
       line-height: 1.4;
       letter-spacing: 0.04em;
     }

@@ -28,7 +28,7 @@ services:
       - ./docker/mysql/init:/docker-entrypoint-initdb.d  # 複数DB初期化用を追加
     environment:
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=study_logs_db
+      - MYSQL_DATABASE=thinkmotion_db
       - MYSQL_USER=laravel_user
       - MYSQL_PASSWORD=laravel_pass
     healthcheck:

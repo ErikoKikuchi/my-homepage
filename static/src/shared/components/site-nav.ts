@@ -8,8 +8,8 @@ class SiteNav extends HTMLElement {
                 <ul class="nav-links">
                 <li><a href="../about/index.html">About</a></li>
                 <li><a href="../pilates/index.html">Pilates</a></li>
-                <li><a href="../think-motion/index.html">ThinkMotion</a></li>
-                <li><a href="../code/index.html">Code</a></li>
+                <li><a href="/thinkmotion">ThinkMotion</a></li>
+                <li><a href="../coming-soon/index.html">Code</a></li>
                 <li><a href="../contact/index.html">Contact</a></li>
                 </ul>
             </nav>

@@ -28,7 +28,7 @@ async function showConceptWords(el: HTMLElement): Promise<void> {
 
     void el.offsetHeight
     el.style.animation = 'conceptFadeIn 1.5s ease forwards'
-    await delay(3500)
+    await delay(3000)
     el.style.animation = 'conceptFadeOut 0.8s ease forwards'
     await delay(800)
     el.textContent = ''
