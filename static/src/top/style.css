@@ -4,7 +4,7 @@
   --color-paper: #FAF6F0;
   --color-text: #846f63;
   --color-forest: #8FAF6A;
-  --color-forest-dark: #FAF6F0;
+  --color-forest-dark: #1F3D2B;
   --color-overlay: rgba(92, 107, 80, 0.15);
   --color-nav-bg:       rgba(250,246,240,0.94);
   --color-nav-text:     #5C6B50;  
@@ -19,7 +19,7 @@
 
 html, body {
   height: 100%;
-  background-color: var(--color-forest-dark);
+  background-color: var(--color-paper);
   color: var(--color-text);
   overflow-x: hidden;
 }
@@ -223,16 +223,17 @@ html, body {
   font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
   color: var(--color-nav-text);
   text-decoration: none;
-  font-size: clamp(0.6rem, 2.2vw, 0.75rem);
+  font-size: clamp(0.6rem, 2.3vw, 0.75rem);
   letter-spacing: 0.05em;
   padding: 4px 6px;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, opacity 0.2s ease, letter-spacing 0.2s ease;
   opacity: 0.8;
 }
 
 .bottom-nav a:hover {
-  color: var(--color-accent);
+  color: var(--color-forest-dark);
   opacity: 1;
+  letter-spacing: 0.08em;
 }
 /* ===== 動線 ===== */
 .start-here{

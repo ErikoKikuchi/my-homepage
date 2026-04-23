@@ -4,7 +4,7 @@
       font-family: 'Noto Serif JP', serif;
       font-size: clamp(1.4rem, 4vw, 1.9rem);
       font-weight: 400;
-      color: var(--color-forest);
+      color: var(--color-forest-dark);
       letter-spacing: 0.15em;
       line-height: 1.6;
       margin-bottom: 64px;

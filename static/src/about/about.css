@@ -8,12 +8,11 @@
     .origin-block .number {
       font-family: var(--font-gothic);
       font-size: 0.65rem;
-      color: var(--color-accent);
       letter-spacing: 0.1em;
       margin-bottom: 0.6rem;
       /* 視認性のため調整 */
       color: var(--color-forest);
-      opacity: 0.5;
+      opacity: 0.7;
     }
  
     .origin-block .catchcopy {
@@ -30,7 +29,6 @@
       font-size: 0.9rem;
       color: var(--color-text);
       line-height: 2;
-      /* ここにErikoが本文を入れる */
     }
  
     /* ── プロフィール ── */
@@ -74,7 +72,7 @@
     .profile-text .name-en {
       font-family: var(--font-gothic);
       font-size: 0.75rem;
-      color: var(--color-muted);
+      color: var(--color-forest);
       letter-spacing: 0.1em;
       margin-bottom: 1.2rem;
     }
@@ -83,13 +81,13 @@
       list-style: none;
       font-family: var(--font-gothic);
       font-size: 0.82rem;
-      color: var(--color-text);
+      color: var(--color-muted);
       line-height: 2;
     }
  
     .profile-text .credentials li::before {
       content: '—  ';
-      color: var(--color-forest);
+      color: var(--color-accent);
       opacity: 0.5;
     }
  

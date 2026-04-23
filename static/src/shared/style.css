@@ -4,7 +4,7 @@
       --color-paper:       #FAF6F0;
       --color-text:        #846f63;
       --color-forest:      #8FAF6A;
-      --color-forest-dark: #FAF6F0;
+      --color-forest-dark: #1F3D2B;
       --color-muted:       #5C6B50;
       --font-serif:        'Noto Serif JP', 'Hiragino Mincho ProN', serif;
       --font-gothic:       'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
@@ -43,7 +43,7 @@
     .site-nav .logo {
       font-family: var(--font-serif);
       font-size: 1rem;
-      color: var(--color-muted);
+      color: var(--color-forest-dark);
       text-decoration: none;
       letter-spacing: 0.08em;
     }
@@ -57,13 +57,16 @@
     .site-nav .nav-links a {
       font-family: var(--font-gothic);
       font-size: 0.8rem;
-      color: var(--color-text);
+      color: var(--color-forest-dark);
       text-decoration: none;
       letter-spacing: 0.06em;
-      transition: color 0.2s;
+      transition: color 0.2s ease, opacity 0.2s ease, letter-spacing 0.2s ease;
     }
  
-    .site-nav .nav-links a:hover { color: var(--color-forest); }
+    .site-nav .nav-links a:hover { 
+      color: var(--color-accent);
+      letter-spacing: 0.08em; 
+    }
  
     /* ── ページヘッダー ── */
     .page-header {
@@ -76,17 +79,14 @@
       font-family: var(--font-gothic);
       font-size: 0.7rem;
       letter-spacing: 0.2em;
-      color: var(--color-accent);
       text-transform: uppercase;
-      margin-bottom: 1rem;
-      /* アクセントカラーが薄い背景で見えにくい場合はforestに切り替え */
       color: var(--color-forest);
     }
  
     .page-header h1 {
       font-size: clamp(2rem, 5vw, 3.2rem);
       font-weight: 300;
-      color: var(--color-forest);
+      color: var(--color-forest-dark);
       line-height: 1.4;
       letter-spacing: 0.04em;
     }
@@ -94,7 +94,7 @@
     .page-header .lead {
       margin-top: 1.5rem;
       font-size: 0.95rem;
-      color: var(--color-muted);
+      color: var(--color-forest);
       font-family: var(--font-gothic);
     }
  
