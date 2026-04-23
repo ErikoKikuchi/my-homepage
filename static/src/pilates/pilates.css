@@ -1,0 +1,148 @@
+/* ── Concept セクション ── */
+.concept-body {
+    font-family: var(--font-serif);
+    font-size: 0.95rem;
+    line-height: 2.2;
+    color: var(--color-text);
+    margin-bottom: 2.5rem;
+}
+.concept-body p + p {
+    margin-top: 0.2em;
+}
+.concept-body .spacer {
+    display: block;
+    margin-top: 1em;
+}
+.target-label {
+    font-family: var(--font-gothic);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    color: var(--color-forest);
+    margin-bottom: 1rem;
+}
+.target-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+.target-list li {
+    font-family: var(--font-gothic);
+    font-size: 0.88rem;
+    line-height: 1.8;
+    color: var(--color-text);
+    padding-left: 1.2em;
+    position: relative;
+}
+.target-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.75em;
+    width: 0.5em;
+    height: 1px;
+    background: var(--color-forest);
+}
+/* ── Price セクション ── */
+.price-duration {
+    font-family: var(--font-gothic);
+    font-size: 0.8rem;
+    color: var(--color-muted);
+    margin-bottom: 1.8rem;
+    letter-spacing: 0.06em;
+}
+.price-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1px;
+    background: rgba(47,92,63,0.12);
+    border: 1px solid rgba(47,92,63,0.12);
+    margin-bottom: 1.5rem;
+}
+.price-item {
+    background: var(--color-paper);
+    padding: 1.4rem 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+.price-item-type {
+    font-family: var(--font-gothic);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: var(--color-muted);
+}
+.price-item-amount {
+    font-family: var(--font-serif);
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--color-forest-dark);
+    letter-spacing: -0.01em;
+}
+.price-group {
+    font-family: var(--font-gothic);
+    font-size: 0.82rem;
+    color: var(--color-text);
+    line-height: 1.8;
+    margin-bottom: 0.6rem;
+}
+.price-note {
+    font-family: var(--font-gothic);
+    font-size: 0.78rem;
+    color: var(--color-muted);
+    line-height: 1.8;
+    padding-left: 1em;
+    text-indent: -1em;
+}
+/* ── CTA セクション ── */
+.cta-lead {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--color-text);
+    line-height: 2.0;
+    margin-bottom: 2rem;
+}
+.cta-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.2rem;
+}
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 0.75rem 1.6rem;
+    font-family: var(--font-gothic);
+    font-size: 0.82rem;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: background 0.2s, color 0.2s;
+    cursor: pointer;
+}
+.btn-primary {
+    background: var(--color-forest);
+    color: #fff;
+    border: 1px solid var(--color-forest);
+}
+.btn-primary:hover { background: var(--color-forest-dark); border-color: var(--color-forest-dark); }
+.btn-outline {
+    background: transparent;
+    color: var(--color-forest);
+    border: 1px solid rgba(47,92,63,0.4);
+}
+.btn-outline:hover { background: rgba(47,92,63,0.05); }
+
+.cta-contact {
+    margin-top: 1rem;
+    font-family: var(--font-gothic);
+    font-size: 0.78rem;
+}
+.cta-contact a {
+    color: var(--color-muted);
+    text-decoration: none;
+}
+.cta-contact a:hover { color: var(--color-forest); }

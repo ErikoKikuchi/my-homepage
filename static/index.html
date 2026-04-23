@@ -1,13 +1,61 @@
 <!doctype html>
-<html lang="en">
+<html lang="ja">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>static</title>
+    <title>からだ散歩</title>
+    <link rel="icon" href="/images/122060.png">
+    <link rel="stylesheet" href="/src/top/style.css" />
   </head>
   <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
+    <div class="scene">
+      <h1 class="title">からだ散歩</h1>
+      <p class="subtitle">Body and Code</p>
+      <p class="concept" id="concept"></p>
+
+      <ul class="leaf-menu" id="leaf-menu">
+        <li class="leaf-outer">
+          <a class="leaf leaf-inner" data-page="about" data-description="からだ散歩について。理学療法士×ピラティス×エンジニアとして伝えたいこと" href="./src/about/index.html">About</a>
+        </li>
+        <li class="leaf-outer">
+          <a class="leaf leaf-inner" data-page="pilates" data-description="自分の身体を知るピラティス。予約・記録はこちらから。" href="./src/pilates/index.html">Pilates</a>
+        </li>
+        <li class="leaf-outer">
+          <a class="leaf leaf-inner" data-page="thinkMotion" data-description="学びの記録。日々の気づきをストックする場所。" href="/thinkmotion">ThinkMotion</a>
+        </li>
+        <li class="leaf-outer">
+          <a class="leaf leaf-inner" data-page="code" data-description="ITを学び始めて。子供に伝えたいことをまとめた場所。" href="./src/coming-soon/index.html">Code</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="leaf-description" id="leaf-description">
+      <p id="description-text"></p>
+    </div>
+
+    <nav class="bottom-nav">
+      <a href="./src/about/index.html">About</a>
+      <a href="./src/pilates/index.html">Pilates</a>
+      <a href="/thinkmotion">ThinkMotion</a>
+      <a href="./src/coming-soon/index.html">Code</a>
+      <a href="/login">Login</a>
+    </nav>
+
+    <div class="start-here">
+      <p class="guide">初めて訪れた方へ</p>
+      <p class="guide">この場所の見方とはじめ方をまとめています</p>
+      <a class="entrance-button" href="src/start-here/index.html">入り口はこちら</a>
+    </div>
+
+
+    <footer class="site-footer">
+      <a href="/login">ログイン</a>
+      <a href="./src/footer/privacy.html">個人情報保護方針</a>
+      <a href="./src/footer/tokusho.html">特定商取引法に基づく表記</a>
+      <a href="./src/contact/index.html">お問い合わせ</a>
+      <p class="copyright">© 2026 からだ散歩</p>
+    </footer>
+
+    <script type="module" src="/src/top/index.ts"></script>
   </body>
 </html>
