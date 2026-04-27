@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('case_comment_likes', function (Blueprint $table) {
-            $table->id();
+            $table->foreignUuid('comment_id')->references('id')->on('case_prompt_comments')->cascadeOnDelete();
+            $table->foreignUuid('user_id')->constrained()->cascadeOnDelete();
+            $table->primary(['comment_id', 'user_id']);
             $table->timestamps();
         });
     }

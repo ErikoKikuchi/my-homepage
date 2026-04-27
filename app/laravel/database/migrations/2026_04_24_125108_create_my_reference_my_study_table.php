@@ -12,7 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('my_reference_my_study', function (Blueprint $table) {
-            $table->id();
+            $table->foreignUuid('my_reference_id')->constrained('my_references')->cascadeOnDelete();
+            $table->foreignUuid('my_study_id')->constrained('my_studies')->cascadeOnDelete();
+            $table->primary(['my_reference_id', 'my_study_id']);
+            $table->text('reference_memo')->nullable();
+            $table->string('chapter')->nullable();
+            $table->string('page')->nullable();
+            $table->string('data_path')->nullable();
             $table->timestamps();
         });
     }

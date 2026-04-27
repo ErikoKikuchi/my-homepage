@@ -12,7 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('member_room', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->foreignUuid('room_id')->references('id')->on('rooms')->cascadeOnDelete();
+            $table->enum('role',['moderator','member'])->default('member');
             $table->timestamps();
         });
     }

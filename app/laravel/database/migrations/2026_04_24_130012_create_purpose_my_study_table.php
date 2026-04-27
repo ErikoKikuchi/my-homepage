@@ -12,7 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('purpose_my_study', function (Blueprint $table) {
-            $table->id();
+            $table->foreignId('purpose_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('my_study_id')->constrained('my_studies')->cascadeOnDelete();
+            $table->primary(['purpose_id', 'my_study_id']);
+            $table->text('custom_text')->nullable();
             $table->timestamps();
         });
     }

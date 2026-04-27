@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('speciality_types', function (Blueprint $table) {
+        Schema::create('specialty_types', function (Blueprint $table) {
             $table->id();
+            $table->enum('specialty', ['specialist','all-around','transfer','not_decide'])->unique()->default('not_decide');
+            $table->unsignedTinyInteger('order');
             $table->timestamps();
         });
     }

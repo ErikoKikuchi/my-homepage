@@ -12,7 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('rooms', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+            $table->uuidMorphs('creator');
+            $table->string('name');
+            $table->string('description')->nullable();
+            $table->boolean('is_public')->default(false);
+            $table->string('icon')->nullable();
+            $table->softDeletes();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

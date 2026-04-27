@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('escalation_rules', function (Blueprint $table) {
             $table->id();
+            $table->string('rule')->unique();
+            $table->unsignedTinyInteger('order');
             $table->timestamps();
         });
     }

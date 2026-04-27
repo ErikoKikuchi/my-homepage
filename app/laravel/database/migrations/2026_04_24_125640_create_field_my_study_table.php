@@ -12,7 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('field_my_study', function (Blueprint $table) {
-            $table->id();
+            $table->foreignId('field_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('my_study_id')->constrained('my_studies')->cascadeOnDelete();
+            $table->primary(['field_id', 'my_study_id']);
+            $table->enum('staging', ['acute','recovery', 'maintenance', 'outpatient','other'])->default('other');
             $table->timestamps();
         });
     }

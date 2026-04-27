@@ -11,12 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('blog_drafts', function (Blueprint $table) {
+        Schema::create('materials', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->foreignId('reference_type_id')->nullable()->constrained('reference_types');
+            $table->string('isbn')->unique()->nullable();
             $table->string('title');
-            $table->text('body');
-            $table->enum('status',['draft','published'])->default('draft');
-            $table->softDeletes();
+            $table->string('author')->nullable();
+            $table->string('publisher')->nullable();
+            $table->year('published_year')->nullable();
+            $table->string('cover_image')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('blog_drafts');
+        Schema::dropIfExists('materials');
     }
 };

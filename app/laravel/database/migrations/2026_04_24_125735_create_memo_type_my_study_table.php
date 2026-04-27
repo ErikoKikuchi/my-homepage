@@ -12,7 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('memo_type_my_study', function (Blueprint $table) {
-            $table->id();
+            $table->foreignId('memo_type_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('my_study_id')->constrained('my_studies')->cascadeOnDelete();
+            $table->primary(['my_study_id', 'memo_type_id']);
+            $table->text('memo_text')->nullable();
             $table->timestamps();
         });
     }

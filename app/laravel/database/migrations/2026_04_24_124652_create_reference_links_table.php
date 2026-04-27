@@ -12,7 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('reference_links', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('material_id')->constrained('materials')->cascadeOnDelete();
+            $table->string('provider');
+            $table->string('url')->unique();
+            $table->string('affiliate_tag')->nullable();
             $table->timestamps();
         });
     }

@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('memo_types', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->unique();
+            $table->unsignedTinyInteger('order');
             $table->timestamps();
         });
     }

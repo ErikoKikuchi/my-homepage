@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('my_data_case_prompt', function (Blueprint $table) {
-            $table->id();
+            $table->foreignUuid('my_data_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('case_prompt_id')->constrained('case_prompts')->cascadeOnDelete();
+            $table->primary(['case_prompt_id', 'my_data_id']);
             $table->timestamps();
         });
     }

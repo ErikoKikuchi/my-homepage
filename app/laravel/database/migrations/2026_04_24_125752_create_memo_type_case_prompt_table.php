@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('room_case_prompt', function (Blueprint $table) {
-            $table->foreignUuid('room_id')->constrained()->cascadeOnDelete();
+        Schema::create('memo_type_case_prompt', function (Blueprint $table) {
+            $table->foreignId('memo_type_id')->constrained()->cascadeOnDelete();
             $table->foreignUuid('case_prompt_id')->constrained('case_prompts')->cascadeOnDelete();
-            $table->primary(['room_id', 'case_prompt_id']);
+            $table->primary(['case_prompt', 'case_prompt_id']);
+            $table->text('memo_text')->nullable();
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('room_case_prompt');
+        Schema::dropIfExists('memo_type_case_prompt');
     }
 };

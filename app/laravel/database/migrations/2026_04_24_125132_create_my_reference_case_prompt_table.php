@@ -12,7 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('my_reference_case_prompt', function (Blueprint $table) {
-            $table->id();
+            $table->foreignUuid('my_reference_id')->constrained('my_references')->cascadeOnDelete();
+            $table->foreignUuid('case_prompt_id')->constrained('case_prompts')->cascadeOnDelete();
+            $table->primary(['my_reference_id', 'case_prompt_id']);
+            $table->text('reference_memo')->nullable();
+            $table->string('chapter')->nullable();
+            $table->string('page')->nullable();
+            $table->string('data_path')->nullable();
             $table->timestamps();
         });
     }

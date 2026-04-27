@@ -12,7 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('escalation_rule_case_prompt', function (Blueprint $table) {
-            $table->id();
+            $table->foreignId('escalation_rule_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('case_prompt_id')->constrained('case_prompts')->cascadeOnDelete();
+            $table->primary(['escalation_rule_id', 'case_prompt_id']);
+            $table->text('custom_text')->nullable();
             $table->timestamps();
         });
     }

@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('experience_years', function (Blueprint $table) {
             $table->id();
+            $table->string('year')->unique();
+            $table->unsignedTinyInteger('order');
             $table->timestamps();
         });
     }

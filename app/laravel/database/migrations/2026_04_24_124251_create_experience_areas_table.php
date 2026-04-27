@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('experience_areas', function (Blueprint $table) {
-            $table->id();
+            $table->primary(['profile_id', 'experience_area_id']);
+            $table->string('name')->unique();
+            $table->unsignedTinyInteger('order');
             $table->timestamps();
         });
     }

@@ -12,7 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('my_references', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('material_id')->constrained()->cascadeOnDelete();
+            $table->unique(['user_id', 'material_id']);
             $table->timestamps();
         });
     }

@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('memo_types_case_prompt', function (Blueprint $table) {
+        Schema::create('experience_area_profile', function (Blueprint $table) {
             $table->id();
+            $table->foreignUuid('profile_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('experience_area_id')->constrained()->restrictOnDelete();
             $table->timestamps();
         });
     }
@@ -22,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('memo_types_case_prompt');
+        Schema::dropIfExists('experience_area_profile');
     }
 };
