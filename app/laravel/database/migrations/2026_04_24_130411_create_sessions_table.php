@@ -12,7 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::connection('client_db')->create('sessions', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('client_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('reservation_id')->constrained()->cascadeOnDelete();
+            $table->dateTime('session_date');
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }

@@ -12,7 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::connection('client_db')->create('client_goals', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('client_id')->constrained()->cascadeOnDelete();
+            $table->text('goal')->nullable();
+            $table->text('outlook')->nullable();
+            $table->text('hope')->nullable();
+            $table->dateTime('achieved_at')->nullable();
             $table->timestamps();
         });
     }

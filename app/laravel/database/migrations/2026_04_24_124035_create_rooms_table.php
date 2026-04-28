@@ -19,7 +19,6 @@ return new class extends Migration
             $table->boolean('is_public')->default(false);
             $table->string('icon')->nullable();
             $table->softDeletes();
-            $table->softDeletes();
             $table->timestamps();
         });
     }

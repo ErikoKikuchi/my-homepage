@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::connection('client_db')->create('training_log_categories', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('training_log_id')->constrained()->cascadeOnDelete();
+            $table->enum('category', ['stretch','care','strength','endurance'])->default('stretch');
             $table->timestamps();
         });
     }

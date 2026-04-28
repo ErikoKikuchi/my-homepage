@@ -12,7 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::connection('client_db')->create('training_logs', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('client_id')->constrained()->cascadeOnDelete();
+            $table->date('logged_date');
+            $table->unsignedTinyInteger('mood')->default(3);
+            $table->text('free_text')->nullable();
             $table->timestamps();
         });
     }

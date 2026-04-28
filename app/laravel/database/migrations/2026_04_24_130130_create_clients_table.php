@@ -12,8 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::connection('client_db')->create('clients', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('user_id');
+            $table->uuid('id')->primary();
+            $table->uuid('user_id');
+            $table->string('name');
+            $table->enum('gender', ['male','female','other']);
+            $table->string('occupation')->nullable();
+            $table->text('body_notes')->nullable();
+            $table->text('personality_notes')->nullable();
+            $table->boolean('is_active')->default(false);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

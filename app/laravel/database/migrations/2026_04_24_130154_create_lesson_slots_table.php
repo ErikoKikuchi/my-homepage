@@ -12,7 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::connection('client_db')->create('lesson_slots', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+            $table->dateTime('start_at');
+            $table->dateTime('end_at');
+            $table->unsignedTinyInteger('capacity');
+            $table->boolean('is_active')->default(false);
             $table->timestamps();
         });
     }

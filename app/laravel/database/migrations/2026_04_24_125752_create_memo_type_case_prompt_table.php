@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('memo_type_case_prompt', function (Blueprint $table) {
             $table->foreignId('memo_type_id')->constrained()->cascadeOnDelete();
             $table->foreignUuid('case_prompt_id')->constrained('case_prompts')->cascadeOnDelete();
-            $table->primary(['case_prompt', 'case_prompt_id']);
+            $table->primary(['memo_type_id', 'case_prompt_id']);
             $table->text('memo_text')->nullable();
             $table->timestamps();
         });

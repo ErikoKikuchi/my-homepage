@@ -12,7 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::connection('client_db')->create('guest_passes', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('client_id')->constrained()->cascadeOnDelete();
+            $table->unsignedTinyInteger('passes_total')->default(3);
+            $table->unsignedTinyInteger('passes_remaining')->default(3);
+            $table->dateTime('last_used_at')->nullable();
             $table->timestamps();
         });
     }

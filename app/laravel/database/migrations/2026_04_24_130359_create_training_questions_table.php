@@ -12,7 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::connection('client_db')->create('training_questions', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('training_log_id')->constrained()->cascadeOnDelete();
+            $table->text('question');
+            $table->enum('urgency', ['urgent','next_session'])->default('next_session');
+            $table->dateTime('answered_at')->nullable();
             $table->timestamps();
         });
     }
