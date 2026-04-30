@@ -1,3 +1,11 @@
+.page-header h2{
+    font-weight: 300;
+    color: var(--color-forest-dark);
+    line-height: 1.4;
+    font-family: var(--font-serif);
+    font-size: 1.4rem;
+    letter-spacing: -0.01em;
+}
 /* ── Concept セクション ── */
 .concept-body {
     font-family: var(--font-serif);

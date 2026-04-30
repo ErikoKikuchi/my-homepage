@@ -71,7 +71,7 @@
     /* ── ページヘッダー ── */
     .page-header {
       padding: 8rem 2rem 4rem;
-      max-width: 800px;
+      max-width: 960px;
       margin: 0 auto;
     }
  
@@ -100,7 +100,7 @@
  
     /* ===== メインコンテンツ ===== */
     .main {
-      max-width: 720px;
+      max-width: 960px;
       margin: 0 auto;
       padding: 80px 40px 120px;
     }

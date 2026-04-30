@@ -15,20 +15,19 @@
     @endif
     <link rel="stylesheet" href="/css/style.css" />
     <script type="module" src="/js/components/site-nav.js"></script>
-    <script type="module" src="/js/components/site-footer.jcds"></script>
+    <script type="module" src="/js/components/site-footer.js"></script>
+    <script>
+        window.STATIC_URL = "{{ env('STATIC_URL') }}";
+    </script>
 </head>
 
 <body>
     <site-nav></site-nav>
     <header class="page-header">
-        <p class="section-label">セクション名</p>
-        <h1></h1>
-        <p class="lead"></p>
+        @yield('header')
     </header>
-    <main>
-        <section class="section">
-            @yield('content')
-        </section>
+    <main class="main">
+        @yield('content')
     </main>
     <site-footer></site-footer>
 </body>

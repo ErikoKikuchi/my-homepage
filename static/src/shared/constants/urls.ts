@@ -1,0 +1,1 @@
+export const THINKMOTION_URL = import.meta.env.VITE_THINKMOTION_URL;

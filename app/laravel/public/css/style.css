@@ -67,61 +67,20 @@
       color: var(--color-accent);
       letter-spacing: 0.08em; 
     }
- 
+
     /* ── ページヘッダー ── */
     .page-header {
       padding: 8rem 2rem 4rem;
-      max-width: 800px;
+      max-width: 960px;
       margin: 0 auto;
     }
- 
-    .page-header .section-label {
-      font-family: var(--font-gothic);
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--color-forest);
-    }
- 
-    .page-header h1 {
-      font-size: clamp(2rem, 5vw, 3.2rem);
-      font-weight: 300;
-      color: var(--color-forest-dark);
-      line-height: 1.4;
-      letter-spacing: 0.04em;
-    }
- 
-    .page-header .lead {
-      margin-top: 1.5rem;
-      font-size: 0.95rem;
-      color: var(--color-forest);
-      font-family: var(--font-gothic);
-    }
- 
+
     /* ===== メインコンテンツ ===== */
     .main {
-      max-width: 720px;
+      max-width: 960px;
       margin: 0 auto;
       padding: 80px 40px 120px;
     }
-  
-    /* ── セクション共通 ── */
-    .section {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 4rem 2rem;
-      border-top: 1px solid rgba(47,92,63,0.12);
-    }
- 
-    .section-title {
-      font-family: var(--font-gothic);
-      font-size: 0.72rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--color-forest);
-      margin-bottom: 2.5rem;
-    }
-
 
     /* ===== フッター ===== */
     .site-footer {
