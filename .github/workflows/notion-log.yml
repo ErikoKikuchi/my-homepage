@@ -15,7 +15,7 @@ jobs:
 
       - name: Send commit info to Notion
         env:
-          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY_TOKEN }}
           NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
         run: |
           curl -s -X POST https://api.notion.com/v1/pages \
