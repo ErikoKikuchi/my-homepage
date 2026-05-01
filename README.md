@@ -34,4 +34,4 @@
 | Node.js | 22.22.2              |
 | npm     | 10.9.7               |
 
-## notion連携トライ
+## notionーGithub連携構築済
