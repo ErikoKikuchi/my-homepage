@@ -17,9 +17,8 @@ return new class extends Migration
             $table->foreignId('experience_year_id')->nullable()->constrained('experience_years');
             $table->foreignId('specialty_type_id')->nullable()->constrained('specialty_types');
             $table->string('display_name');
-            $table->string('occupation')->nullable();
             $table->string('bio')->nullable();
-            $table->string('icon')->nullable();
+            $table->foreignId('icon_id')->nullable()->constrained('icons');
             $table->json('links')->nullable();
             $table->timestamps();
         });
