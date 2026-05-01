@@ -12,7 +12,7 @@ use App\Http\Controllers\Auth\User\UserLoginController;
 
 Route::middleware('guest')->group(function(){
     Route::post('/register',[UserRegisterController::class,'register']);
-    Route::post('/login',[UserLoginController::class,'login']);
+    Route::post('/login',[UserLoginController::class,'login'])->name('login');
     Route::post('/admin/login',[AdminLoginController::class,'adminLogin']);
     Route::get('admin/login', function () {return view('auth.admin-login');})->name('admin.login');
 });
@@ -36,3 +36,4 @@ Route::middleware('auth:web')->group(function () {
         return redirect()->route('profile');
     })->middleware(['auth:web'])->name('verification.verify');
 });
+
