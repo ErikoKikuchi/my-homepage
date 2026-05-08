@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('memo_type_my_study', function (Blueprint $table) {
-            $table->foreignId('memo_type_id')->constrained()->cascadeOnDelete();
+        Schema::create('theme_my_study', function (Blueprint $table) {
+            $table->foreignId('theme_id')->constrained()->cascadeOnDelete();
             $table->foreignUuid('my_study_id')->constrained('my_studies')->cascadeOnDelete();
-            $table->primary(['my_study_id', 'memo_type_id']);
+            $table->primary(['my_study_id', 'theme_id']);
             $table->text('memo_text')->nullable();
             $table->timestamps();
         });
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('memo_type_my_study');
+        Schema::dropIfExists('theme_my_study');
     }
 };

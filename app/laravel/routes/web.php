@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\Auth\Admin\AdminLoginController;
+use App\Http\Controllers\Auth\Admin\AdminTwoFactorController;
+use App\Http\Controllers\Auth\Admin\AdminTwoFactorSetupController;
 use App\Http\Controllers\Auth\Admin\AdminHomeController;
 use App\Http\Controllers\Auth\User\UserRegisterController;
 use App\Http\Controllers\Auth\User\UserLoginController;
@@ -13,13 +15,18 @@ use App\Http\Controllers\Auth\User\UserLoginController;
 Route::middleware('guest')->group(function(){
     Route::post('/register',[UserRegisterController::class,'register']);
     Route::post('/login',[UserLoginController::class,'login'])->name('login');
+    Route::get('admin/login', [AdminLoginController::class,'showForm']);
     Route::post('/admin/login',[AdminLoginController::class,'adminLogin']);
-    Route::get('admin/login', function () {return view('auth.admin-login');})->name('admin.login');
+    Route::get('/admin/two-factor', [AdminTwoFactorController::class, 'showForm'])->name('admin.two-factor');
+    Route::get('/admin/two-factor/verify', [AdminTwoFactorController::class, 'showVerifyForm'])->name('two-factor-verify');
+    Route::post('/admin/two-factor/verify', [AdminTwoFactorController::class, 'verify']);
+    Route::get('/admin/two-factor/setup', [AdminTwoFactorSetupController::class, 'showSetupForm'])->name('two-factor-setup');
+    Route::post('/admin/two-factor/setup', [AdminTwoFactorSetupController::class, 'setup']);
 });
 
 Route::middleware('auth:admin')->group(function(){
     Route::post('/admin/logout', [AdminLoginController::class, 'adminLogout']);
-    Route::get('/admin/home', [AdminHomeController::class,'index']);
+    Route::get('/admin/home', [AdminHomeController::class,'index'])->name('admin.home');
 });
 
 Route::middleware('auth:web')->group(function () {

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('user_id')->constrained()->cascadeOnDelete();
             $table->foreignUuid('material_id')->constrained()->cascadeOnDelete();
+            $table->enum('read_status', ['want', 'reading', 'done'])->nullable();
             $table->unique(['user_id', 'material_id']);
             $table->timestamps();
         });
