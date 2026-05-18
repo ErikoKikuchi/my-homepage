@@ -28,7 +28,7 @@ class UserLoginRequest extends FormRequest
                 'string',
                 'email',
                 ],
-            'password'=>['required','min:8','string'],
+            'password'=>['required','min:12','string'],
         ];
     }
     public function messages()

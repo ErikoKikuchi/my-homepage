@@ -31,8 +31,8 @@ class RegisterRequest extends FormRequest
                 'email',
                 'max:255',
                 ],
-            "password"=> ['required','min:8','string'],
-            'password_confirmation'=>['required','min:8','same:password'],
+            "password"=> ['required','min:12','string'],
+            'password_confirmation'=>['required','min:12','same:password'],
             'is_medical' => ['boolean'],
         ];
     }

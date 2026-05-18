@@ -11,17 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('rooms', function (Blueprint $table) {
+        Schema::create('room_purchases', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('creator')->references('id')->on('users')->cascadeOnDelete();
+            $table->foreignUuid('room_id')->references('id')->on('rooms')->restrictOnDelete();
             $table->foreignUuid('admin')->references('id')->on('users')->cascadeOnDelete();
-            $table->string('name');
-            $table->string('description')->nullable();
-            $table->boolean('is_public')->default(false);
-            $table->string('icon')->nullable();
-            $table->dateTime('expires_at');
-            $table->tinyInteger('max_members');
-            $table->softDeletes();
+            $table->timestamp('purchased_at');
+            $table->timestamp('expires_at');
+            $table->tinyInteger('duration_months')->default(6);
             $table->timestamps();
         });
     }
@@ -31,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('rooms');
+        Schema::dropIfExists('room_purchases');
     }
 };

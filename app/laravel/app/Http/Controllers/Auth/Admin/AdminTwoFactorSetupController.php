@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Auth\Admin;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\AdminTwoFactorRequest;
+use BaconQrCode\Renderer\ImageRenderer;
+use BaconQrCode\Renderer\Image\SvgImageBackEnd;
+use BaconQrCode\Renderer\RendererStyle\RendererStyle;
+use BaconQrCode\Writer;
 
 class AdminTwoFactorSetupController extends Controller
 {
@@ -23,7 +27,12 @@ class AdminTwoFactorSetupController extends Controller
         }
 
         $qrUrl = $google2fa->getQRCodeUrl('からだ散歩', $admin->email, $secret);
-        return view('auth.admin-two-factor-setup', compact('qrUrl'));
+
+        $renderer = new ImageRenderer(new RendererStyle(200), new SvgImageBackEnd());
+        $writer = new Writer($renderer);
+        $qrCode = $writer->writeString($qrUrl);  // SVG文字列
+
+        return view('auth.admin-two-factor-setup', compact('qrCode'));
     }
     public function setup(AdminTwoFactorRequest $request)
     {
