@@ -30,7 +30,7 @@ class UserLoginController extends Controller
                 }
 
             return redirect()->intended(
-                $from === 'thinkmotion' ? '/thinkmotion/home' : '/pilates/home'
+                $from === 'thinkmotion' ? '/thinkmotion/mypage' : '/pilates/mypage'
             );
     }
 

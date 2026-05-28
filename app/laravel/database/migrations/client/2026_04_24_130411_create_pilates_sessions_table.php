@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::connection('client_db')->create('sessions', function (Blueprint $table) {
+        Schema::connection('client_db')->create('pilates_sessions', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('client_id')->constrained()->cascadeOnDelete();
             $table->foreignUuid('reservation_id')->constrained()->cascadeOnDelete();
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::connection('client_db')->dropIfExists('sessions');
+        Schema::connection('client_db')->dropIfExists('pilates_sessions');
     }
 };

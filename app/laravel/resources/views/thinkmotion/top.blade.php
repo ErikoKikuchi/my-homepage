@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('css')
-    @vite('resources/js/pages/thinkmotion/top.js')
+    @vite('resources/js/pages/thinkmotion/top-thinkmotion.js')
 @endsection
 
 @section('header')
@@ -75,8 +75,8 @@
     <!-- ページ末尾CTA -->
     <section class="cta-section">
         <div class="cta-row">
-            <a href="/thinkmotion/articles" class="btn btn-outline">思考の記録を見る</a>
-            <a href="/thinkmotion/register" class="btn btn-primary">思考の記録をはじめる</a>
+            <a href="{{ route('thinkmotion.guest.index') }}" class="btn btn-outline">思考の記録を見る</a>
+            <a href="{{ route('login') }}?from=thinkmotion" class="btn btn-primary">思考の記録をはじめる</a>
         </div>
     </section>
 

@@ -16,8 +16,11 @@ return new class extends Migration
             $table->foreignUuid('created_by')->constrained('users')->cascadeOnDelete();
             $table->foreignUuid('room_id')->nullable()->constrained('rooms')->cascadeOnDelete();
             $table->enum('visibility', ['public','members','room_only','private'])->default('public');
+            $table->dateTime('published_at')->nullable();
             $table->string('title');
-            $table->text('prompt_text')->nullable();
+            $table->text('body_phase1');
+            $table->text('body_phase2')->nullable();
+            $table->text('body_phase3')->nullable();
             $table->text('constraint_text')->nullable();
             $table->unsignedTinyInteger('priority')->default(3);
             $table->unsignedTinyInteger('confidence')->default(3);
@@ -30,6 +33,7 @@ return new class extends Migration
             $table->boolean('is_stock')->default(false);
             $table->boolean('is_incubating')->default(false);
             $table->boolean('allow_comments')->default(false);
+            $table->boolean('is_draft')->default(false);
             $table->softDeletes();
             $table->timestamps();
         });

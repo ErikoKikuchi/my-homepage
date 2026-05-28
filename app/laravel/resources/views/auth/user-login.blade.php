@@ -44,7 +44,10 @@
                 </div>
             </form>
             <div class="move-to-register">
-                <a class="register-link" href="/register">ユーザー登録はこちら</a>
+                <a class="register__link" href="/register">ユーザー登録はこちら</a>
+            </div>
+            <div class="move-to-forgot-password">
+                <a class="forgot-password__link" href="/forgot-password">パスワードをお忘れの方はこちら</a>
             </div>
         </div>
     </div>

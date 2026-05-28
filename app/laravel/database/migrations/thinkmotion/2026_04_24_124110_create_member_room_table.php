@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->foreignUuid('room_id')->references('id')->on('rooms')->cascadeOnDelete();
-            $table->enum('role',['moderator','member'])->default('member');
+            $table->enum('role',['admin','moderator','member'])->default('member');
             $table->timestamps();
         });
     }

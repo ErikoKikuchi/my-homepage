@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignUuid('created_by')->constrained('users')->cascadeOnDelete();
             $table->foreignUuid('room_id')->nullable()->constrained('rooms')->cascadeOnDelete();
             $table->enum('visibility', ['public','members','room_only','private'])->default('public');
+            $table->dateTime('published_at')->nullable();
             $table->string('title');
             $table->boolean('show_one_sentence_insight')->default(false);
             $table->string('one_sentence_insight')->nullable();
@@ -35,6 +36,7 @@ return new class extends Migration
             $table->boolean('is_stock')->default(false);
             $table->boolean('is_incubating')->default(false);
             $table->boolean('allow_comments')->default(false);
+            $table->boolean('is_draft')->default(false);
             $table->softDeletes();
             $table->timestamps();
         });
