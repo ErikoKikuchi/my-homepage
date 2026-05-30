@@ -1,89 +1,66 @@
- /* ── Design tokens（トップページ引き継ぎ） ── */
-    :root {
-      --color-accent:      #B8DC24;
-      --color-paper:       #FAF6F0;
-      --color-text:        #846f63;
-      --color-forest:      #8FAF6A;
-      --color-forest-dark: #1F3D2B;
-      --color-muted:       #5C6B50;
-      --font-serif:        'Noto Serif JP', 'Hiragino Mincho ProN', serif;
-      --font-gothic:       'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
-    }
- 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
- 
-    html { scroll-behavior: smooth; }
- 
-    body {
-      background-color: var(--color-paper);
-      color: var(--color-text);
-      font-family: var(--font-serif);
-      font-size: 16px;
-      line-height: 1.9;
-      position: relative;
-      min-height: 100vh;
-      margin: 0;
-      padding-bottom: 50px;
-    }
- 
-    /* ── ナビ（骨格のみ） ── */
-    .site-nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 2rem;
-      background: rgba(255,246,239,0.92);
-      backdrop-filter: blur(6px);
-      border-bottom: 1px solid rgba(47,92,63,0.1);
-    }
- 
-    .site-nav .logo {
-      font-family: var(--font-serif);
-      font-size: 1rem;
-      color: var(--color-forest-dark);
-      text-decoration: none;
-      letter-spacing: 0.08em;
-    }
- 
-    .site-nav .nav-links {
-      display: flex;
-      gap: 2rem;
-      list-style: none;
-    }
- 
-    .site-nav .nav-links a {
-      font-family: var(--font-gothic);
-      font-size: 0.8rem;
-      color: var(--color-forest-dark);
-      text-decoration: none;
-      letter-spacing: 0.06em;
-      transition: color 0.2s ease, opacity 0.2s ease, letter-spacing 0.2s ease;
-    }
- 
-    .site-nav .nav-links a:hover { 
-      color: var(--color-accent);
-      letter-spacing: 0.08em; 
-    }
+/* ── ナビ（骨格のみ） ── */
+.site-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: rgba(255, 246, 239, 0.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid rgba(47, 92, 63, 0.1);
+}
 
-    /* ── ページヘッダー ── */
-    .page-header {
-      padding: 8rem 2rem 4rem;
-      max-width: 960px;
-      margin: 0 auto;
-    }
+.site-nav .logo {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    color: var(--color-forest-dark);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+}
 
-    /* ===== メインコンテンツ ===== */
-    .main {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 80px 40px 120px;
-    }
+.site-nav .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+}
 
-    /* ===== フッター ===== */
-    .site-footer {
+.site-nav .nav-links a {
+    font-family: var(--font-gothic);
+    font-size: 0.8rem;
+    color: var(--color-forest-dark);
+    text-decoration: none;
+    letter-spacing: 0.06em;
+    transition:
+        color 0.2s ease,
+        opacity 0.2s ease,
+        letter-spacing 0.2s ease;
+}
+
+.site-nav .nav-links a:hover {
+    color: var(--color-accent);
+    letter-spacing: 0.08em;
+}
+
+/* ── ページヘッダー ── */
+.page-header {
+    padding: 8rem 2rem 4rem;
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+/* ===== メインコンテンツ ===== */
+.main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 80px 40px 120px;
+}
+
+/* ===== フッター ===== */
+.site-footer {
     position: relative;
     border-top: 1px solid var(--color-border);
     padding: 32px 40px;
@@ -98,4 +75,3 @@
     right: 0;
     width: 20%;
 }
-

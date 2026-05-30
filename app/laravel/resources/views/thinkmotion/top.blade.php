@@ -1,16 +1,12 @@
-@extends('layouts.app')
+@extends ('layouts.app')
 
-@section('css')
-    @vite('resources/js/pages/thinkmotion/top-thinkmotion.js')
-@endsection
-
-@section('header')
-    <p class="section-label">ThinkMotion</p>
-    <h1>書くために考えるのではなく、<br>考えを磨くために書く。</h1>
+@section ('header')
+    <p class="font-gothic text-[0.7rem] tracking-[.2em] text-forest/65 mb-4 uppercase">ThinkMotion</p>
+    <h1>書くために考えるのではなく、<br />考えを磨くために書く。</h1>
     <p class="lead">臨床で生まれた思考を記録し、言語化し、検討し、読み合うためのプラットフォーム</p>
 @endsection
 
-@section('content')
+@section ('content')
     <!-- Concept -->
     <section class="section">
         <p class="section-title">Concept — 思考を磨くプロセス</p>
@@ -34,9 +30,9 @@
             <p class="concept-closing">この循環を繰り返すことで、思考は磨かれていく</p>
         </div>
     </section>
-    <div class="divider"> </div>
+    <div class="divider"></div>
     <div class="contents">Contents</div>
-    <div class="divider"> </div>
+    <div class="divider"></div>
     <!-- 思考の記録を見る -->
     <section class="section">
         <p class="section-title">思考の記録を見る</p>
@@ -46,20 +42,26 @@
                 <!-- 最新記事：あとでLaravel側から動的に差し替える -->
                 <div class="article-item">
                     <span class="article-date">2026.04.18</span>
-                    <a href="#" class="article-title">痛みの訴えと動作観察が一致しないとき、何を優先するか</a>
+                    <a href="#" class="article-title"
+                        >痛みの訴えと動作観察が一致しないとき、何を優先するか</a
+                    >
                 </div>
                 <div class="article-item">
                     <span class="article-date">2026.04.12</span>
-                    <a href="#" class="article-title">「改善した」の定義を患者と合わせるために</a>
+                    <a href="#" class="article-title"
+                        >「改善した」の定義を患者と合わせるために</a
+                    >
                 </div>
                 <div class="article-item">
                     <span class="article-date">2026.04.05</span>
-                    <a href="#" class="article-title">経験年数より思考の密度が問われる場面</a>
+                    <a href="#" class="article-title"
+                        >経験年数より思考の密度が問われる場面</a
+                    >
                 </div>
             </div>
         </div>
     </section>
-    <div class="divider"> </div>
+    <div class="divider"></div>
     <!-- 思考を検討する -->
     <section class="section">
         <p class="section-title">思考を記録し、深める</p>
@@ -75,11 +77,18 @@
     <!-- ページ末尾CTA -->
     <section class="cta-section">
         <div class="cta-row">
-            <a href="{{ route('thinkmotion.guest.index') }}" class="btn btn-outline">思考の記録を見る</a>
-            <a href="{{ route('login') }}?from=thinkmotion" class="btn btn-primary">思考の記録をはじめる</a>
+            <a
+                href="{{ route('thinkmotion.guest.index') }}"
+                class="btn btn-outline"
+                >思考の記録を見る</a
+            >
+            <a
+                href="{{ route('login') }}?from=thinkmotion"
+                class="btn btn-primary"
+                >思考の記録をはじめる</a
+            >
         </div>
     </section>
-
     <!-- フッター -->
     <footer class="site-footer">
         <div class="footer-top">
