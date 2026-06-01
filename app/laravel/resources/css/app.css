@@ -26,8 +26,28 @@
     }
 
     body {
-        @apply min-h-screen bg-[--color-paper] font-serif text-base text-[--color-text];
+        @apply bg-paper text-text min-h-screen font-serif text-base;
         line-height: 1.9;
         padding-bottom: 50px;
+    }
+    .page-header h1 {
+        font-size: clamp(2rem, 5vw, 3.2rem);
+    }
+}
+@layer components {
+    .btn {
+        @apply inline-block cursor-pointer rounded-xs px-6 py-2.75 font-serif text-sm tracking-[0.08em] no-underline transition-opacity duration-200;
+    }
+
+    .btn-primary {
+        @apply bg-forest-dark text-paper;
+    }
+
+    .btn-outline {
+        @apply text-forest-dark border-muted/45 border bg-transparent;
+    }
+
+    .btn:hover {
+        @apply opacity-[0.72];
     }
 }
