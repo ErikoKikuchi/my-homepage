@@ -1,48 +1,47 @@
-@extends('layouts.app')
+@extends ('layouts.app')
 
-@section('css')
-    @if(!app()->environment(['testing']) && !config('app.vite_disabled'))
-        @vite('resources/js/admins/login.js')
-    @endif
+@section ('header')
+    <h1
+        class="font-light text-2xl tracking-[0.04em] leading-[1.4] text-forest-dark text-center mt-10"
+    >
+        ログイン
+    </h1>
 @endsection
 
-@section('content')
-    <div class="container">
-        <div class="login-form">
-            <div class="login-form__title">
-                <h1 class="form__title">ログイン</h1>
+@section ('content')
+    <form class="max-w-md mx-auto" action="/admin/login" method="post">
+        @csrf
+        <div class="p-5">
+            <label class="text-sm/1.8" for="email">メールアドレス </label>
+            <input
+                class="border border-forest w-full h-10"
+                type="text"
+                id="email"
+                name="email"
+                value="{{old('email')}}"
+            />
+            <div class="alert">
+                @foreach ($errors->get('email') as $message)
+                    <p>{{$message}}</p>
+                @endforeach
             </div>
-            <form class="login-form__inner" action="/admin/login" method="post">@csrf
-                <div class="login-form__email">
-                    <div class="login-form__label">
-                        <label class="login-form__label-title" for="email">メールアドレス</label>
-                    </div>
-                    <div class="login-form__input">
-                        <input class="login-form__input-box" type="text" id="email" name="email" value="{{old('email')}}">
-                    </div>
-                    <div class="error">
-                        @foreach($errors->get('email') as $message)
-                            <p class="error-message">{{$message}}</p>
-                        @endforeach
-                    </div>
-                </div>
-                <div class="login-form__password">
-                    <div class="login-form__label">
-                        <label class="login-form__label-title" for="password">パスワード</label>
-                    </div>
-                    <div class="login-form__input">
-                        <input class="login-form__input-box" type="password" id="password" name="password">
-                    </div>
-                    <div class="error">
-                        @error('password')
-                            <p class="error-message">{{$message}}</p>
-                        @enderror
-                    </div>
-                </div>
-                <div class="login-form__button">
-                    <button class="login__button" type="submit">ログインする</button>
-                </div>
-            </form>
         </div>
-    </div>
+        <div class="p-5">
+            <label class="text-sm/1.8" for="password">パスワード </label>
+            <input
+                class="border border-forest w-full h-10"
+                type="password"
+                id="password"
+                name="password"
+            />
+            <div class="alert">
+                @error ('password')
+                    <p>{{$message}}</p>
+                @enderror
+            </div>
+        </div>
+        <div class="flex justify-center m-6">
+            <button class="btn btn-primary" type="submit">ログインする</button>
+        </div>
+    </form>
 @endsection

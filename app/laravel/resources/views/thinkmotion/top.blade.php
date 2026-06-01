@@ -3,7 +3,7 @@
 @section ('header')
     <p class="font-gothic text-xs tracking-[.2em] text-forest mb-4 uppercase">ThinkMotion</p>
     <h1
-        class="font-light text-fluid-lg mb-5 tracking-[0.04em] leading-[1.4] text-forest-dark"
+        class="font-light mb-5 tracking-[0.04em] leading-[1.4] text-forest-dark"
     >
         書くために考えるのではなく、<br />考えを磨くために書く。
     </h1>

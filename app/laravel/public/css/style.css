@@ -47,7 +47,7 @@
 
 /* ── ページヘッダー ── */
 .page-header {
-    padding: 8rem 2rem 4rem;
+    padding: 8rem 2rem 1rem;
     max-width: 960px;
     margin: 0 auto;
 }
@@ -74,4 +74,19 @@
     bottom: 0;
     right: 0;
     width: 20%;
+}
+
+@media (max-width: 600px) {
+    .site-nav {
+        padding: 0 10px;
+        display: grid;
+        grid-template-columns: repeat(2);
+        gap: 10px;
+    }
+    .site-nav .nav-links {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 1rem;
+        list-style: none;
+    }
 }

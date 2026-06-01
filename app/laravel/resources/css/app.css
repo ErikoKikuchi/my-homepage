@@ -50,4 +50,7 @@
     .btn:hover {
         @apply opacity-[0.72];
     }
+    .alert {
+        @apply text-red-500;
+    }
 }

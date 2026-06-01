@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminLoginController extends Controller
 {
-    public function shoeForm(Request $request)
+    public function showForm(Request $request)
     {
-        return view("admin-login");
+        return view("auth.admin-login");
     }
     public function adminLogin(AdminLoginRequest $request)
     {
@@ -25,13 +25,13 @@ class AdminLoginController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('admin.two-factor'));
+        return redirect()->intended(route('auth.admin.two-factor'));
     }
     public function logout(Request $request)
     {
         Auth::guard('admin')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('admin.login');
+        return redirect()->route('auth.admin.login');
     }
 }

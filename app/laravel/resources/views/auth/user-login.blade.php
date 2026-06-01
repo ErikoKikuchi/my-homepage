@@ -1,54 +1,62 @@
-@extends('layouts.app')
+@extends ('layouts.app')
 
-@section('css')
-    @if(!app()->environment(['testing']) && !config('app.vite_disabled'))
-        @vite('resources/js/users/login.js')
-    @endif
+@section ('header')
+    <h1
+        class="font-light text-2xl tracking-[0.04em] leading-[1.4] text-forest-dark text-center mt-10"
+    >
+        ログイン
+    </h1>
 @endsection
 
-@section('content')
-    <div class="container">
-        <div class="login-form">
-            <div class="login-form__title">
-                <h1 class="form__title">ログイン</h1>
-            </div>
-            <form class="login-form__inner" action="/login" method="post">@csrf
-                <div class="login-form__email">
-                    <div class="login-form__label">
-                        <label class="login-form__label-title" for="email">メールアドレス</label>
-                    </div>
-                    <div class="login-form__input">
-                        <input class="login-form__input-box" type="text" id="email" name="email" value="{{old('email')}}">
-                    </div>
-                    <div class="error">
-                        @foreach($errors->get('email') as $message)
-                            <p class="error-message">{{$message}}</p>
-                        @endforeach
-                    </div>
-                </div>
-                <div class="login-form__password">
-                    <div class="login-form__label">
-                        <label class="login-form__label-title" for="password">パスワード</label>
-                    </div>
-                    <div class="login-form__input">
-                        <input class="login-form__input-box" type="password" id="password" name="password">
-                    </div>
-                    <div class="error">
-                        @error('password')
-                            <p class="error-message">{{$message}}</p>
-                        @enderror
-                    </div>
-                </div>
-                <div class="login-form__button">
-                    <button class="login__button" type="submit">ログインする</button>
-                </div>
-            </form>
-            <div class="move-to-register">
-                <a class="register__link" href="/register">ユーザー登録はこちら</a>
-            </div>
-            <div class="move-to-forgot-password">
-                <a class="forgot-password__link" href="/forgot-password">パスワードをお忘れの方はこちら</a>
+@section ('content')
+    <form class="max-w-md mx-auto" action="/admin/login" method="post">
+        @csrf
+        <div class="p-5">
+            <label class="text-sm/1.8" for="email">メールアドレス </label>
+            <input
+                class="border border-forest w-full h-10"
+                type="text"
+                id="email"
+                name="email"
+                value="{{old('email')}}"
+            />
+            <div class="alert">
+                @foreach ($errors->get('email') as $message)
+                    <p>{{$message}}</p>
+                @endforeach
             </div>
         </div>
+        <div class="p-5">
+            <label class="text-sm/1.8" for="password">パスワード </label>
+            <input
+                class="border border-forest w-full h-10"
+                type="password"
+                id="password"
+                name="password"
+            />
+            <div class="alert">
+                @error ('password')
+                    <p>{{$message}}</p>
+                @enderror
+            </div>
+        </div>
+        <div class="flex justify-center m-6">
+            <button class="btn btn-primary" type="submit">ログインする</button>
+        </div>
+    </form>
+    <div class="flex flex-col items-center gap-4 my-6">
+        <div class="flex">
+            <p class="text-xs items-baseline">アカウントをお持ちでない方は</p>
+            <a
+                class="text-xs text-forest cursor-pointer hover:text-forest-dark"
+                href="/register"
+                >新規登録
+            </a>
+        </div>
+        <a
+            class="text-xs text-forest cursor-pointer hover:text-forest-dark"
+            href="/forgot-password"
+            >パスワードをお忘れの方はこちら</a
+        >
     </div>
 @endsection
