@@ -17,15 +17,15 @@ Route::middleware('guest')->group(function(){
     Route::post('/login',[UserLoginController::class,'login'])->name('login');
     Route::get('admin/login', [AdminLoginController::class,'showForm']);
     Route::post('/admin/login',[AdminLoginController::class,'adminLogin']);
-    Route::get('/admin/two-factor', [AdminTwoFactorController::class, 'showForm'])->name('admin.two-factor');
-    Route::get('/admin/two-factor/verify', [AdminTwoFactorController::class, 'showVerifyForm'])->name('two-factor-verify');
-    Route::post('/admin/two-factor/verify', [AdminTwoFactorController::class, 'verify']);
-    Route::get('/admin/two-factor/setup', [AdminTwoFactorSetupController::class, 'showSetupForm'])->name('two-factor-setup');
-    Route::post('/admin/two-factor/setup', [AdminTwoFactorSetupController::class, 'setup']);
-});
+}); 
 
 Route::middleware('auth:admin')->group(function(){
     Route::post('/admin/logout', [AdminLoginController::class, 'adminLogout']);
+    Route::get('/admin/two-factor/verify', [AdminTwoFactorController::class, 'showVerifyForm'])->name('two-factor-verify');
+    Route::get('/admin/two-factor', [AdminTwoFactorController::class, 'showForm'])->name('admin.two-factor');
+    Route::post('/admin/two-factor/verify', [AdminTwoFactorController::class, 'verify']);
+    Route::get('/admin/two-factor/setup', [AdminTwoFactorSetupController::class, 'showSetupForm'])->name('two-factor-setup');
+    Route::post('/admin/two-factor/setup', [AdminTwoFactorSetupController::class, 'setup']);
     Route::get('/admin/home', [AdminHomeController::class,'index'])->name('admin.home');
 });
 

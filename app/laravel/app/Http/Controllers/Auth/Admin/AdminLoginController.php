@@ -27,7 +27,7 @@ class AdminLoginController extends Controller
 
         return redirect()->route('admin.two-factor');
     }
-    public function logout(Request $request)
+    public function adminLogout(Request $request)
     {
         Auth::guard('admin')->logout();
         $request->session()->invalidate();

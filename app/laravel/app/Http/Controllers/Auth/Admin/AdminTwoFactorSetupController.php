@@ -21,8 +21,8 @@ class AdminTwoFactorSetupController extends Controller
 
         if (empty($admin->two_factor_secret)) {
             $secret = $google2fa->generateSecretKey();
-            $admin->two_factor_secret = $secret;
-            $admin->save();
+            $secret = $google2fa->generateSecretKey();
+            session(['two_factor_secret_temp' => $secret]);
         } else {
             $secret = $admin->two_factor_secret;
         }
@@ -37,20 +37,24 @@ class AdminTwoFactorSetupController extends Controller
     }
     public function setup(AdminTwoFactorRequest $request)
     {
+        /** @var \App\Models\Auth\Admin $admin */
         $admin = Auth::guard('admin')->user();
         $google2fa = new Google2FA();
 
-        $valid = $google2fa->verifyKey(
-            $admin->two_factor_secret,
-            $request->two_factor_secret
-        );
+        $secret = session('two_factor_secret_temp') ?? $admin->two_factor_secret;
+
+        $valid = $google2fa->verifyKey($secret, $request->two_factor_secret);
 
         if (!$valid) {
             return back()->withErrors(['two_factor_secret' => '認証コードが正しくありません']);
         }
 
-        session(['admin_two_factor_verified' => true]);
+        // 検証成功後にDBへ保存
+        $admin->two_factor_secret = $secret;
+        $admin->save();
+        session()->forget('two_factor_secret_temp');
 
+        session(['admin_two_factor_verified' => true]);
         return redirect()->route('admin.home');
     }
 }

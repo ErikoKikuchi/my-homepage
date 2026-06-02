@@ -14,15 +14,11 @@
             <p class="text-sm/1.8">登録していただいたメールアドレスに認証メールを送付しました。</p>
             <p class="text-sm/1.8">メール内認証を完了してください。</p>
         </div>
-        <form
-            class="flex justify-center m-6"
-            method="GET"
-            action="{{ route('verification.open') }}"
-        >
-            <button class="btn btn-outline" type="submit">
+        <div class="flex justify-center m-6">
+            <a class="btn btn-outline" href="{{ route('verification.open') }}">
                 認証はこちらから
-            </button>
-        </form>
+            </a>
+        </div>
         <form
             class="flex justify-center m-6"
             method="POST"

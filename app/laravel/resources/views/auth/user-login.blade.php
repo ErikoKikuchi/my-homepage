@@ -15,7 +15,7 @@
             <label class="text-sm/1.8" for="email">メールアドレス </label>
             <input
                 class="border border-forest w-full h-10"
-                type="text"
+                type="email"
                 id="email"
                 name="email"
                 value="{{old('email')}}"
