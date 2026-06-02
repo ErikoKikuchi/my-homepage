@@ -33,7 +33,7 @@ class RegisterRequest extends FormRequest
                 ],
             "password"=> ['required','min:12','string'],
             'password_confirmation'=>['required','min:12','same:password'],
-            'is_medical' => ['boolean'],
+            'is_medical' => ['required','boolean'],
         ];
     }
     public function messages(): array
@@ -53,6 +53,7 @@ class RegisterRequest extends FormRequest
             'password_confirmation.required'=>'確認用パスワードを入力してください',
             'password_confirmation.min'=>'パスワードは８文字以上で入力してください',
             'password_confirmation.same'=>'パスワードと一致しません',
+            'is_medical.required'=>'選択してください'
         ];
     }
 }

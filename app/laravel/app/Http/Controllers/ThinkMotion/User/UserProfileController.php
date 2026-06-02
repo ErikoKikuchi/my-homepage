@@ -9,6 +9,6 @@ class UserProfileController extends Controller
 {
     public function register(Request $request)
     {
-        
+        return view('thinkmotion.user.profile-register');
     }
 }

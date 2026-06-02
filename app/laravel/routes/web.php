@@ -40,7 +40,10 @@ Route::middleware('auth:web')->group(function () {
     })->middleware('throttle:6,1')->name('verification.send');
     Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
         $request->fulfill();
-        return redirect()->route('profile');
+        $user = $request->user();
+        return $user->is_medical
+            ? redirect()->route('profile.register')
+            : redirect()->route('pilates.mypage');
     })->middleware(['auth:web'])->name('verification.verify');
 });
 
