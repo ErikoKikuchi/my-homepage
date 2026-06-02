@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\AdminTwoFactorRequest;
 use Illuminate\Support\Facades\Auth;
+use PragmaRX\Google2FAQRCode\Google2FA;
 
 class AdminTwoFactorController extends Controller
 {
@@ -23,7 +24,7 @@ class AdminTwoFactorController extends Controller
     {
         $admin = Auth::guard('admin')->user();
 
-        $google2fa = app(\PragmaRx\Google2FALaravel\Google2FA::class);
+        $google2fa = new Google2FA();
 
         // DBに保存済みのsecretで検証
         $valid = $google2fa->verifyKey(

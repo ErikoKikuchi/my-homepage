@@ -21,6 +21,7 @@ class UserLoginController extends Controller
             }
 
             $request->session()->regenerate();
+            $request->session()->forget('url.intended');
 
             $user = Auth::guard('web')->user();
 
@@ -29,7 +30,7 @@ class UserLoginController extends Controller
                     return redirect()->route('profile.register');
                 }
 
-            return redirect()->intended(
+            return redirect(
                 $from === 'thinkmotion' ? '/thinkmotion/mypage' : '/pilates/mypage'
             );
     }

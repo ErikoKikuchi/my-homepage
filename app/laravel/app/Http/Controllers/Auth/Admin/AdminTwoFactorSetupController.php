@@ -9,14 +9,15 @@ use BaconQrCode\Renderer\ImageRenderer;
 use BaconQrCode\Renderer\Image\SvgImageBackEnd;
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
 use BaconQrCode\Writer;
+use PragmaRX\Google2FAQRCode\Google2FA;
 
 class AdminTwoFactorSetupController extends Controller
 {
     public function showSetupForm()
     {
-        /** @var \App\Models\Admin $admin */
+        /** @var \App\Models\Auth\Admin $admin */
         $admin = Auth::guard('admin')->user();
-        $google2fa = app(\PragmaRx\Google2FALaravel\Google2FA::class);
+        $google2fa = new Google2FA();
 
         if (empty($admin->two_factor_secret)) {
             $secret = $google2fa->generateSecretKey();
@@ -37,7 +38,7 @@ class AdminTwoFactorSetupController extends Controller
     public function setup(AdminTwoFactorRequest $request)
     {
         $admin = Auth::guard('admin')->user();
-        $google2fa = app(\PragmaRx\Google2FALaravel\Google2FA::class);
+        $google2fa = new Google2FA();
 
         $valid = $google2fa->verifyKey(
             $admin->two_factor_secret,

@@ -9,7 +9,7 @@
 @endsection
 
 @section ('content')
-    <form class="max-w-md mx-auto" action="/admin/login" method="post">
+    <form class="max-w-md mx-auto" action="/login" method="post">
         @csrf
         <div class="p-5">
             <label class="text-sm/1.8" for="email">メールアドレス </label>

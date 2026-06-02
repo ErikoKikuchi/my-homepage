@@ -25,7 +25,7 @@ class AdminLoginController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('auth.admin.two-factor'));
+        return redirect()->route('admin.two-factor');
     }
     public function logout(Request $request)
     {
