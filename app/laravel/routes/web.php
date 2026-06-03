@@ -20,17 +20,14 @@ Route::middleware('guest')->group(function(){
 }); 
 
 Route::middleware('auth:admin')->group(function(){
-    Route::post('/admin/logout', [AdminLoginController::class, 'adminLogout']);
     Route::get('/admin/two-factor/verify', [AdminTwoFactorController::class, 'showVerifyForm'])->name('two-factor-verify');
     Route::get('/admin/two-factor', [AdminTwoFactorController::class, 'showForm'])->name('admin.two-factor');
     Route::post('/admin/two-factor/verify', [AdminTwoFactorController::class, 'verify']);
     Route::get('/admin/two-factor/setup', [AdminTwoFactorSetupController::class, 'showSetupForm'])->name('two-factor-setup');
     Route::post('/admin/two-factor/setup', [AdminTwoFactorSetupController::class, 'setup']);
-    Route::get('/admin/home', [AdminHomeController::class,'index'])->name('admin.home');
 });
 
 Route::middleware('auth:web')->group(function () {
-    Route::post('/logout', [UserLoginController::class, 'logout']);
     Route::get('/email/verify', function () {return view('auth.verify-email');
     })->name('verification.notice');
     Route::get('/redirect', function () {return redirect()->away(config('services.mailtrap.sandbox_url'));}) ->name('verification.open');
@@ -47,3 +44,11 @@ Route::middleware('auth:web')->group(function () {
     })->middleware(['auth:web'])->name('verification.verify');
 });
 
+Route::middleware(['auth:admin', 'admin.2fa'])->group(function(){
+    Route::get('/admin/home', [AdminHomeController::class,'index'])->name('admin.home');
+    Route::post('/admin/logout', [AdminLoginController::class, 'adminLogout']);
+});
+
+Route::middleware(['auth:web', 'verified'])->group(function(){
+    Route::post('/logout', [UserLoginController::class, 'logout']);
+});

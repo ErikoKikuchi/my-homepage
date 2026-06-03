@@ -35,8 +35,8 @@ class AdminTwoFactorController extends Controller
         if (!$valid) {
             return back()->withErrors(['two_factor_secret' => '認証コードが正しくありません']);
         }
-
-        session(['admin_two_factor_verified' => true]);
+        session(['admin_two_factor_verified.auth_passed' => true]);
+        session(['admin_two_factor_verified.auth_time' => \Carbon\Carbon::now()->toIso8601String()]);
 
         return redirect()->route('admin.home');
     }

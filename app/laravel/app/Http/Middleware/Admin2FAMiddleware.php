@@ -10,7 +10,7 @@ class Admin2FAMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        /** @var \PragmaRX\Google2FALaravel\Support\Authenticator $authenticator */
+        /** @var Authenticator $authenticator */
         $authenticator = app(Authenticator::class)->boot($request);
 
         if ($authenticator->isAuthenticated()) {

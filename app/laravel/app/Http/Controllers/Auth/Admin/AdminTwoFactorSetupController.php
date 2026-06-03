@@ -21,7 +21,6 @@ class AdminTwoFactorSetupController extends Controller
 
         if (empty($admin->two_factor_secret)) {
             $secret = $google2fa->generateSecretKey();
-            $secret = $google2fa->generateSecretKey();
             session(['two_factor_secret_temp' => $secret]);
         } else {
             $secret = $admin->two_factor_secret;
@@ -54,7 +53,8 @@ class AdminTwoFactorSetupController extends Controller
         $admin->save();
         session()->forget('two_factor_secret_temp');
 
-        session(['admin_two_factor_verified' => true]);
+        session(['admin_two_factor_verified.auth_passed' => true]);
+        session(['admin_two_factor_verified.auth_time' => \Carbon\Carbon::now()->toIso8601String()]);
         return redirect()->route('admin.home');
     }
 }

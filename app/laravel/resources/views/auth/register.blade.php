@@ -64,7 +64,7 @@
                 name="password_confirmation"
             />
             <div class="alert">
-                @error ('password_confirmation')
+                @error ('password')
                     <p class="error-message">{{$message}}</p>
                 @enderror
             </div>

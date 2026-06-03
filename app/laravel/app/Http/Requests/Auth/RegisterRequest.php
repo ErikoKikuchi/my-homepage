@@ -31,9 +31,8 @@ class RegisterRequest extends FormRequest
                 'email',
                 'max:255',
                 ],
-            "password"=> ['required','min:12','string'],
-            'password_confirmation'=>['required','min:12','same:password'],
-            'is_medical' => ['required','boolean'],
+            "password"=> ['required','min:12','string','confirmed'],
+            'is_medical' => ['required','boolean','in:0,1'],
         ];
     }
     public function messages(): array
@@ -48,12 +47,13 @@ class RegisterRequest extends FormRequest
             'email.email'=>'メールアドレスはメール形式で入力してください',
             'email.max'=>'メールアドレスは２５５文字以内で入力してください',
             'password.required'=>'パスワードを入力してください',
-            'password.min'=>'パスワードは８文字以上で入力してください',
+            'password.min'=>'パスワードは12文字以上で入力してください',
             'password.string'=>'パスワードを正しく入力してください',
             'password_confirmation.required'=>'確認用パスワードを入力してください',
-            'password_confirmation.min'=>'パスワードは８文字以上で入力してください',
-            'password_confirmation.same'=>'パスワードと一致しません',
-            'is_medical.required'=>'選択してください'
+            'password_confirmation.min'=>'パスワードは12文字以上で入力してください',
+            'password.confirmed'=>'パスワードと一致しません',
+            'is_medical.required'=>'選択してください',
+            'is_medical.in'=>'選択してください',
         ];
     }
 }

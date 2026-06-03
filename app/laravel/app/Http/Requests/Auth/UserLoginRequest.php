@@ -25,7 +25,6 @@ class UserLoginRequest extends FormRequest
         return [
             'email' => [
                 'required',
-                'string',
                 'email',
                 ],
             'password'=>['required','min:12','string'],
@@ -35,7 +34,6 @@ class UserLoginRequest extends FormRequest
     {
         return [
             'email.required'=>'メールアドレスを入力してください',
-            'email.string'=>'メールアドレスを正しく入力してください',
             'email.email'=>'メールアドレスはメール形式で入力してください',
             'password.required'=>'パスワードを入力してください',
             'password.min'=>'パスワードは12文字以上で入力してください',
