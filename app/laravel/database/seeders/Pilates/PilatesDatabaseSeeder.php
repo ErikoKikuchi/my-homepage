@@ -12,6 +12,8 @@ class PilatesDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $this->call(LocationSeeder::class);
+        $this->call(LessonTemplateSeeder::class);
+        $this->call(LessonSlotSeeder::class);
     }
 }

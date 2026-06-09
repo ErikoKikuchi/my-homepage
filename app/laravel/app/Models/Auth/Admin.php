@@ -5,9 +5,11 @@ namespace App\Models\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class Admin extends Authenticatable
 {
+    use HasUuids;
     protected $fillable = [
         'username',
         'email',
