@@ -15,7 +15,7 @@ use App\Http\Controllers\Auth\User\UserLoginController;
 Route::middleware('guest')->group(function(){
     Route::post('/register',[UserRegisterController::class,'register']);
     Route::post('/login',[UserLoginController::class,'login'])->name('login');
-    Route::get('admin/login', [AdminLoginController::class,'showForm']);
+    Route::get('/admin/login', [AdminLoginController::class,'showForm']);
     Route::post('/admin/login',[AdminLoginController::class,'adminLogin']);
 }); 
 
