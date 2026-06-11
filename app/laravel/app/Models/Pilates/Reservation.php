@@ -39,4 +39,24 @@ class Reservation extends Model
     {
         $query->where('status', 'confirmed');
     }
+    //ユーザーがこれからの予約を確認用
+    #[Scope]
+    protected function upComing(Builder $query):void
+    {
+        $query->whereHas('lessonSlot', fn($q) => $q->where('date', '>=', today()));
+    }
+    //過去の予約を確認用
+    #[Scope]
+    protected function past(Builder $query):void
+    {
+        $query->whereHas('lessonSlot', fn($q) => $q->where('date', '<', today()));
+    }
+    //ログインユーザの予約のみ表示
+    #[Scope]
+    protected function forUser(Builder $query):void
+    {
+        /** @var \App\Models\Auth\User|null $user */
+        $user = auth('web')->user();
+        $query->where('user_id', $user?->id);
+    }
 }

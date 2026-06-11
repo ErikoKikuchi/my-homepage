@@ -17,6 +17,7 @@ class LessonTemplate extends Model
         'end_time',
         'is_active'
     ];
+
     //開始時間・終了時間の表示整形
     public function startTime():Attribute
     {

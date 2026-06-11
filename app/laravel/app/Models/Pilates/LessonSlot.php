@@ -18,6 +18,10 @@ class LessonSlot extends Model
         'date',
         'is_active',
     ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
     
     //リレーション先
     public function reservation():HasMany

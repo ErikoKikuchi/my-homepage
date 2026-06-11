@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignUuid('training_log_id')->constrained()->cascadeOnDelete();
             $table->text('question');
             $table->enum('urgency', ['urgent','next_session'])->default('next_session');
+            $table->text('answer');
             $table->dateTime('answered_at')->nullable();
             $table->timestamps();
         });
