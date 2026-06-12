@@ -13,5 +13,6 @@ class ThinkMotionDatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(AdminSeeder::class);
+        $this->call(UserSeeder::class);
     }
 }
