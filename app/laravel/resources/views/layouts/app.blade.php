@@ -25,6 +25,7 @@
 
 <body>
     <site-nav></site-nav>
+    @yield ('subnav')
     <header class="page-header">
         @yield ('header')
     </header>

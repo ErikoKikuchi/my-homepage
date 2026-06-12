@@ -22,6 +22,10 @@ class Reservation extends Model
         'cancelled_reason',
     ];
 
+    protected $casts = [
+        'cancelled_at'=>'datetime',
+    ];
+
     //リレーション
     public function lessonSlot():BelongsTo
     {

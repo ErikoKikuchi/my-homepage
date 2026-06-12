@@ -19,6 +19,10 @@ class Location extends Model
         'is_active',
     ];
 
+    protected $casts = [
+        'is_active'=>'boolean',
+    ];
+
     // 表示用ラベル
     public function policyNote(): string
     {

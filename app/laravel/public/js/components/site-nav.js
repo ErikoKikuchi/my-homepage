@@ -1,5 +1,5 @@
 // public/js/components/site-nav.js
-const staticUrl = window.STATIC_URL ?? 'http://localhost:5173';
+const staticUrl = window.STATIC_URL ?? "http://localhost:5173";
 
 class SiteNav extends HTMLElement {
     connectedCallback() {
@@ -15,6 +15,16 @@ class SiteNav extends HTMLElement {
                 </ul>
             </nav>
         `;
+        const nav = this.querySelector(".site-nav");
+        const updateHeight = () => {
+            document.documentElement.style.setProperty(
+                "--site-nav-height",
+                `${nav.offsetHeight}px`,
+            );
+        };
+
+        updateHeight();
+        new ResizeObserver(updateHeight).observe(nav);
     }
 }
-customElements.define('site-nav', SiteNav);
+customElements.define("site-nav", SiteNav);

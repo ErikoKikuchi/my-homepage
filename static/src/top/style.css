@@ -1,23 +1,26 @@
 /* ===== カラー変数 ===== */
 :root {
-  --color-accent: #B8DC24;
-  --color-paper: #FAF6F0;
+  --color-accent: #b8dc24;
+  --color-paper: #faf6f0;
   --color-text: #846f63;
-  --color-forest: #8FAF6A;
-  --color-forest-dark: #1F3D2B;
+  --color-forest: #8faf6a;
+  --color-forest-dark: #1f3d2b;
   --color-overlay: rgba(92, 107, 80, 0.15);
-  --color-nav-bg:       rgba(250,246,240,0.94);
-  --color-nav-text:     #5C6B50;  
+  --color-nav-bg: rgba(255, 246, 239, 0.92);
+  --color-nav-text: #5c6b50;
 }
 
 /* ===== リセット・ベース ===== */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   background-color: var(--color-paper);
   color: var(--color-text);
@@ -30,8 +33,8 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 140px 20px 260px;  
-  background-image: url('/images/IMG_7034.JPG');
+  padding: 140px 20px 260px;
+  background-image: url("/images/IMG_7034.JPG");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -40,7 +43,7 @@ html, body {
 
 /* 背景に深緑のオーバーレイ */
 .scene::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   z-index: 0;
@@ -54,7 +57,7 @@ html, body {
 
 /* ===== タイトル ===== */
 .title {
-  font-family: 'Hiragino Mincho ProN', 'Noto Serif JP', serif;
+  font-family: "Hiragino Mincho ProN", "Noto Serif JP", serif;
   font-size: clamp(2rem, 8vw, 3.5rem);
   font-weight: 400;
   letter-spacing: 0.25em;
@@ -62,18 +65,19 @@ html, body {
   margin-bottom: 10px;
   opacity: 0;
   animation: fadeIn 2s ease forwards;
-  text-shadow:0 1px 12px rgba(0,0,0,0.45),
-              0 2px 32px rgba(0,0,0,0.30);
+  text-shadow:
+    0 1px 12px rgba(0, 0, 0, 0.45),
+    0 2px 32px rgba(0, 0, 0, 0.3);
 }
 
 .subtitle {
-  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+  font-family: "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
   font-size: clamp(0.75rem, 3vw, 0.95rem);
   letter-spacing: 0.35em;
   color: var(--color-accent);
   opacity: 0;
   animation: fadeIn 1.5s ease 1.3s forwards;
-  text-shadow:0 2px 24px rgba(0,0,0,0.28);
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.28);
   background-color: var(--color-forest);
   padding: 4px 16px;
   border-radius: 20px;
@@ -81,7 +85,7 @@ html, body {
 
 /* ===== コンセプトワード ===== */
 .concept {
-  font-family: 'Hiragino Mincho ProN', 'Noto Serif JP', serif;
+  font-family: "Hiragino Mincho ProN", "Noto Serif JP", serif;
   margin-top: 140px;
   font-size: clamp(1rem, 5vw, 1.3rem);
   font-weight: bold;
@@ -89,8 +93,9 @@ html, body {
   min-height: 2em;
   text-align: center;
   color: var(--color-paper);
-  text-shadow:0 1px 10px rgba(0,0,0,0.40),
-              0 2px 24px rgba(0,0,0,0.25);
+  text-shadow:
+    0 1px 10px rgba(0, 0, 0, 0.4),
+    0 2px 24px rgba(0, 0, 0, 0.25);
   text-align: left;
   align-self: flex-start;
   padding-left: 20vw;
@@ -112,12 +117,15 @@ html, body {
   color: var(--color-paper);
   border-radius: 40% 60% 55% 45% / 45% 40% 60% 55%;
   cursor: pointer;
-  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+  font-family: "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
   font-size: clamp(0.85rem, 3vw, 1rem);
   letter-spacing: 0.1em;
   user-select: none;
   border: 1px solid transparent;
-  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .leaf-outer {
@@ -146,7 +154,9 @@ html, body {
     opacity: 0;
     transform: translateY(-120px) rotate(-5deg);
   }
-  60% { opacity: 1; }
+  60% {
+    opacity: 1;
+  }
   100% {
     opacity: 1;
     transform: translateY(0) rotate(0deg);
@@ -154,22 +164,41 @@ html, body {
 }
 
 @keyframes sway {
-  0%, 100% { transform: translateX(0) rotate(-1deg); }
-  50%       { transform: translateX(6px) rotate(1deg); }
+  0%,
+  100% {
+    transform: translateX(0) rotate(-1deg);
+  }
+  50% {
+    transform: translateX(6px) rotate(1deg);
+  }
 }
 
 @keyframes fadeIn {
-  to { opacity: 1; }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes conceptFadeIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes conceptFadeOut {
-  from { opacity: 1; transform: translateY(0); }
-  to   { opacity: 0; transform: translateY(-6px); }
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
 }
 
 /* ===== 説明文エリア ===== */
@@ -185,7 +214,9 @@ html, body {
   border-top: 1px solid var(--color-accent);
   opacity: 0;
   transform: translateY(8px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
   pointer-events: none;
   z-index: 50;
 }
@@ -196,7 +227,7 @@ html, body {
 }
 
 #description-text {
-  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+  font-family: "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
   font-size: clamp(0.78rem, 3vw, 0.9rem);
   color: var(--color-paper);
   letter-spacing: 0.08em;
@@ -215,18 +246,21 @@ html, body {
   background-color: var(--color-nav-bg);
   backdrop-filter: blur(8px);
   padding: 12px 8px;
-  border-top: 1px solid  rgba(92,107,80,0.2);
+  border-top: 1px solid rgba(92, 107, 80, 0.2);
   z-index: 100;
 }
 
 .bottom-nav a {
-  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+  font-family: "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
   color: var(--color-nav-text);
   text-decoration: none;
   font-size: clamp(0.6rem, 2.3vw, 0.75rem);
   letter-spacing: 0.05em;
   padding: 4px 6px;
-  transition: color 0.2s ease, opacity 0.2s ease, letter-spacing 0.2s ease;
+  transition:
+    color 0.2s ease,
+    opacity 0.2s ease,
+    letter-spacing 0.2s ease;
   opacity: 0.8;
 }
 
@@ -236,36 +270,36 @@ html, body {
   letter-spacing: 0.08em;
 }
 /* ===== 動線 ===== */
-.start-here{
+.start-here {
   margin: 50px auto 30px;
   display: flex;
   flex-direction: column;
 }
-.guide{
+.guide {
   text-align: center;
   color: var(--color-text);
   margin: 8px 0;
 }
-.entrance-button{
+.entrance-button {
   display: inline-block;
   align-self: center;
   text-align: center;
   text-decoration: none;
   background-color: var(--color-forest);
-  color:var(--color-paper);
+  color: var(--color-paper);
   letter-spacing: 0.05em;
-  border:1px solid var(--color-accent);
+  border: 1px solid var(--color-accent);
   border-radius: 20px;
-  padding:10px 20px;
-  margin-top:20px
+  padding: 10px 20px;
+  margin-top: 20px;
 }
-.entrance-button:hover{
+.entrance-button:hover {
   opacity: 0.8;
 }
 
 /* ===== フッター ===== */
 .site-footer {
-  padding:  60px 20px 180px;
+  padding: 60px 20px 180px;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -274,7 +308,7 @@ html, body {
 }
 
 .site-footer a {
-  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+  font-family: "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
   color: var(--color-text);
   text-decoration: none;
   font-size: 0.72rem;
