@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignUuid('client_id')->constrained()->cascadeOnDelete();
             $table->unsignedTinyInteger('passes_total')->default(3);
             $table->unsignedTinyInteger('passes_remaining')->default(3);
-            $table->dateTime('last_used_at')->nullable();
+            $table->date('last_used_at')->nullable();
             $table->timestamps();
         });
     }

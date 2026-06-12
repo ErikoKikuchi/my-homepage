@@ -35,3 +35,33 @@
 | npm     | 10.9.7               |
 
 ## notionーGithub連携構築済
+
+開発状況の可視化を目的として、NotionとGitHubを連携しています。
+実装内容だけでなく、学習内容や気づき、設計上の判断、見込時間も記録しています。
+
+## フロント教材との並行学習について
+
+本プロジェクトは学習を兼ねて段階的に技術移行を行っています。
+
+### Phase1
+
+- static部分（トップページ、各セクション、一部UI）は HTML + CSS + TypeScript で実装
+
+### Phase2
+
+- Backendは Laravel を中心に設計
+- Pilates側は JavaScript を用いて動的処理を実装
+- ThinkMotion側は TypeScript を用いて動的処理を実装
+
+### Phase3
+
+- 作成した機能を React 化
+
+### Phase4
+
+- Staticページを Next.js へ移行しながら学習・改善
+
+## 学習方針
+
+まずはWebアプリケーションの基礎構造（HTML/CSS/JavaScript/Laravel）を理解し、
+その後React・Next.jsへ段階的に移行することで、各技術の役割と設計思想を理解することを目的としています。

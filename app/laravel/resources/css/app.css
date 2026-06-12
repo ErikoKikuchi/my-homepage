@@ -16,6 +16,9 @@
     --color-forest: #8faf6a;
     --color-forest-dark: #1f3d2b;
     --color-muted: #5c6b50;
+    --color-overlay: rgba(92, 107, 80, 0.15);
+    --color-nav-bg: rgba(255, 246, 239, 0.92);
+    --color-nav-text: #5c6b50;
     --font-serif: "Noto Serif JP", "Hiragino Mincho ProN", serif;
     --font-gothic: "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
 }

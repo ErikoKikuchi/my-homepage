@@ -18,12 +18,9 @@ return new class extends Migration
             $table->unsignedTinyInteger('participants')->default(1);
             $table->text('participants_name')->nullable();
             $table->text('note')->nullable();
-            $table->enum('status', ['pending','waiting_venue','confirmed','canceled'])->default('pending');
+            $table->enum('status', ['waiting_venue','confirmed','canceled'])->default('waiting_venue');
             $table->timestamp('cancelled_at')->nullable();
             $table->enum('cancelled_reason', ['user','venue','instructor'])->nullable();
-            $table->string('guest_name')->nullable();
-            $table->string('contact_phone')->nullable();
-            $table->string('contact_line')->nullable();
             $table->timestamps();
         });
     }
