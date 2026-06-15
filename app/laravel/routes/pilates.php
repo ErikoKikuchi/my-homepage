@@ -13,6 +13,7 @@ use App\Http\Controllers\Pilates\Admin\TrainingLogController as PilatesAdminTrai
 
 // ゲスト用
 Route::get('/pilates', [PilatesGuestController::class, 'index'])->name('pilates.guest.index');
+Route::get('/pilates/reservations/create', [PilatesReservationController::class, 'create'])->name('pilates.guest.create');
 
 
 // ログイン後

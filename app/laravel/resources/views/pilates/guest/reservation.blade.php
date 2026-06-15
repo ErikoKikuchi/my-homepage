@@ -13,6 +13,7 @@
 @section ('pilates-content')
     <div
         id="calendar"
+        data-month="{{ $month }}"
         data-authenticated="{{ auth()->check() ? 'true' : 'false' }}"
         data-login-url="{{ route('login') }}"
     >
@@ -20,11 +21,13 @@
             <button id="prev-month-btn" class="btn btn-outline">前月</button>
             <button id="next-month-btn" class="btn btn-outline">翌月</button>
         </div>
-        <div id="this-month-calendar">
+        <div id="calendar-form">
             <h2 class="font-light text-xl text-forest-dark p-4">
-                今月の空き状況
+                {{ $month }}月の空き状況
             </h2>
-            <div class="weekdays grid grid-cols-7 p-2 text-center">
+            <div
+                class="weekdays grid grid-cols-7 p-2 text-center text-xl border border-forest-dark bg-forest-dark text-white font-bold"
+            >
                 <div>日</div>
                 <div>月</div>
                 <div>火</div>
@@ -34,68 +37,14 @@
                 <div>土</div>
             </div>
             <div class="dates grid grid-cols-7 gap-1 auto-rows-[minmax(0,3fr)]">
-                @for ($i = 0; $i < 42; $i++)
-                    <div
-                        class="date border border-accent items-center text-center"
-                    >
-                        @if ($i - $dayOfWeek<0)
-                            @php 
-                                $date = null;
-                            @endphp
-                        @elseif ($i-$daysInMonth-$dayOfWeek>=0)
-                            @php 
-                                $date = null;
-                            @endphp
-                        @else
-                            @php 
-                                $date = $i-$dayOfWeek+1;
-                            @endphp
-                        @endif
-                        {{ $date ??''}}
-                    </div>
-                @endfor
+                @foreach ($cells as $cell)
+                    <div class=""></div>
+                @endforeach
             </div>
         </div>
-        <div id="next-month-calendar" class="hidden">
-            <h2 class="text-xl text-forest-dark p-4">来月の空き状況</h2>
-            <div class="weekdays grid grid-cols-7 p-2 text-center">
-                <div>日</div>
-                <div>月</div>
-                <div>火</div>
-                <div>水</div>
-                <div>木</div>
-                <div>金</div>
-                <div>土</div>
-            </div>
-            <div class="dates grid grid-cols-7 gap-1 auto-rows-[minmax(0,3fr)]">
-                @for ($i = 0; $i < 42; $i++)
-                    <div
-                        class="date border border-accent items-center text-center"
-                    >
-                        @if ($i - $dayOfWeekNext<0)
-                            @php 
-                                $date = null;
-                            @endphp
-                        @elseif ($i-$daysInMonthNext-$dayOfWeekNext>=0)
-                            @php 
-                                $date = null;
-                            @endphp
-                        @else
-                            @php 
-                                $date = $i-$dayOfWeekNext+1;
-                            @endphp
-                        @endif
-                        {{ $date ??''}}
-                    </div>
-                @endfor
-            </div>
-        </div>
-        <div class="m-2 pb-1">
-            <div class="m-2 pb-1">
-                <p>会員登録せずにピラティス体験希望の方は <a href="http://" class="text-xm text-blue-500 hover:text-blue-700 border-b">こちらへ</a></p>
-            </div>
-            <p class="text-xs text-muted pb-1 pl-4">＊カレンダー上で空き枠を確認後お申し込みください。</p>
-            <p class="text-xs text-muted pb-1 pl-4">＊ユーザー登録されている方が優先となりますのでご了承ください。</p>
+        <div class="explanation">
+            <p class="text-xs text-muted pb-1 pl-4">〇：空きあり</p>
+            <p class="text-xs text-muted pb-1 pl-4">✕：空き無し</p>
         </div>
     </div>
 
