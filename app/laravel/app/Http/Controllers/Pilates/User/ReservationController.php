@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Pilates\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pilates\LessonSlot;
+use App\Models\Pilates\Location;
 use App\Models\Pilates\Reservation;
 use Illuminate\Http\Request;
 use App\Http\Requests\Pilates\User\StoreReservationRequest;
@@ -20,10 +21,17 @@ class ReservationController extends Controller
         $date = $request->input('date');
         $dayOfWeek = \Carbon\Carbon::parse($date)->dayOfWeek;
         $times = ['10:00', '11:00', '12:00'];
+        $isWednesday = $dayOfWeek===3;
+
+        if ($isWednesday) {
+            $locations = Location::where('name', 'beauty Ruby')->get();
+        } else {
+            $locations = Location::where('name', '!=', 'beauty Ruby')->get();
+        }
 
         return view('pilates.guest.reservation-detail', [
             'date' => $date,
-            'isWednesday' => $dayOfWeek === 3,
+            'locations' => $locations,
             'times'  =>$times,
         ]);
     }

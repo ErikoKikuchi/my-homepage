@@ -11,12 +11,7 @@
 @endsection
 
 @section ('pilates-content')
-    <div
-        id="calendar"
-        data-month="{{ $month }}"
-        data-authenticated="{{ auth()->check() ? 'true' : 'false' }}"
-        data-login-url="{{ route('login') }}"
-    >
+    <div id="calendar" data-month="{{ $month }}">
         <div class="calendar-controls flex gap-10 flex-wrap justify-center">
             <button id="prev-month-btn" class="btn btn-outline">前月</button>
             <button id="next-month-btn" class="btn btn-outline">翌月</button>

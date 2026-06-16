@@ -11,7 +11,12 @@
 @endsection
 
 @section ('pilates-content')
-    <div class="reservation-form" data-date="{{ $date }}">
+    <div
+        class="reservation-form"
+        data-date="{{ $date }}"
+        data-authenticated="{{ auth()->check() ? 'true' : 'false' }}"
+        data-login-url="{{ route('login') }}"
+    >
         <div class="text-xl m-2">{{ $date }}の予約</div>
         <div class="text-xl m-2 flex flex-col items-center mb-10 gap-4">
             レッスン開始時間
@@ -34,40 +39,39 @@
             id="reserve-place"
         >
             場所の選択
-            <div>
+            <div class="text-xl m-2 flex flex-col items-center mb-10 gap-4">
                 <label for="first-place">第一希望の場所　　　　</label>
                 <select
                     class="text-xl m-2 border border-forest h-10"
                     id="first-place"
                 >
-                    @if ($isWednesday)
-                        <option value="5">beauty Ruby</option>
-                    @else
-                        <option value="1"><!--ownだが現在はなし--></option>
-                        <option value="2">遠浅公民館</option>
-                        <option value="3">早来スポーツセンター</option>
-                        <option value="4">町内会館</option>
-                    @endif
+                    @foreach ($locations as $location)
+                        <option value="{{ $location->id }}">
+                            {{ $location->name }}
+                        </option>
+                    @endforeach
                 </select>
             </div>
-            <div>
+            <div class="text-xl m-2 flex flex-col items-center mb-10 gap-4">
                 <label for="second-place">第二希望の場所（任意）</label>
-                @if (!$isWednesday)
-                    <select
-                        class="text-xl m-2 border border-forest h-10"
-                        id="second-place"
-                    >
-                        第二希望
-                        <option value="1"><!--ownだが現在はなし--></option>
-                        <option value="2">遠浅公民館</option>
-                        <option value="3">早来スポーツセンター</option>
-                        <option value="4">町内会館</option>
-                    </select>
-                @endif
+                <select
+                    class="text-xl m-2 border border-forest h-10"
+                    id="second-place"
+                >
+                    <option value="">未選択</option>
+                    @foreach ($locations as $location)
+                        <option value="{{ $location->id }}">
+                            {{ $location->name }}
+                        </option>
+                    @endforeach
+                </select>
             </div>
+            <p class="text-xs">＊実施場所は予約申請後、講師で場所を確保したのち、確定の連絡をいたします。</p>
+            <p class="text-xs">＊Lineにて連絡をいたしますので、お済みでない方は事前に登録をお願いいたします。</p>
+            <p class="text-xs">＊公共施設では冠婚葬祭・選挙等により急な予定変更依頼がある可能性がありますので、ご了承ください。</p>
         </div>
         <div class="text-xl m-2 flex flex-col items-center mb-10 gap-4">
-            <label for="first-place">人数</label>
+            <label for="participants">人数</label>
             <select
                 class="text-xl m-2 border border-forest h-10 w-30"
                 id="participants"
@@ -100,25 +104,21 @@
             ></textarea>
         </div>
         <div class="reserve-button text-xl m-2 text-center mb-10">
-            @if (auth()->check())
-                <button
-                    type="submit"
-                    id="reservation-confirm"
-                    class="border border-forest bg-forest text-white h-10 w-3xs cursor-pointer hover:bg-forest-dark"
-                >
-                    予約確認画面へ
-                </button>
-            @else
-                <a href="http://">ログイン</a>
+            <button
+                type="submit"
+                id="reservation-confirm"
+                class="border border-forest bg-forest text-white h-10 w-3xs cursor-pointer hover:bg-forest-dark"
+            >
+                予約確認画面へ
+            </button>
+            <div class="m-2 pb-1">
                 <div class="m-2 pb-1">
-                    <div class="m-2 pb-1">
-                        <p>会員登録せずにピラティス体験希望の方はこちらへ <a href="http://" class="text-xm text-blue-500 hover:text-blue-700 border-b">体験レッスン予約フォーム</a></p>
-                    </div>
-                    <p class="text-xs text-muted pb-1 pl-4">＊カレンダー上で空き枠を確認後お申し込みください。</p>
-                    <p class="text-xs text-muted pb-1 pl-4">＊体験レッスンの日程はお申し込み後に確定となります。</p>
-                    <p class="text-xs text-muted pb-1 pl-4">＊お申し込みのタイミングによっては、ご希望日時の変更をお願いする場合があります。</p>
+                    <p>会員登録せずにピラティス体験希望の方はこちらへ <a href="http://" class="text-xm text-blue-500 hover:text-blue-700 border-b">体験レッスン予約フォーム</a></p>
                 </div>
-            @endif
+                <p class="text-xs text-muted pb-1 pl-4">＊カレンダー上で空き枠を確認後お申し込みください。</p>
+                <p class="text-xs text-muted pb-1 pl-4">＊体験レッスンの日程はお申し込み後に確定となります。</p>
+                <p class="text-xs text-muted pb-1 pl-4">＊お申し込みのタイミングによっては、ご希望日時の変更をお願いする場合があります。</p>
+            </div>
         </div>
     </div>
     <div

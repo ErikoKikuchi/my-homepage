@@ -30,28 +30,36 @@ document.querySelectorAll(".time-btn").forEach((btn) => {
 });
 
 document.getElementById("reservation-confirm").addEventListener("click", () => {
+    dateString = document.querySelector(".reservation-form").dataset.date;
+    const isAuthenticated =
+        document.querySelector(".reservation-form").dataset.authenticated ===
+        "true";
+    const loginUrl =
+        document.querySelector(".reservation-form").dataset.loginUrl;
+
+    if (!isAuthenticated) {
+        window.location.href = `${loginUrl}?from=pilates-create&date=${dateString}`;
+        return;
+    }
+
     selectedTime = document.querySelector(".time-btn.selected")?.dataset.time;
     firstPlace = document.getElementById("first-place").value;
     secondPlace = document.getElementById("second-place")?.value ?? null;
-    dateString = document.querySelector(".reservation-form").dataset.date;
     participants = document.getElementById("participants").value;
     participantsName =
         document.getElementById("participants-name")?.value ?? null;
     note = document.getElementById("note")?.value ?? null;
 
-    const placeNames = {
-        1: "自宅（未定）",
-        2: "遠浅公民館",
-        3: "早来スポーツセンター",
-        4: "町内会館",
-        5: "beauty Ruby",
-    };
+    const firstPlaceName =
+        document.getElementById("first-place").selectedOptions[0].text;
+
+    const secondPlaceName =
+        document.getElementById("second-place")?.selectedOptions[0].text;
 
     document.getElementById("modal-date").textContent = dateString;
     document.getElementById("modal-time").textContent = selectedTime;
-    document.getElementById("modal-place").textContent = placeNames[firstPlace];
-    document.getElementById("modal-place2").textContent =
-        placeNames[secondPlace];
+    document.getElementById("modal-place").textContent = firstPlaceName;
+    document.getElementById("modal-place2").textContent = secondPlaceName;
     document.getElementById("modal-participants").textContent = participants;
     document.getElementById("modal-participants-name").textContent =
         participantsName;
@@ -72,6 +80,7 @@ document.getElementById("modal-submit").addEventListener("click", async () => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                Accept: "application/json",
                 "X-CSRF-TOKEN": document.querySelector(
                     'meta[name="csrf-token"]',
                 ).content,

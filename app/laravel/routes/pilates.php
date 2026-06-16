@@ -20,7 +20,7 @@ Route::get('/pilates/reservations/create', [PilatesReservationController::class,
 Route::prefix('pilates')->middleware(['auth:web', 'verified'])->group(function () {
     Route::get('/mypage', [PilatesMyPageController::class, 'index'])->name('pilates.mypage');
     Route::patch('/reservations/{reservation}/cancel', [PilatesReservationController::class,'cancel'])->name('pilates.user.reservation.cancel');
-    Route::resource('/reservations', PilatesReservationController::class)->only(['index', 'show','create', 'store'])->names('pilates.user.reservation');
+    Route::resource('/reservations', PilatesReservationController::class)->only(['index', 'show', 'store'])->names('pilates.user.reservation');
     Route::resource('/training-logs',PilatesTrainingLogController::class)->only(['index', 'show','create', 'store','edit','update','destroy'])->names('pilates.user.training-log');
 });
 
