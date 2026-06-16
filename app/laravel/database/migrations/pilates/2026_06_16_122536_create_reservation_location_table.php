@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::connection('client_db')->create('lesson_templates', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->time('start_time');
-            $table->time('end_time');
-            $table->boolean('is_active')->default(true);
+        Schema::connection('client_db')->create('reservation_location', function (Blueprint $table) {
+            $table->id();
+            $table->foreignUuid('reservation_id')->constrained();
+            $table->foreignUuid('location_id')->constrained();
+            $table->tinyInteger('priority');
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::connection('client_db')->dropIfExists('lesson_templates');
+        Schema::connection('client_db')->dropIfExists('reservation_location');
     }
 };

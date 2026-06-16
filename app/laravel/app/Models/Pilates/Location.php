@@ -23,6 +23,11 @@ class Location extends Model
         'is_active'=>'boolean',
     ];
 
+    public function reservations()
+    {
+        return $this->belongsToMany('reservation_location','location_id','reservation_id');
+    }
+
     // 表示用ラベル
     public function policyNote(): string
     {

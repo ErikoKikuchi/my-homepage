@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Reservation extends Model
 {
@@ -34,6 +35,10 @@ class Reservation extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(\App\Models\Auth\User::class);
+    }
+    public function location():BelongsToMany
+    {
+        return $this->belongsToMany(Location::class,'reservation_location','reservation_id','location_id');
     }
 
 
