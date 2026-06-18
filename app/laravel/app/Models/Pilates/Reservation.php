@@ -15,12 +15,12 @@ class Reservation extends Model
     protected $connection = 'client_db';
 
     protected $fillable = [
+        'user_id',
         'participants',
         'participants_name',
         'note',
         'status',
         'cancelled_at',
-        'cancelled_reason',
     ];
 
     protected $casts = [

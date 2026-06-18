@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Pilates\Guest;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Pilates\Guest\ReservationIndexRequest;
+use App\Models\Pilates\LessonSlot;
 use Carbon\Carbon;
 
 class GuestController extends Controller
@@ -16,10 +17,24 @@ class GuestController extends Controller
         $previous=now()->parse($month)->subMonth()->format('Y-m');
         $next=now()->parse($month)->addMonth()->format('Y-m');
 
-        $slots = [
-            '2026-06-18' => 'available',
-            '2026-06-20' => 'full',
-        ];
+        $slots = LessonSlot::where('is_active',true)
+        ->whereBetween('date', [
+            $startOfMonth->format('Y-m-d'),
+            $startOfMonth->copy()->endOfMonth()->format('Y-m-d'),
+        ])
+        ->with('reservations')
+        ->get();
+
+        $slotMap = $slots->groupBy(fn($slot) => $slot->date->format('Y-m-d'))
+            ->map(function($daySlots) {
+                $hasAvailable = $daySlots->some(function($slot) {
+                    return $slot->reservations
+                        ->whereNotIn('status', ['canceled'])
+                        ->count() === 0;
+                });
+                return $hasAvailable ? 'available' : 'full';
+            });
+
         $cells=[];
         for ($i = 0; $i < 42; $i++)
             if ($i - $dayOfWeek<0 || $i>=$daysInMonth+$dayOfWeek){
@@ -29,7 +44,7 @@ class GuestController extends Controller
                 $dateString = $month . '-' . sprintf('%02d', $date);
                 $cells[]=[
                     'date'=>$date,
-                    'status' => $slots[$dateString] ?? null,
+                    'status' => $slotMap[$dateString] ?? null,
                 ];
             }
 

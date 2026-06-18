@@ -95,9 +95,16 @@ document.getElementById("modal-submit").addEventListener("click", async () => {
                 note: note,
             }),
         });
-        console.log(response.status);
-        const data = await response.text();
-        console.log(data); // ← 追加
+        if (response.ok) {
+            const data = await response.json();
+            // モーダルを閉じる
+            document.getElementById("confirm-modal").classList.add("hidden");
+            // マイページへリダイレクト
+            window.location.href = "/pilates/mypage";
+        } else {
+            const error = await response.json();
+            console.error("エラー：", error);
+        }
     } catch (error) {
         console.error("エラー：", error);
     }

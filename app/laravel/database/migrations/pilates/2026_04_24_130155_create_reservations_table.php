@@ -20,7 +20,6 @@ return new class extends Migration
             $table->text('note')->nullable();
             $table->enum('status', ['waiting_venue','confirmed','canceled'])->default('waiting_venue');
             $table->timestamp('cancelled_at')->nullable();
-            $table->enum('cancelled_reason', ['user','venue','instructor'])->nullable();
             $table->timestamps();
         });
     }

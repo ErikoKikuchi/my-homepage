@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::connection('client_db')->create('guest_passes', function (Blueprint $table) {
+        Schema::connection('client_db')->create('guest_passes_usages', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->foreignUuid('guest_pass_purchase_id')->constrained()->cascadeOnDelete();
             $table->foreignUuid('client_id')->constrained()->cascadeOnDelete();
-            $table->unsignedTinyInteger('passes_total')->default(3);
-            $table->unsignedTinyInteger('passes_remaining')->default(3);
-            $table->date('last_used_at')->nullable();
+            $table->foreignUuid('reservation_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->enum('status', ['reserved', 'completed', 'cancelled'])->default('reserved');
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::connection('client_db')->dropIfExists('guest_passes');
+        Schema::connection('client_db')->dropIfExists('guest_passes_usages');
     }
 };

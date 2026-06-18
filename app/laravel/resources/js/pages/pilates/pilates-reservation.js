@@ -45,9 +45,19 @@ async function loadMonth(month) {
                         cell.status === "available" ? "〇" : "☓";
                     div.appendChild(statusEl);
                 }
-                div.addEventListener("click", () => {
-                    window.location.href = `/pilates/reservations/create?date=${dateString}`;
-                });
+                if (cell.status === "full") {
+                    // クリック無効・見た目も変える
+                    div.classList.remove("cursor-pointer", "hover:bg-accent");
+                    div.classList.add("opacity-50", "cursor-not-allowed");
+                    div.addEventListener("click", (e) => e.preventDefault());
+                } else if (cell.status === "available") {
+                    div.addEventListener("click", () => {
+                        window.location.href = `/pilates/reservations/create?date=${dateString}`;
+                    });
+                } else {
+                    // status === null はクリック無効
+                    div.classList.remove("cursor-pointer", "hover:bg-accent");
+                }
             }
             datesEl.appendChild(div);
         });

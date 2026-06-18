@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Pilates\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pilates\LessonSlot;
+use App\Models\Pilates\LessonTemplate;
 use App\Models\Pilates\Location;
 use App\Models\Pilates\Reservation;
 use Illuminate\Http\Request;
 use App\Http\Requests\Pilates\User\StoreReservationRequest;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class ReservationController extends Controller
 {
@@ -19,8 +21,18 @@ class ReservationController extends Controller
     public function create(Request $request)
     {
         $date = $request->input('date');
-        $dayOfWeek = \Carbon\Carbon::parse($date)->dayOfWeek;
-        $times = ['10:00', '11:00', '12:00'];
+        $dayOfWeek = Carbon::parse($date)->dayOfWeek;
+        $times = LessonSlot::where('is_active', true)
+        ->where('date', $date)
+        ->with('lessonTemplate')
+        ->get()
+        ->filter(function($slot) {
+            return $slot->reservations
+                ->whereNotIn('status', ['canceled'])
+                ->count() === 0;
+        })
+        ->map(fn($slot) => Carbon::parse($slot->lessonTemplate->start_time)->format('H:i'))
+        ->toArray();
         $isWednesday = $dayOfWeek===3;
 
         if ($isWednesday) {
@@ -41,13 +53,13 @@ class ReservationController extends Controller
         $user = auth('web')->user();
 
         DB::transaction(function() use ($reservationData, $user, $request) {
-            $slot = LessonSlot::whereDate('date', $reservationData['date'])
+            $slots = LessonSlot::where('date', $reservationData['date'])
             ->whereHas('lessonTemplate', function($q) use ($reservationData) {
-                $q->where('start_time', $reservationData['time']);
+                $q->whereTime('start_time', $reservationData['time']);
             })->lockForUpdate() ->firstOrFail();
 
             // そのスロットにすでに予約があるかチェック
-            $alreadyReserved = $slot->reservations()
+            $alreadyReserved = $slots->reservations()
                 ->whereNotIn('status', ['cancelled'])
                 ->exists();
             
@@ -55,13 +67,12 @@ class ReservationController extends Controller
                 throw new \Exception('このスロットはすでに予約済みです');
             }
 
-            $reservationInfo=Reservation::create([
-                'lesson_slot_id'   => $slot->id,
+            $reservationInfo=$slots->reservations()->create([
                 'user_id'          => $user->id,
                 'participants'=>$reservationData['participants'],
                 'participants_name'=>$reservationData['participants_name'] ,
                 'note'=>$reservationData['note'] ,
-                'status'=>'pending',
+                'status'=>'waiting_venue',
             ]);
 
             $locations = [$reservationData['first_place'] => ['priority' => 1]];
