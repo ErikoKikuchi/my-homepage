@@ -21,10 +21,11 @@ class LessonSlot extends Model
 
     protected $casts = [
         'is_active' => 'boolean',
+        'date' => 'date',
     ];
-    
+
     //リレーション先
-    public function reservation():HasMany
+    public function reservations():HasMany
     {
         return $this->hasMany(Reservation::class);
     }

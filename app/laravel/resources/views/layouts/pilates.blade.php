@@ -7,7 +7,9 @@
         @auth
             <a href="{{ route('pilates.mypage') }}">マイページ</a>
             @if (auth()->user()->is_client && auth()->user()->client?->is_active)
-                <a href="{{ route('training-log') }}">自主トレログ</a>
+                <a href="{{ route('pilates.user.training-log.index') }}"
+                    >自主トレログ</a
+                >
             @endif
             @if (auth()->user()->is_medical)
                 <a href="{{ route('thinkmotion.mypage') }}"
@@ -23,6 +25,10 @@
         @endauth
     </nav>
     @yield ('subnav')
+@endsection
+
+@section ('header')
+    @yield ('pilates-header')
 @endsection
 
 @section ('content')

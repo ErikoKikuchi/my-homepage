@@ -12,7 +12,7 @@ class UserLoginController extends Controller
     public function login(UserLoginRequest $request)
         {
             $credentials = $request->only(['email', 'password']);
-            $from=$request->query('from');
+            $from = $request->session()->pull('login_from');
 
             if (!Auth::guard('web')->attempt($credentials, $request->boolean('remember'))) {
                 return back()
@@ -29,9 +29,15 @@ class UserLoginController extends Controller
                 {
                     return redirect()->route('profile.register');
                 }
+            $date = $request->session()->pull('reservation_date');
 
             return redirect(
-                $from === 'thinkmotion' ? '/thinkmotion/mypage' : '/pilates/mypage'
+                match ($from) {
+                    'pilates-reservation' => route('pilates.guest.index'),
+                    'pilates-create' => route('pilates.guest.create', ['date' => $date]),
+                    'thinkmotion' => '/thinkmotion/mypage',
+                    default => '/pilates/mypage',
+                }
             );
     }
 

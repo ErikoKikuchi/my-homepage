@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::connection('client_db')->create('lesson_templates', function (Blueprint $table) {
+        Schema::connection('client_db')->create('stripe_customers', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->time('start_time');
-            $table->time('end_time');
-            $table->boolean('is_active')->default(true);
+            $table->foreignUuid('client_id')->constrained()->cascadeOnDelete();
+            $table->string('stripe_customer_id')->unique(); // cus_xxxx
+            $table->text('memo')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::connection('client_db')->dropIfExists('lesson_templates');
+        Schema::connection('client_db')->dropIfExists('stripe_customers');
     }
 };

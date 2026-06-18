@@ -50,5 +50,5 @@ Route::middleware(['auth:admin', 'admin.2fa'])->group(function(){
 });
 
 Route::middleware(['auth:web', 'verified'])->group(function(){
-    Route::post('/logout', [UserLoginController::class, 'logout']);
+    Route::post('/logout', [UserLoginController::class, 'logout'])->name('logout');
 });
