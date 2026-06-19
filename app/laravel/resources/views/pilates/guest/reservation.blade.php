@@ -33,7 +33,7 @@
             </div>
             <div class="dates grid grid-cols-7 gap-1 auto-rows-[minmax(0,3fr)]">
                 @foreach ($cells as $cell)
-                    <div class=""></div>
+                    <div></div>
                 @endforeach
             </div>
         </div>
@@ -42,5 +42,11 @@
             <p class="text-xs text-muted pb-1 pl-4">✕：空き無し</p>
         </div>
     </div>
-
+    <div class="time-select hidden">
+        <h2 class="font-light text-xl text-forest-dark p-4"></h2>
+        <div class="flex flex-col items-start">
+            <!--JSで描画-->
+        </div>
+        <p class="bg-forest/20 border border-forest text-sm">＊レッスンは60分間です</p>
+    </div>
 @endsection

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Pilates\Guest;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Pilates\Guest\ReservationIndexRequest;
 use App\Models\Pilates\LessonSlot;
@@ -58,5 +59,29 @@ class GuestController extends Controller
         }
 
         return view('pilates.guest.reservation', compact('month', 'cells', 'previous', 'next'));
+    }
+    public function show(Request $request){
+        $date = $request->query('date');
+        $dayOfWeek = Carbon::parse($date)->isoFormat('ddd');
+        $times = LessonSlot::where('is_active', true)
+        ->where('date', $date)
+        ->with('lessonTemplate')
+        ->get()
+        ->filter(function($slot) {
+            return $slot->reservations
+                ->whereNotIn('status', ['canceled'])
+                ->count() === 0;
+        })
+        ->map(fn($slot) => [
+            'start'=>Carbon::parse($slot->lessonTemplate->start_time)->format('H:i'),
+            'end'=>Carbon::parse($slot->lessonTemplate->end_time)->format('H:i'),
+        ])
+        ->toArray();
+
+        return response()->json([
+            'date' => $date,
+            'dayOfWeek' => $dayOfWeek,
+            'times' => $times,
+        ]);
     }
 }

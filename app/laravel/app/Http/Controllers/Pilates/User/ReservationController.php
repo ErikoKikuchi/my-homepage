@@ -4,9 +4,7 @@ namespace App\Http\Controllers\Pilates\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pilates\LessonSlot;
-use App\Models\Pilates\LessonTemplate;
 use App\Models\Pilates\Location;
-use App\Models\Pilates\Reservation;
 use Illuminate\Http\Request;
 use App\Http\Requests\Pilates\User\StoreReservationRequest;
 use Illuminate\Support\Facades\DB;
@@ -20,20 +18,11 @@ class ReservationController extends Controller
 
     public function create(Request $request)
     {
-        $date = $request->input('date');
-        $dayOfWeek = Carbon::parse($date)->dayOfWeek;
-        $times = LessonSlot::where('is_active', true)
-        ->where('date', $date)
-        ->with('lessonTemplate')
-        ->get()
-        ->filter(function($slot) {
-            return $slot->reservations
-                ->whereNotIn('status', ['canceled'])
-                ->count() === 0;
-        })
-        ->map(fn($slot) => Carbon::parse($slot->lessonTemplate->start_time)->format('H:i'))
-        ->toArray();
-        $isWednesday = $dayOfWeek===3;
+        $date = $request->query('date');
+        $time = $request->query('time');
+        $isWednesday = Carbon::parse($date)->dayOfWeek === 3;
+        $dayOfWeek = Carbon::parse($date)->isoFormat('ddd');
+        
 
         if ($isWednesday) {
             $locations = Location::where('name', 'beauty Ruby')->get();
@@ -44,7 +33,8 @@ class ReservationController extends Controller
         return view('pilates.guest.reservation-detail', [
             'date' => $date,
             'locations' => $locations,
-            'times'  =>$times,
+            'dayOfWeek'=>$dayOfWeek,
+            'time'=>$time,
         ]);
     }
     public function store(StoreReservationRequest $request)

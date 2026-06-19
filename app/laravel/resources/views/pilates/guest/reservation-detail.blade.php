@@ -6,7 +6,7 @@
     <h1
         class="font-light text-2xl tracking-[0.04em] leading-[1.4] text-forest-dark text-center mt-10"
     >
-        ピラティス日時選択画面
+        ピラティス予約画面
     </h1>
 @endsection
 
@@ -14,35 +14,16 @@
     <div
         class="reservation-form"
         data-date="{{ $date }}"
+        data-time="{{ $time }}"
         data-authenticated="{{ auth()->check() ? 'true' : 'false' }}"
         data-login-url="{{ route('login') }}"
     >
-        <div class="text-xl m-2">{{ $date }}の予約</div>
-        <div class="text-xl m-2 flex flex-col items-center mb-10 gap-4">
-            レッスン開始時間
-            <!--管理画面で作った時間の枠を持ってくる-->
-            @foreach ($times as $time)
-                <div class="text-xl m-2 items-center">
-                    {{ $time }}
-                    <button
-                        class="time-btn text-xl m-2 bg-forest cursor-pointer text-white w-30 h-10 hover:bg-forest-dark"
-                        type="button"
-                        data-time="{{ $time }}"
-                    >
-                        選択
-                    </button>
-                </div>
-            @endforeach
-        </div>
-        <div
-            class="text-xl m-2 flex flex-col items-center mb-10 gap-4"
-            id="reserve-place"
-        >
-            場所の選択
-            <div class="text-xl m-2 flex flex-col items-center mb-10 gap-4">
+        <div class="text-xl m-2 flex-col items-start mb-5" id="reserve-place">
+            <div class="font-bold">1、開催場所を選択してください</div>
+            <div class="text-xl m-1 flex items-center mb-10">
                 <label for="first-place">第一希望の場所　　　　</label>
                 <select
-                    class="text-xl m-2 border border-forest h-10"
+                    class="text-xl m-1 border border-forest h-10"
                     id="first-place"
                 >
                     @foreach ($locations as $location)
@@ -52,10 +33,10 @@
                     @endforeach
                 </select>
             </div>
-            <div class="text-xl m-2 flex flex-col items-center mb-10 gap-4">
+            <div class="text-xl m-2 flex items-center mb-10">
                 <label for="second-place">第二希望の場所（任意）</label>
                 <select
-                    class="text-xl m-2 border border-forest h-10"
+                    class="text-xl m-1 border border-forest h-10"
                     id="second-place"
                 >
                     <option value="">未選択</option>
@@ -70,8 +51,10 @@
             <p class="text-xs">＊Lineにて連絡をいたしますので、お済みでない方は事前に登録をお願いいたします。</p>
             <p class="text-xs">＊公共施設では冠婚葬祭・選挙等により急な予定変更依頼がある可能性がありますので、ご了承ください。</p>
         </div>
-        <div class="text-xl m-2 flex flex-col items-center mb-10 gap-4">
-            <label for="participants">人数</label>
+        <div class="text-xl m-2 items-center mb-10 gap-4">
+            <label for="participants" class="font-bold"
+                >2、参加人数を選択してください</label
+            >
             <select
                 class="text-xl m-2 border border-forest h-10 w-30"
                 id="participants"
@@ -81,10 +64,10 @@
                 <option value="3">3名</option>
                 <option value="4">4名</option>
             </select>
-            <p>*複数名でご予約した場合ピラティスのグループレッスンのみの対応となります。</p>
+            <p>＊2名以上でご予約した場合は参加者名をご入力ください。</p>
         </div>
-        <div class="text-xl m-2 flex flex-col items-center mb-10 gap-4">
-            参加者名
+        <div class="text-xl m-2 items-center mb-10 w-full">
+            参加者名(任意)
             <input
                 type="text"
                 name="name"
@@ -93,13 +76,13 @@
                 placeholder="複数名で参加予定の方はご記入ください"
             />
         </div>
-        <div class="text-xl m-2 flex flex-col items-center mb-10 gap-4">
-            備考
+        <div class="text-xl m-2 items-center mb-10 gap-4">
+            3、備考(任意)
             <textarea
                 type="text"
                 name="text"
                 id="note"
-                class="text-xl m-2 border border-forest h-40 w-150"
+                class="text-xl m-2 border border-forest h-20 w-full"
                 placeholder="事前に講師に伝えることがあればご記入ください。"
             ></textarea>
         </div>
