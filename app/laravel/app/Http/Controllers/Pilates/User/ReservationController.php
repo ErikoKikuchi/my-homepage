@@ -20,21 +20,16 @@ class ReservationController extends Controller
     {
         $date = $request->query('date');
         $time = $request->query('time');
-        $isWednesday = Carbon::parse($date)->dayOfWeek === 3;
-        $dayOfWeek = Carbon::parse($date)->isoFormat('ddd');
-        
 
-        if ($isWednesday) {
-            $locations = Location::where('name', 'beauty Ruby')->get();
-        } else {
-            $locations = Location::where('name', '!=', 'beauty Ruby')->get();
-        }
+        $slot = LessonSlot::where('date', $date)
+        ->whereHas('lessonTemplate', fn($q) => $q->whereTime('start_time', $time))
+        ->with('location')
+        ->firstOrFail();
 
         return view('pilates.guest.reservation-detail', [
             'date' => $date,
-            'locations' => $locations,
-            'dayOfWeek'=>$dayOfWeek,
             'time'=>$time,
+            'venueNote' => $slot->venueNote(),
         ]);
     }
     public function store(StoreReservationRequest $request)
@@ -50,14 +45,14 @@ class ReservationController extends Controller
 
             // そのスロットにすでに予約があるかチェック
             $alreadyReserved = $slots->reservations()
-                ->whereNotIn('status', ['cancelled'])
+                ->whereNotIn('status', ['canceled'])
                 ->exists();
             
             if ($alreadyReserved) {
                 throw new \Exception('このスロットはすでに予約済みです');
             }
 
-            $reservationInfo=$slots->reservations()->create([
+            $slots->reservations()->create([
                 'user_id'          => $user->id,
                 'participants'=>$reservationData['participants'],
                 'participants_name'=>$reservationData['participants_name'] ,
@@ -65,16 +60,16 @@ class ReservationController extends Controller
                 'status'=>'waiting_venue',
             ]);
 
-            $locations = [$reservationData['first_place'] => ['priority' => 1]];
-                if (!empty($reservationData['second_place'])) {
-                    $locations[$reservationData['second_place']] = ['priority' => 2];
-                }
-            $reservationInfo->location()->attach($locations);
         });
 
         if ($request->expectsJson()) {
+            session()->flash(
+                'message',
+                "予約申請を受け付けました。\n施設を確保後、LINEにて予約確定のご連絡をいたします。\n通常1〜2日以内にご連絡いたします。"
+            );
+        
             return response()->json([
-                'message' => '予約が完了しました！'
+                'success' => true
             ]);
         }
 

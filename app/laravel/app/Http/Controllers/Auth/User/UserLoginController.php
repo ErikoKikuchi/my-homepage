@@ -34,7 +34,7 @@ class UserLoginController extends Controller
             return redirect(
                 match ($from) {
                     'pilates-reservation' => route('pilates.guest.index'),
-                    'pilates-create' => route('pilates.guest.create', ['date' => $date]),
+                    'pilates-create' => route('pilates.guest.index'),
                     'thinkmotion' => '/thinkmotion/mypage',
                     default => '/pilates/mypage',
                 }
