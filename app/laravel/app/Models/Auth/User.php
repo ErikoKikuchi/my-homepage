@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -60,5 +60,13 @@ class User extends Authenticatable implements MustVerifyEmail
                 $model->id = (string) Str::uuid();
             }
         });
+    }
+    public function clients():HasMany
+    {
+        return $this->hasMany(\App\Models\Pilates\Client::class);
+    }
+    public function reservations():HasMany
+    {
+        return $this->hasMany(\App\Models\Pilates\Reservation::class);
     }
 }

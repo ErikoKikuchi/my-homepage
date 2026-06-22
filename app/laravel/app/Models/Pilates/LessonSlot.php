@@ -47,7 +47,7 @@ class LessonSlot extends Model
 
     protected $casts = [
         'is_active' => 'boolean',
-        'date' => 'date',
+        'date' => 'datetime',
     ];
 
     //リレーション先
@@ -58,10 +58,6 @@ class LessonSlot extends Model
     public function lessonTemplate():BelongsTo
     {
         return $this->belongsTo(LessonTemplate::class);
-    }
-    public function location():BelongsTo
-    {
-        return $this->belongsTo(Location::class);
     }
 
     public function venueNote(): string

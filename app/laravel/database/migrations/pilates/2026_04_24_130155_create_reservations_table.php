@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::connection('client_db')->create('reservations', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('lesson_slot_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('location_id')->nullable()->constrained()->cascadeOnDelete();
             $table->uuid('user_id');
             $table->unsignedTinyInteger('participants')->default(1);
             $table->text('participants_name')->nullable();
             $table->text('note')->nullable();
-            $table->enum('status', ['waiting_venue','confirmed','canceled'])->default('waiting_venue');
+            $table->enum('status', ['waiting_venue','confirmed','canceled','no_show'])->default('waiting_venue');
             $table->timestamp('cancelled_at')->nullable();
             $table->timestamps();
         });

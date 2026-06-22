@@ -19,31 +19,31 @@ class LessonSlotSeeder extends Seeder
 
         LessonSlot::create([
             'lesson_template_id' => $morning->id,
-            'date'               => '2026-06-20',
+            'date'               => '2026-06-27',
             'location_id'        => null,
             'is_active'          => true,
         ]);
         LessonSlot::create([
             'lesson_template_id' => $morning->id,
-            'date'               => '2026-06-18',
+            'date'               => '2026-06-28',
             'location_id'        => null,
             'is_active'          => true,
         ]);
         LessonSlot::create([
             'lesson_template_id' => $morning->id,
-            'date'               => '2026-06-19',
+            'date'               => '2026-06-28',
             'location_id'        => null,
             'is_active'          => true,
         ]);
         LessonSlot::create([
             'lesson_template_id' => $afternoon2->id,
-            'date'               => '2026-06-20',
+            'date'               => '2026-06-30',
             'location_id'        => null,
             'is_active'          => true,
         ]);
         LessonSlot::create([
             'lesson_template_id' => $afternoon2->id,
-            'date'               => '2026-06-19',
+            'date'               => '2026-06-30',
             'location_id'        => null,
             'is_active'          => true,
         ]);

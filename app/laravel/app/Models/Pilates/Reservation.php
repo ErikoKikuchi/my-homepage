@@ -42,12 +42,15 @@ class Reservation extends Model
     }
 
 
-    //確定済の予約の絞り込み用
+    //未来の予約の絞り込み用
     #[Scope]
-    protected function confirmed(Builder $query): void
-    {
-        $query->where('status', 'confirmed');
-    }
+    protected function active(Builder $query): void
+{
+    $query->whereIn('status', [
+        'waiting_venue',
+        'confirmed',
+    ]);
+}
     //ユーザーがこれからの予約を確認用
     #[Scope]
     protected function upComing(Builder $query):void

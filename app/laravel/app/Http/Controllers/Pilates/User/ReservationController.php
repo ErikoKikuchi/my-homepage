@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Pilates\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pilates\LessonSlot;
-use App\Models\Pilates\Location;
 use Illuminate\Http\Request;
 use App\Http\Requests\Pilates\User\StoreReservationRequest;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class ReservationController extends Controller
 {
@@ -23,7 +21,6 @@ class ReservationController extends Controller
 
         $slot = LessonSlot::where('date', $date)
         ->whereHas('lessonTemplate', fn($q) => $q->whereTime('start_time', $time))
-        ->with('location')
         ->firstOrFail();
 
         return view('pilates.guest.reservation-detail', [

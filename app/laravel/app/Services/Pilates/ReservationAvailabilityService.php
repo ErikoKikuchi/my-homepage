@@ -55,7 +55,7 @@ class ReservationAvailabilityService
     {
         return LessonSlot::where('is_active', true)
             ->where('date', $date)
-            ->with(['lessonTemplate', 'location'])
+            ->with('lessonTemplate')
             ->get()
             ->filter(fn($slot) => $this->isSlotAvailable($slot))
             ->map(fn($slot) => [
