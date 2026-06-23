@@ -19,41 +19,35 @@
     <section
         class="max-w-200 my-0 mx-auto py-16 px-8 border-t border-forest-dark/12"
     >
-        <p class="font-gothic text-xs tracking-[0.18em] uppercase text-forest mb-10">リンク</p>
+        <p class="font-gothic text-xs tracking-[0.18em] uppercase text-forest mb-10">クイックメニュー</p>
         <div class="flex gap-2">
             @if ($notLineLinkedClient)
                 <a
                     href="#line"
-                    class="px-4 py-2 rounded border border-accent bg-accent"
+                    class="px-4 py-2 rounded border border-forest bg-forest hover:bg-forest-dark text-white"
                 >
                     LINE登録
                 </a>
             @endif
             <a
                 href="#reservation"
-                class="px-4 py-2 rounded border border-accent bg-accent"
+                class="px-4 py-2 rounded border border-forest bg-forest hover:bg-forest-dark text-white"
             >
                 予約
             </a>
 
             <a
                 href="#reservation-index"
-                class="px-4 py-2 rounded border border-accent bg-accent"
+                class="px-4 py-2 rounded border border-forest bg-forest hover:bg-forest-dark text-white"
             >
                 予約一覧
             </a>
 
             <a
                 href="#tickets"
-                class="px-4 py-2 rounded border border-accent bg-accent"
+                class="px-4 py-2 rounded border border-forest bg-forest hover:bg-forest-dark text-white"
             >
                 回数券購入
-            </a>
-            <a
-                href="#training-log"
-                class="px-4 py-2 rounded border border-accent bg-accent"
-            >
-                BodyMind～自主トレ記録~
             </a>
         </div>
     </section>
@@ -104,6 +98,11 @@
         id="reservation"
     >
         <p class="font-gothic text-xs tracking-[0.18em] uppercase text-forest mb-10">ご予約はこちら</p>
+        <a
+            href="{{ route('pilates.guest.index') }}"
+            class="px-4 py-2 rounded border border-accent bg-forest-dark text-white pointer hover:bg-forest"
+            >ご予約はこちら</a
+        >
     </section>
     <!--ご予約一覧-->
     <section
@@ -111,6 +110,36 @@
         id="reservation-index"
     >
         <p class="font-gothic text-xs tracking-[0.18em] uppercase text-forest mb-10">ご予約一覧はこちら</p>
+        <div class="flex gap-5 flex-col">
+            <p>今後のご予約</p>
+            @foreach ( $upcomingReservations as $upcoming)
+                <table class="table-fixed">
+                    <tr class="w-full h-10 border rounded">
+                        <th class="text-center">日付</th>
+                        <th class="text-center">場所</th>
+                        <th class="text-center"></th>
+                    </tr>
+                    <tr class="w-full h-14 border rounded">
+                        <td class="text-center">{{ $upcoming['date'] }}</td>
+                        <td class="text-center">{{ $upcoming['location'] }}</td>
+                        <td class="text-center">
+                            <a
+                                href="{{ route('pilates.user.reservation.show', $upcoming['uuid'])}}"
+                                class="border border-forest-dark bg-forest-dark text-white px-4 py-2 rounded hover:bg-forest"
+                                >確認/キャンセル</a
+                            >
+                        </td>
+                    </tr>
+                </table>
+            @endforeach
+
+            <p>過去のご予約</p>
+            <a
+                href="{{ route('pilates.past.reservation') }}"
+                class="px-4 py-2 rounded border border-accent bg-forest text-white pointer hover:bg-forest/80"
+                >過去のご予約はこちら</a
+            >
+        </div>
     </section>
     <!--回数券購入-->
     <section
@@ -118,6 +147,11 @@
         id="tickets"
     >
         <p class="font-gothic text-xs tracking-[0.18em] uppercase text-forest mb-10">回数券購入</p>
+        <a
+            href="{{ route('pilates.tickets') }}"
+            class="px-4 py-2 rounded border border-accent bg-forest-dark text-white pointer hover:bg-forest"
+            >回数券の購入はこちら</a
+        >
     </section>
     <!--自主トレログへのリンク-->
     <section

@@ -25,13 +25,21 @@ class MyPageController extends Controller
         //LINE登録
         $notLineLinkedClient=$user->clients()->notLineLinked()->get();
         //予約履歴
-        //
-        //
+        $upcomingReservations=$user->reservations()->upComing()->get()->sortBy(fn($reservation) => $reservation->lessonSlot->date)->values()->map(fn ($reservation) => [
+            'uuid' => $reservation->id,
+            'date' => $reservation->lessonSlot->date->format('Y年m月d日'),
+            'location' => $reservation->status === 'waiting_venue'
+                ? '施設調整中'
+                : $reservation->lessonSlot->location->name,
+            'participants' => $reservation->participants,
+        ])
+        ->toArray();
 
         return view('pilates.user.mypage',[
             'notLineLinkedClient' => $notLineLinkedClient,
             'nextReservationInfo'=> $nextReservationInfo,
             'remainingTicketCounts'=>$remainingTicketCounts,
+            'upcomingReservations'=>$upcomingReservations,
         ]);
     }
 }

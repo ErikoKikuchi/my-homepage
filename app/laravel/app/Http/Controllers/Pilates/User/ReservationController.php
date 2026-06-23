@@ -72,4 +72,26 @@ class ReservationController extends Controller
 
         return redirect()->route('pilates.mypage');
     }
+    public function show(){
+        
+    }
+    public function archive(Request $request)
+    {
+        $user=auth('web')->user();
+
+        $query = $user->reservations()
+            ->past()
+            ->with(['lessonSlot', 'location'])
+            ->paginate(10);
+        $pastReservations= $query->through(fn($reservation) => [
+                'uuid' => $reservation->uuid,
+                'date'=>$reservation->lessonSlot->date->format('Y年m月d日'),
+                'location'=>$reservation->reservations()->location->name,
+                'participants' => $reservation->participants,
+            ]);
+
+        return view('pilates.user.past-reservation',[
+            'pastReservations' => $pastReservations,
+        ]);
+    }
 }
