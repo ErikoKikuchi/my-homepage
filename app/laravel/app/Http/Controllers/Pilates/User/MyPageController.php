@@ -30,12 +30,11 @@ class MyPageController extends Controller
             'date' => $reservation->lessonSlot->date->format('Y年m月d日'),
             'location' => $reservation->status === 'waiting_venue'
                 ? '施設調整中'
-                : $reservation->lessonSlot->location->name,
-            'participants' => $reservation->participants,
+                : $reservation->lessonSlot->location?->name,
         ])
         ->toArray();
 
-        return view('pilates.user.mypage',[
+        return view('pages.pilates.user.mypage',[
             'notLineLinkedClient' => $notLineLinkedClient,
             'nextReservationInfo'=> $nextReservationInfo,
             'remainingTicketCounts'=>$remainingTicketCounts,

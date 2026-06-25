@@ -45,7 +45,7 @@ class GuestController extends Controller
             ]);
         }
 
-        return view('pilates.guest.reservation', compact('month', 'cells', 'previous', 'next'));
+        return view('pages.pilates.guest.reservation', compact('month', 'cells', 'previous', 'next'));
     }
     public function show(Request $request){
         $date = $request->query('date');

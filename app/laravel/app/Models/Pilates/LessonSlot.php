@@ -83,6 +83,9 @@ class LessonSlot extends Model
     #[Scope]
     protected function upcoming(Builder $query):void
     {
-        $query->where('date', '>', now()->toDateString());
+        $query->whereHas('lessonSlot', function ($q) {
+            $q->where('date', '>', now()->toDateString());
+        })
+        ->where('status', '!=', 'canceled');
     }
 }

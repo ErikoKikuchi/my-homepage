@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Pilates\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pilates\LessonSlot;
+use App\Models\Pilates\Reservation;
 use Illuminate\Http\Request;
 use App\Http\Requests\Pilates\User\StoreReservationRequest;
 use Illuminate\Support\Facades\DB;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 class ReservationController extends Controller
 {
     public function index(Request $request){
-        return view('pilates.user.mypage');
+        return view('pilates.mypage');
     }
 
     public function create(Request $request)
@@ -23,7 +24,7 @@ class ReservationController extends Controller
         ->whereHas('lessonTemplate', fn($q) => $q->whereTime('start_time', $time))
         ->firstOrFail();
 
-        return view('pilates.guest.reservation-detail', [
+        return view('pages.pilates.guest.reservation-detail', [
             'date' => $date,
             'time'=>$time,
             'venueNote' => $slot->venueNote(),
@@ -72,9 +73,27 @@ class ReservationController extends Controller
 
         return redirect()->route('pilates.mypage');
     }
-    public function show(){
-        
+    public function show(Reservation $reservation)
+    {
+        $user=auth('web')->user();
+        $booking=[
+            'participants' => $reservation->participants,
+            'date' => $reservation->lessonSlot->date->format('Y年m月d日'),
+            'location' => $reservation->status === 'waiting_venue'
+                ? '施設調整中'
+                : $reservation->lessonSlot->location->name,
+            'note'=>$reservation->note,
+            'start_time'=>$reservation->lessonSlot->lessonTemplate->start_time,
+            'end_time'=>$reservation->lessonSlot->lessonTemplate->end_time,
+        ];
+
+        return view('pages.pilates.user.pilates-cancellation',[
+            'booking'=>$booking,
+            'user'=>$user,
+            'reservation'=>$reservation
+        ]);
     }
+
     public function archive(Request $request)
     {
         $user=auth('web')->user();

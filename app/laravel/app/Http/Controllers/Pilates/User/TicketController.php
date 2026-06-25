@@ -9,6 +9,6 @@ class TicketController extends Controller
 {
     public function index(Request $request)
     {
-        return view('pilates.user.tickets-shop');
+        return view('pages/pilates.user.tickets-shop');
     }
 }
