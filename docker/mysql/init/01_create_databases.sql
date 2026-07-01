@@ -1,13 +1,13 @@
--- MYSQL_DATABASE=study_logs_db は docker-compose.yml の environment で自動生成
+-- MYSQL_DATABASE=thinkmotion_db は docker-compose.yml の environment で自動生成
 -- 残り2つを追加作成
 
-CREATE DATABASE IF NOT EXISTS reservation_db
+CREATE DATABASE IF NOT EXISTS thinkmotion_db
     CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-CREATE DATABASE IF NOT EXISTS training_db
+CREATE DATABASE IF NOT EXISTS client_db
     CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-CREATE DATABASE IF NOT EXISTS seed_of_thought_db
+CREATE DATABASE IF NOT EXISTS code_db
     CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- laravel_user に全 DB へのアクセス権を付与
