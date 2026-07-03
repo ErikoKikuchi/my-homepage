@@ -16,15 +16,11 @@
                     >ThinkMotionマイページへ</a
                 >
             @endif
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit">ログアウト</button>
-            </form>
+            @include ('partials.logout-form')
         @else
-            <a href="{{ route('login') }}">ログイン</a>
+            @include ('partials.login-link')
         @endauth
     </nav>
-    @yield ('subnav')
 @endsection
 
 @section ('header')

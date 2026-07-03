@@ -58,4 +58,5 @@ class GuestController extends Controller
             'times' => $times
         ]);
     }
+    
 }

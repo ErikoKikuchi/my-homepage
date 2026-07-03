@@ -8,6 +8,6 @@ use Illuminate\Http\Request;
 class MyPageController extends Controller
 {
     public function index(Request $request){
-        return view('thinkmotion.user.mypage');
+        return view('pages.thinkmotion.user.mypage');
     }
 }

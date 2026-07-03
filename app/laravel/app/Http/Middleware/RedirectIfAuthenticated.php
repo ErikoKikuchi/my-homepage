@@ -22,9 +22,14 @@ class RedirectIfAuthenticated
             if (Auth::guard($guard)->check()) {
                 // ↓ ここを guard ごとに分岐させる
                 if ($guard === 'admin') {
-                    return redirect('/admin/home');
+                    return redirect()->route('admin.home');
                 }
-                return redirect('/home');
+
+                if ($request->is('thinkmotion/*')) {
+                    return redirect()->route('thinkmotion.mypage');
+                }
+
+                return redirect()->route('pilates.mypage');
             }
         }
 

@@ -16,7 +16,7 @@
         data-date="{{ $date }}"
         data-time="{{ $time }}"
         data-authenticated="{{ auth()->check() ? 'true' : 'false' }}"
-        data-login-url="{{ route('login') }}"
+        data-login-url="{{ route('pilates.login', ['from' => 'pilates-reservation']) }}"
     >
         <div class="text-xl m-2 flex-col items-start mb-5" id="reserve-place">
             <div class="font-bold">1、開催場所のご案内</div>

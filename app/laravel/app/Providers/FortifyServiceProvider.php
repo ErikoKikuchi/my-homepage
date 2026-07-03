@@ -11,10 +11,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
-use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
 use Laravel\Fortify\Fortify;
-use App\Actions\Fortify\LoginResponse;
-use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
+use App\Actions\Fortify\PasswordResetResponse;
+use Laravel\Fortify\Contracts\PasswordResetResponse as PasswordResetResponseContract;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -31,16 +30,12 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->app->singleton(LoginResponseContract::class, LoginResponse::class);
+        $this->app->singleton(PasswordResetResponseContract::class, PasswordResetResponse::class);
+
 
         Fortify::createUsersUsing(CreateNewUser::class);
             Fortify::registerView(function(){
                 return view("auth.register");
-            });
-            Fortify::loginView(function(Request $request){
-                $request->session()->put('login_from', $request->query('from'));
-                $request->session()->put('reservation_date',$request->query('date'));
-                return view("auth.user-login");
             });
             Fortify::requestPasswordResetLinkView(function () {
                 return view('auth.forgot-password');
@@ -51,6 +46,10 @@ class FortifyServiceProvider extends ServiceProvider
         //Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
+        Fortify::requestPasswordResetLinkView(function (Request $request) {
+            $request->session()->put('login_from', $request->query('from'));
+            return view('auth.forgot-password');
+        });
         //Fortify::redirectUserForTwoFactorAuthenticationUsing(RedirectIfTwoFactorAuthenticatable::class);
 
         RateLimiter::for('login', function (Request $request) {

@@ -13,8 +13,13 @@ use App\Http\Controllers\Auth\User\UserLoginController;
 
 
 Route::middleware('guest')->group(function(){
+    Route::get('/pilates/login', [UserLoginController::class, 'showPilatesForm'])->name('pilates.login');
+    Route::post('/pilates/login', [UserLoginController::class, 'login'])->name('pilates.login.attempt');
+
+    Route::get('/thinkmotion/login', [UserLoginController::class, 'showThinkmotionForm'])->name('thinkmotion.login');
+    Route::post('/thinkmotion/login', [UserLoginController::class, 'login'])->name('thinkmotion.login.attempt');
+
     Route::post('/register',[UserRegisterController::class,'register']);
-    Route::post('/login',[UserLoginController::class,'login'])->name('login');
     Route::get('/admin/login', [AdminLoginController::class,'showForm']);
     Route::post('/admin/login',[AdminLoginController::class,'adminLogin']);
 }); 

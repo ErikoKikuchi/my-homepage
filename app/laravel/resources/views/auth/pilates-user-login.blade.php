@@ -4,12 +4,12 @@
     <h1
         class="font-light text-2xl tracking-[0.04em] leading-[1.4] text-forest-dark text-center mt-10"
     >
-        ログイン
+        Pilatesログイン
     </h1>
 @endsection
 
 @section ('content')
-    <form class="max-w-md mx-auto" action="/login" method="post">
+    <form class="max-w-md mx-auto" action="/pilates/login" method="post">
         @csrf
         <div class="p-5">
             <label class="text-sm/1.8" for="email">メールアドレス </label>
@@ -55,7 +55,7 @@
         </div>
         <a
             class="text-xs text-forest cursor-pointer hover:text-forest-dark"
-            href="/forgot-password"
+            href="{{ route('password.request', ['from' => 'pilates']) }}"
             >パスワードをお忘れの方はこちら</a
         >
     </div>

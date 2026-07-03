@@ -32,7 +32,8 @@ class RegisterRequest extends FormRequest
                 'max:255',
                 ],
             "password"=> ['required','min:12','string','confirmed'],
-            'is_medical' => ['required','boolean','in:0,1'],
+            "password_confirmation" => ['required', 'string', 'min:12'],
+            'service' => ['required','in:pilates,thinkmotion'],
         ];
     }
     public function messages(): array
@@ -49,11 +50,12 @@ class RegisterRequest extends FormRequest
             'password.required'=>'パスワードを入力してください',
             'password.min'=>'パスワードは12文字以上で入力してください',
             'password.string'=>'パスワードを正しく入力してください',
-            'password_confirmation.required'=>'確認用パスワードを入力してください',
-            'password_confirmation.min'=>'パスワードは12文字以上で入力してください',
             'password.confirmed'=>'パスワードと一致しません',
-            'is_medical.required'=>'選択してください',
-            'is_medical.in'=>'選択してください',
+            'password_confirmation.required'=>'確認用パスワードを入力してください',
+            'password_confirmation.string'=>'パスワードを正しく入力してください',
+            'password_confirmation.min'=>'パスワードは12文字以上で入力してください',
+            'service.required'=>'選択してください',
+            'service.in'=>'選択してください',
         ];
     }
 }

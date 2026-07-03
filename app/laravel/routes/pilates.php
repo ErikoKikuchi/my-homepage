@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Pilates\Guest\GuestController as PilatesGuestController;
 use App\Http\Controllers\Pilates\User\MyPageController as PilatesMyPageController;
+use App\Http\Controllers\Pilates\User\ViewerController as PilatesViewerController;
 use App\Http\Controllers\Pilates\User\ReservationController as PilatesReservationController;
 use App\Http\Controllers\Pilates\User\CancellationController as PilatesCancellationController;
 use App\Http\Controllers\Pilates\User\TrainingLogController as PilatesTrainingLogController;
@@ -15,7 +16,8 @@ use App\Http\Controllers\Pilates\Admin\TrainingLogController as PilatesAdminTrai
 
 
 // ゲスト用
-Route::get('/pilates', [PilatesGuestController::class, 'index'])->name('pilates.guest.index');
+Route::get('/pilates', [PilatesViewerController::class, 'index']);
+Route::get('/pilates/calendar', [PilatesGuestController::class, 'index'])->name('pilates.guest.index');
 Route::get('/pilates/slots',[PilatesGuestController::class,'show'])->name('pilates.guest.show');
 Route::get('/pilates/reservations/create', [PilatesReservationController::class, 'create'])->name('pilates.guest.create');
 

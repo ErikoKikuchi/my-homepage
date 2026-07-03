@@ -24,6 +24,7 @@ return new class extends Migration
             $table->boolean('bookshelf_public')->default(true);
             $table->boolean('is_client')->default(false);
             $table->boolean('is_medical')->default(false);
+            $table->boolean('is_pilates_user')->default(false);
             $table->timestamp('agreed_at')->nullable();
             $table->softDeletes();
             $table->timestamps();

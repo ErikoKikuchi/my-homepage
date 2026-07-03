@@ -1,4 +1,4 @@
-@extends ('layouts.app')
+@extends ('layouts.thinkmotion')
 
 @section ('header')
     <p class="font-gothic text-xs tracking-[.2em] text-forest mb-4 uppercase">ThinkMotion</p>
@@ -111,17 +111,9 @@
     </section>
     <!-- ページ末尾CTA -->
     <section class="mb-18 py-14 px-0 border-y border-muted/12 text-center">
-        <div class="flex gap-10 flex-wrap justify-center">
-            <a
-                href="{{ route('thinkmotion.guest.index') }}"
-                class="btn btn-outline"
-                >思考の記録を見る</a
-            >
-            <a
-                href="{{ route('login') }}?from=thinkmotion"
-                class="btn btn-primary"
-                >思考の記録をはじめる</a
-            >
+        <a href="{{ route('thinkmotion.guest.index') }}" class="btn btn-outline"
+            >思考の記録を見る</a
+        >
         </div>
     </section>
     <!-- フッター -->
