@@ -20,7 +20,9 @@
     <script type="module" src="/js/components/site-nav.js"></script>
     <script type="module" src="/js/components/site-footer.js"></script>
     <script>
-        window.STATIC_URL = "{{ env('STATIC_URL') }}";
+        window.STATIC_URL = "{{ config('app.static_url') }}";
+        window.PILATES_URL = "{{ config('app.pilates_url') }}";
+        window.THINKMOTION_URL = "{{ config('app.thinkmotion_url') }}";
     </script>
 </head>
 

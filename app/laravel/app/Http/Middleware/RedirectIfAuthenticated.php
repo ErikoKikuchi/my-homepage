@@ -25,7 +25,7 @@ class RedirectIfAuthenticated
                     return redirect()->route('admin.home');
                 }
 
-                if ($request->is('thinkmotion/*')) {
+                if ($request->is('thinkmotion', 'thinkmotion/*')) {
                     return redirect()->route('thinkmotion.mypage');
                 }
 
