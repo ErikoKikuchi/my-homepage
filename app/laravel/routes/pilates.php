@@ -19,7 +19,7 @@ use App\Http\Controllers\Pilates\Admin\TrainingLogController as PilatesAdminTrai
 Route::get('/pilates', [PilatesViewerController::class, 'index']);
 Route::get('/pilates/calendar', [PilatesGuestController::class, 'index'])->name('pilates.guest.index');
 Route::get('/pilates/slots',[PilatesGuestController::class,'show'])->name('pilates.guest.show');
-Route::get('/pilates/reservations/create', [PilatesReservationController::class, 'create'])->name('pilates.guest.create');
+
 
 
 // ログイン後
@@ -28,7 +28,7 @@ Route::prefix('pilates')->middleware(['auth:web', 'verified'])->group(function (
     Route::get('/archive',[PilatesReservationController::class,'archive'])->name('pilates.past.reservation');
     Route::get('/tickets', [PilatesTicketsController::class, 'index'])->name('pilates.tickets');
     Route::patch('/reservations/{reservation}/cancel', [PilatesCancellationController::class,'cancel'])->name('pilates.user.reservation.cancel');
-    Route::resource('/reservations', PilatesReservationController::class)->only(['index', 'show', 'store'])->names('pilates.user.reservation');
+    Route::resource('/reservations', PilatesReservationController::class)->only(['index', 'show', 'create','store'])->names('pilates.user.reservation');
     Route::resource('/training-logs',PilatesTrainingLogController::class)->only(['index', 'show','create', 'store','edit','update','destroy'])->names('pilates.user.training-log');
 });
 

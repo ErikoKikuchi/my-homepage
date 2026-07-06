@@ -11,21 +11,25 @@ class UserLoginController extends Controller
 {
     public function showPilatesForm(Request $request)
     {
-        $request->session()->put('login_from', $request->query('from'));
+        $request->session()->put('pilates_login_from', $request->query('from', 'pilates'));
         $request->session()->put('reservation_date', $request->query('date'));
         return view('auth.pilates-user-login');
     }
     
     public function showThinkmotionForm(Request $request)
     {
-        $request->session()->put('login_from', $request->query('from', 'thinkmotion'));
+        $request->session()->put('thinkmotion_login_from', $request->query('from', 'thinkmotion'));
         return view('auth.thinkmotion-user-login');
     }
 
     public function login(UserLoginRequest $request)
         {
             $credentials = $request->only(['email', 'password']);
-            $from = $request->session()->pull('login_from');
+            $isThinkmotion = $request->is('thinkmotion','thinkmotion/*');
+
+            $from = $isThinkmotion
+                ? $request->session()->pull('thinkmotion_login_from')
+                : $request->session()->pull('pilates_login_from');
 
             if (!Auth::guard('web')->attempt($credentials, $request->boolean('remember'))) {
                 return back()
@@ -42,7 +46,6 @@ class UserLoginController extends Controller
                 {
                     return redirect()->route('profile.register');
                 }
-            $date = $request->session()->pull('reservation_date');
 
             return redirect(
                 match ($from) {

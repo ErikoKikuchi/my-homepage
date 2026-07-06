@@ -18,6 +18,9 @@
         data-authenticated="{{ auth()->check() ? 'true' : 'false' }}"
         data-login-url="{{ route('pilates.login', ['from' => 'pilates-reservation']) }}"
     >
+        <div class="font-bold p-2">
+            {{ $name }}さん：{{ $dateFormatted}} {{ $timeFormatted }}のご予約
+        </div>
         <div class="text-xl m-2 flex-col items-start mb-5" id="reserve-place">
             <div class="font-bold">1、開催場所のご案内</div>
             <p class="text-xl m-2">{{ $venueNote }}</p>

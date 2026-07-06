@@ -65,7 +65,7 @@ function renderSchedule(date, dayOfWeek, times, status) {
 }
 
 async function loadMonth(month) {
-    const response = await fetch(`/pilates?month=${month}`, {
+    const response = await fetch(`/pilates/calendar?month=${month}`, {
         headers: { Accept: "application/json" },
     });
     const data = await response.json();

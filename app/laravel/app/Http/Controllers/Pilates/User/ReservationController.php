@@ -8,6 +8,7 @@ use App\Models\Pilates\Reservation;
 use Illuminate\Http\Request;
 use App\Http\Requests\Pilates\User\StoreReservationRequest;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class ReservationController extends Controller
 {
@@ -17,8 +18,11 @@ class ReservationController extends Controller
 
     public function create(Request $request)
     {
+        $user = auth('web')->user();
         $date = $request->query('date');
         $time = $request->query('time');
+        $carbonDate = Carbon::parse($date);
+        $carbonTime = Carbon::parse($time);
 
         $slot = LessonSlot::where('date', $date)
         ->whereHas('lessonTemplate', fn($q) => $q->whereTime('start_time', $time))
@@ -27,7 +31,10 @@ class ReservationController extends Controller
         return view('pages.pilates.guest.reservation-detail', [
             'date' => $date,
             'time'=>$time,
+            'dateFormatted' => $carbonDate->isoFormat('M月D日(ddd)'), // 表示用
+            'timeFormatted' => $carbonTime->format('H:i'),   
             'venueNote' => $slot->venueNote(),
+            'name'=>$user->name,
         ]);
     }
     public function store(StoreReservationRequest $request)
@@ -109,7 +116,7 @@ class ReservationController extends Controller
                 'participants' => $reservation->participants,
             ]);
 
-        return view('pilates.user.past-reservation',[
+        return view('pages.pilates.user.past-reservation',[
             'pastReservations' => $pastReservations,
         ]);
     }
