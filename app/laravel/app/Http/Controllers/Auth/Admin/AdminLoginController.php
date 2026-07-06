@@ -9,23 +9,40 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminLoginController extends Controller
 {
-    public function showForm(Request $request)
+    public function showPilatesForm(Request $request)
     {
-        return view("auth.admin-login");
+        $request->session()->put('pilates_login_from', $request->query('from', 'pilates'));
+        return view("auth.pilates-admin-login");
+    }
+    public function showThinkmotionForm(Request $request)
+    {
+        $request->session()->put('thinkmotion_login_from', $request->query('from', 'thinkmotion'));
+        return view("auth.thinkmotion-admin-login");
     }
     public function adminLogin(AdminLoginRequest $request)
     {
         $credentials = $request->only(['email', 'password']);
+        //ここにpilatesなのかthinkmotionなのか
+            $isThinkmotion = $request->is('thinkmotion','thinkmotion/*');
 
-        if (!Auth::guard('admin')->attempt($credentials, $request->boolean('remember'))) {
-            return back()
-                ->withErrors(['email' => 'ログイン情報が登録されていません'])
-                ->onlyInput('email');
-        }
+            $from = $isThinkmotion
+                ? $request->session()->pull('thinkmotion_login_from')
+                : $request->session()->pull('pilates_login_from');
 
-        $request->session()->regenerate();
+            if (!Auth::guard('web')->attempt($credentials, $request->boolean('remember'))) {
+                return back()
+                    ->withErrors(['email' => 'ログイン情報が登録されていません'])
+                    ->onlyInput('email');
+            }
+
+            $request->session()->regenerate();
+            $request->session()->forget('url.intended');
+
+            $user = Auth::guard('admin')->user();
+
 
         return redirect()->route('admin.two-factor');
+        //ここの書き方は？match?
     }
     public function adminLogout(Request $request)
     {

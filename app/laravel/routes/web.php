@@ -20,8 +20,10 @@ Route::middleware('guest')->group(function(){
     Route::post('/thinkmotion/login', [UserLoginController::class, 'login'])->name('thinkmotion.login.attempt');
 
     Route::post('/register',[UserRegisterController::class,'register']);
-    Route::get('/admin/login', [AdminLoginController::class,'showForm']);
-    Route::post('/admin/login',[AdminLoginController::class,'adminLogin']);
+    Route::get('/pilates/admin/login', [AdminLoginController::class,'showPilatesForm']);
+    Route::post('/pilates/admin/login',[AdminLoginController::class,'adminLogin']);
+    Route::get('/thinkmotion/admin/login', [AdminLoginController::class,'showThinkmotionForm']);
+    Route::post('/thinkmotion/admin/login',[AdminLoginController::class,'adminLogin']);
 }); 
 
 Route::middleware('auth:admin')->group(function(){
