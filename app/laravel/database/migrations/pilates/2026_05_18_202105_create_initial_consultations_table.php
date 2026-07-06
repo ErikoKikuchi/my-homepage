@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::connection('client_db')->create('initial_consultations', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('client_id')->references('id')->on('clients');
+            $table->foreignUuid('client_id')->nullable()->references('id')->on('clients');
+            $table->foreignUuid('user_id');
             $table->foreignUuid('intake_form_id')->references('id')->on('intake_forms');
 
             // セクション1：基本情報

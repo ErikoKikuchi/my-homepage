@@ -56,7 +56,9 @@
             </div>
         </div>
         <div class="p-5">
-            <label class="text-sm/1.8" for="password">パスワード確認</label>
+            <label class="text-sm/1.8" for="password_confirmation"
+                >パスワード確認</label
+            >
             <input
                 class="border border-forest w-full h-10"
                 type="password"
@@ -64,24 +66,38 @@
                 name="password_confirmation"
             />
             <div class="alert">
-                @error ('password')
+                @error ('password_confirmation')
                     <p class="error-message">{{$message}}</p>
                 @enderror
             </div>
         </div>
         <div class="p-5">
-            <label class="text-sm/1.8" for="password">医療従事者ですか？</label>
-            <div>
+            <fieldset class="flex flex-col">
+                <legend>ご利用サービスを選択してください</legend>
                 <label>
-                    <input type="radio" name="is_medical" value="1" /> はい
+                    <input
+                        type="radio"
+                        name="service"
+                        value="pilates"
+                        required
+                        @checked (old('service') === 'pilates')
+                    />
+                    Pilates（ピラティス予約）
                 </label>
                 <label>
-                    <input type="radio" name="is_medical" value="0" />
-                    いいえ
+                    <input
+                        type="radio"
+                        name="service"
+                        value="thinkmotion"
+                        required
+                        @checked (old('service') === 'thinkmotion')
+                    />
+                    ThinkMotion（医療従事者向けプラットフォーム）
                 </label>
-            </div>
+                <p class="mt-2">＊両方ご利用希望の方は管理者までご連絡ください。</p>
+            </fieldset>
             <div class="alert">
-                @error ('is_medical')
+                @error ('service')
                     <p class="error-message">{{$message}}</p>
                 @enderror
             </div>
@@ -93,8 +109,13 @@
     <div class="flex flex-col items-center gap-4 my-6">
         <a
             class="text-xs text-forest cursor-pointer hover:text-forest-dark"
-            href="/login"
-            >ログインはこちら</a
+            href="/pilates/login"
+            >ピラティスのログインはこちら</a
+        >
+        <a
+            class="text-xs text-forest cursor-pointer hover:text-forest-dark"
+            href="/thinkmotion/login"
+            >ThinkMotionのログインはこちら</a
         >
     </div>
 @endsection

@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Pilates\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pilates\LessonSlot;
-use App\Models\Pilates\LessonTemplate;
-use App\Models\Pilates\Location;
 use App\Models\Pilates\Reservation;
 use Illuminate\Http\Request;
 use App\Http\Requests\Pilates\User\StoreReservationRequest;
@@ -15,36 +13,28 @@ use Carbon\Carbon;
 class ReservationController extends Controller
 {
     public function index(Request $request){
-        return view('pilates.user.mypage');
+        return view('pilates.mypage');
     }
 
     public function create(Request $request)
     {
-        $date = $request->input('date');
-        $dayOfWeek = Carbon::parse($date)->dayOfWeek;
-        $times = LessonSlot::where('is_active', true)
-        ->where('date', $date)
-        ->with('lessonTemplate')
-        ->get()
-        ->filter(function($slot) {
-            return $slot->reservations
-                ->whereNotIn('status', ['canceled'])
-                ->count() === 0;
-        })
-        ->map(fn($slot) => Carbon::parse($slot->lessonTemplate->start_time)->format('H:i'))
-        ->toArray();
-        $isWednesday = $dayOfWeek===3;
+        $user = auth('web')->user();
+        $date = $request->query('date');
+        $time = $request->query('time');
+        $carbonDate = Carbon::parse($date);
+        $carbonTime = Carbon::parse($time);
 
-        if ($isWednesday) {
-            $locations = Location::where('name', 'beauty Ruby')->get();
-        } else {
-            $locations = Location::where('name', '!=', 'beauty Ruby')->get();
-        }
+        $slot = LessonSlot::where('date', $date)
+        ->whereHas('lessonTemplate', fn($q) => $q->whereTime('start_time', $time))
+        ->firstOrFail();
 
-        return view('pilates.guest.reservation-detail', [
+        return view('pages.pilates.guest.reservation-detail', [
             'date' => $date,
-            'locations' => $locations,
-            'times'  =>$times,
+            'time'=>$time,
+            'dateFormatted' => $carbonDate->isoFormat('M月D日(ddd)'), // 表示用
+            'timeFormatted' => $carbonTime->format('H:i'),   
+            'venueNote' => $slot->venueNote(),
+            'name'=>$user->name,
         ]);
     }
     public function store(StoreReservationRequest $request)
@@ -60,14 +50,14 @@ class ReservationController extends Controller
 
             // そのスロットにすでに予約があるかチェック
             $alreadyReserved = $slots->reservations()
-                ->whereNotIn('status', ['cancelled'])
+                ->whereNotIn('status', ['canceled'])
                 ->exists();
             
             if ($alreadyReserved) {
                 throw new \Exception('このスロットはすでに予約済みです');
             }
 
-            $reservationInfo=$slots->reservations()->create([
+            $slots->reservations()->create([
                 'user_id'          => $user->id,
                 'participants'=>$reservationData['participants'],
                 'participants_name'=>$reservationData['participants_name'] ,
@@ -75,19 +65,59 @@ class ReservationController extends Controller
                 'status'=>'waiting_venue',
             ]);
 
-            $locations = [$reservationData['first_place'] => ['priority' => 1]];
-                if (!empty($reservationData['second_place'])) {
-                    $locations[$reservationData['second_place']] = ['priority' => 2];
-                }
-            $reservationInfo->location()->attach($locations);
         });
 
         if ($request->expectsJson()) {
+            session()->flash(
+                'message',
+                "予約申請を受け付けました。\n施設を確保後、LINEにて予約確定のご連絡をいたします。\n通常1〜2日以内にご連絡いたします。"
+            );
+        
             return response()->json([
-                'message' => '予約が完了しました！'
+                'success' => true
             ]);
         }
 
         return redirect()->route('pilates.mypage');
+    }
+    public function show(Reservation $reservation)
+    {
+        $user=auth('web')->user();
+        $booking=[
+            'participants' => $reservation->participants,
+            'date' => $reservation->lessonSlot->date->format('Y年m月d日'),
+            'location' => $reservation->status === 'waiting_venue'
+                ? '施設調整中'
+                : $reservation->lessonSlot->location->name,
+            'note'=>$reservation->note,
+            'start_time'=>$reservation->lessonSlot->lessonTemplate->start_time,
+            'end_time'=>$reservation->lessonSlot->lessonTemplate->end_time,
+        ];
+
+        return view('pages.pilates.user.pilates-cancellation',[
+            'booking'=>$booking,
+            'user'=>$user,
+            'reservation'=>$reservation
+        ]);
+    }
+
+    public function archive(Request $request)
+    {
+        $user=auth('web')->user();
+
+        $query = $user->reservations()
+            ->past()
+            ->with(['lessonSlot', 'location'])
+            ->paginate(10);
+        $pastReservations= $query->through(fn($reservation) => [
+                'uuid' => $reservation->uuid,
+                'date'=>$reservation->lessonSlot->date->format('Y年m月d日'),
+                'location'=>$reservation->reservations()->location->name,
+                'participants' => $reservation->participants,
+            ]);
+
+        return view('pages.pilates.user.past-reservation',[
+            'pastReservations' => $pastReservations,
+        ]);
     }
 }

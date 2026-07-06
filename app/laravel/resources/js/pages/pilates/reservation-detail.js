@@ -1,36 +1,12 @@
-let selectedTime = null;
-let firstPlace = null;
-let secondPlace = null;
 let dateString = null;
 let participants = null;
 let participantsName = null;
 let note = null;
-
-document.querySelectorAll(".time-btn").forEach((btn) => {
-    btn.addEventListener("click", () => {
-        // 全ボタンのハイライトをリセット
-        document
-            .querySelectorAll(".time-btn")
-            .forEach((b) =>
-                b.classList.remove(
-                    "selected",
-                    "bg-forest-dark",
-                    "ring-2",
-                    "ring-forest",
-                ),
-            );
-        // クリックしたボタンをハイライト
-        btn.classList.add(
-            "selected",
-            "bg-forest-dark",
-            "ring-2",
-            "ring-forest",
-        );
-    });
-});
+let selectedTime = null;
 
 document.getElementById("reservation-confirm").addEventListener("click", () => {
     dateString = document.querySelector(".reservation-form").dataset.date;
+    selectedTime = document.querySelector(".reservation-form").dataset.time;
     const isAuthenticated =
         document.querySelector(".reservation-form").dataset.authenticated ===
         "true";
@@ -42,24 +18,13 @@ document.getElementById("reservation-confirm").addEventListener("click", () => {
         return;
     }
 
-    selectedTime = document.querySelector(".time-btn.selected")?.dataset.time;
-    firstPlace = document.getElementById("first-place").value;
-    secondPlace = document.getElementById("second-place")?.value ?? null;
     participants = document.getElementById("participants").value;
     participantsName =
-        document.getElementById("participants-name")?.value ?? null;
+        document.getElementById("participants_name")?.value ?? null;
     note = document.getElementById("note")?.value ?? null;
-
-    const firstPlaceName =
-        document.getElementById("first-place").selectedOptions[0].text;
-
-    const secondPlaceName =
-        document.getElementById("second-place")?.selectedOptions[0].text;
 
     document.getElementById("modal-date").textContent = dateString;
     document.getElementById("modal-time").textContent = selectedTime;
-    document.getElementById("modal-place").textContent = firstPlaceName;
-    document.getElementById("modal-place2").textContent = secondPlaceName;
     document.getElementById("modal-participants").textContent = participants;
     document.getElementById("modal-participants-name").textContent =
         participantsName;
@@ -88,8 +53,6 @@ document.getElementById("modal-submit").addEventListener("click", async () => {
             body: JSON.stringify({
                 date: dateString,
                 time: selectedTime,
-                first_place: firstPlace,
-                second_place: secondPlace,
                 participants: participants,
                 participants_name: participantsName,
                 note: note,

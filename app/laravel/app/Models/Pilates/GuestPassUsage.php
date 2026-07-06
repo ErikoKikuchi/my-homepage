@@ -14,11 +14,12 @@ class GuestPassUsage extends Model
     protected $connection = 'client_db';
     
     protected $fillable = [
-        
+        'reason',
+        'used_at'
     ];
 
     protected $casts = [
-        
+        'used_at'=>'datetime',
     ];
 
     public function client():BelongsTo
@@ -26,6 +27,21 @@ class GuestPassUsage extends Model
         return $this->belongsTo(Client::class);
     }
 
-    
-
+    public function guestPassPurchases():BelongsTo
+    {
+        return $this->belongsTo(GuestPassPurchase::class);
+    }
+    public function pilatesSessions():BelongsTo
+    {
+        return $this->belongsTo(PilatesSession::class);
+    }
+    public function reservation():BelongsTo
+    {
+        return $this->belongsTo(Reservation::class);
+    }
+    #[scope]
+    protected function noShow(Builder $query): void
+    {
+        $query->where('reason', 'no_show');
+    }
 }

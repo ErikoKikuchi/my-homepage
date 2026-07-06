@@ -122,5 +122,7 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
-
+    'static_url' => env('STATIC_URL'),
+    'pilates_url' => env('PILATES_URL'),
+    'thinkmotion_url' => env('THINKMOTION_URL'),
 ];

@@ -15,8 +15,11 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('guest_pass_purchase_id')->constrained()->cascadeOnDelete();
             $table->foreignUuid('client_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('pilates_session_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignUuid('reservation_id')->nullable()->constrained()->cascadeOnDelete();
-            $table->enum('status', ['reserved', 'completed', 'cancelled'])->default('reserved');
+            $table->unique(['reservation_id']);
+            $table->enum('reason', ['session_completed', 'no_show']);
+            $table->timestamp('used_at')->nullable();
             $table->timestamps();
         });
     }

@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::connection('client_db')->create('intake_forms', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('client_id');
+            $table->foreignUuid('client_id')->nullable();
+            $table->foreignUuid('user_id');
             $table->timestamp('submitted_at')->nullable();
             $table->timestamps();
         });

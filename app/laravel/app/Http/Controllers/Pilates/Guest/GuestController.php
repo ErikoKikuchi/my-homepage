@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers\Pilates\Guest;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Pilates\Guest\ReservationIndexRequest;
-use App\Models\Pilates\LessonSlot;
 use Carbon\Carbon;
+use App\Services\Pilates\ReservationAvailabilityService;
 
 class GuestController extends Controller
 {
+    public function __construct(
+        private ReservationAvailabilityService $availabilityService
+    ) {}
     public function index(ReservationIndexRequest $request){
         $month = $request->input('month', now()->format('Y-m'));
         $startOfMonth = Carbon::parse($month)->startOfMonth();
@@ -17,23 +21,7 @@ class GuestController extends Controller
         $previous=now()->parse($month)->subMonth()->format('Y-m');
         $next=now()->parse($month)->addMonth()->format('Y-m');
 
-        $slots = LessonSlot::where('is_active',true)
-        ->whereBetween('date', [
-            $startOfMonth->format('Y-m-d'),
-            $startOfMonth->copy()->endOfMonth()->format('Y-m-d'),
-        ])
-        ->with('reservations')
-        ->get();
-
-        $slotMap = $slots->groupBy(fn($slot) => $slot->date->format('Y-m-d'))
-            ->map(function($daySlots) {
-                $hasAvailable = $daySlots->some(function($slot) {
-                    return $slot->reservations
-                        ->whereNotIn('status', ['canceled'])
-                        ->count() === 0;
-                });
-                return $hasAvailable ? 'available' : 'full';
-            });
+        $slotMap = $this->availabilityService->buildSlotMap($month);
 
         $cells=[];
         for ($i = 0; $i < 42; $i++)
@@ -57,6 +45,18 @@ class GuestController extends Controller
             ]);
         }
 
-        return view('pilates.guest.reservation', compact('month', 'cells', 'previous', 'next'));
+        return view('pages.pilates.guest.reservation', compact('month', 'cells', 'previous', 'next'));
     }
+    public function show(Request $request){
+        $date = $request->query('date');
+        $dayOfWeek = Carbon::parse($date)->isoFormat('ddd');
+        $times = $this->availabilityService->getAvailableTimes($date);
+
+        return response()->json([
+            'date' => $date,
+            'dayOfWeek' => $dayOfWeek,
+            'times' => $times
+        ]);
+    }
+    
 }

@@ -29,8 +29,6 @@ class StoreReservationRequest extends FormRequest
             'cancelled_reason'=>['nullable','string','max:255'],
             'date'        => ['required', 'date_format:Y-m-d'],
             'time'        => ['required', 'date_format:H:i'],
-            'first_place' => ['required', 'uuid', 'exists:client_db.locations,id'],
-            'second_place'=> ['nullable', 'uuid', 'exists:client_db.locations,id'],
         ];
     }
     public function messages()
@@ -46,11 +44,7 @@ class StoreReservationRequest extends FormRequest
             'cancelled_reason.max'=>'キャンセル理由は２５５文字以内で入力してください',
             'time.required'=>'時間を選択してください',
             'time.date_format'=>'時間を正しく選択してください',
-            'first_place.required'=>'場所を選択してください',
-            'first_place.uuid'=>'場所を正しく選択してください',
-            'first_place.exists'=>'場所を正しく選択してください',
-            'second_place.uuid'=>'場所を正しく選択してください',
-            'second_place.exists'=>'場所を正しく選択してください',
+            
         ];
     }
 }

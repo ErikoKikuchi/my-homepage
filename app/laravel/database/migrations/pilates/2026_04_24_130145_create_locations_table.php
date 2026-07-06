@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::connection('client_db')->create('locations', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
-            $table->enum('policy', ['own','free', 'shared', 'paid']);
+            $table->boolean('is_bookable')->default(true);
+            $table->unsignedInteger('price_addon_per_session')->default(0);
             $table->string('address');
             $table->decimal('base_fee', 8, 2)->nullable();
             $table->string('map_url')->nullable();

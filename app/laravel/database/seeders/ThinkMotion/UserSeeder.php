@@ -20,6 +20,7 @@ class UserSeeder extends Seeder
             'password'=>Hash::make('password123456'),
             'profile_completed'=>false,
             'bookshelf_public'=>true,
+            'is_pilates_user'=>true,
             'is_client'=>true,
             'is_medical'=>false,
         ]);
@@ -29,6 +30,7 @@ class UserSeeder extends Seeder
             'password'=>Hash::make('password123456'),
             'profile_completed'=>false,
             'bookshelf_public'=>true,
+            'is_pilates_user'=>true,
             'is_client'=>true,
             'is_medical'=>true,
         ]);
@@ -38,6 +40,7 @@ class UserSeeder extends Seeder
             'password'=>Hash::make('password123456'),
             'profile_completed'=>false,
             'bookshelf_public'=>true,
+            'is_pilates_user'=>false,
             'is_client'=>false,
             'is_medical'=>true,
         ]);

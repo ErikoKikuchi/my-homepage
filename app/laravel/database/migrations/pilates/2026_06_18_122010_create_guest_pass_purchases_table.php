@@ -12,14 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::connection('client_db')->create('guest_pass_purchases', function (Blueprint $table) {
-    $table->uuid('id')->primary();
-    $table->foreignUuid('client_id')->constrained()->cascadeOnDelete();
-    $table->unsignedTinyInteger('passes_purchased'); // 3 or 10
-    $table->unsignedInteger('amount_paid')->nullable();
-    $table->string('payment_method')->nullable(); // cash, stripe等
-    $table->date('purchased_at');
-    $table->boolean('is_finished')->default(false);
-    $table->timestamps();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('client_id')->constrained()->cascadeOnDelete();
+            $table->unsignedTinyInteger('passes_purchased'); // 3 or 10
+            $table->unsignedInteger('amount_paid')->nullable();
+            $table->string('payment_method')->nullable(); // cash, stripe等
+            $table->date('purchased_at');
+            $table->boolean('is_finished')->default(false);
+            $table->timestamps();
 });
     }
 

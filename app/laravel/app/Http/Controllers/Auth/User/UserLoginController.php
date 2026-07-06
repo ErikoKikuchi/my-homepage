@@ -9,10 +9,27 @@ use Illuminate\Http\Request;
 
 class UserLoginController extends Controller
 {
+    public function showPilatesForm(Request $request)
+    {
+        $request->session()->put('pilates_login_from', $request->query('from', 'pilates'));
+        $request->session()->put('reservation_date', $request->query('date'));
+        return view('auth.pilates-user-login');
+    }
+    
+    public function showThinkmotionForm(Request $request)
+    {
+        $request->session()->put('thinkmotion_login_from', $request->query('from', 'thinkmotion'));
+        return view('auth.thinkmotion-user-login');
+    }
+
     public function login(UserLoginRequest $request)
         {
             $credentials = $request->only(['email', 'password']);
-            $from = $request->session()->pull('login_from');
+            $isThinkmotion = $request->is('thinkmotion','thinkmotion/*');
+
+            $from = $isThinkmotion
+                ? $request->session()->pull('thinkmotion_login_from')
+                : $request->session()->pull('pilates_login_from');
 
             if (!Auth::guard('web')->attempt($credentials, $request->boolean('remember'))) {
                 return back()
@@ -29,12 +46,10 @@ class UserLoginController extends Controller
                 {
                     return redirect()->route('profile.register');
                 }
-            $date = $request->session()->pull('reservation_date');
 
             return redirect(
                 match ($from) {
                     'pilates-reservation' => route('pilates.guest.index'),
-                    'pilates-create' => route('pilates.guest.create', ['date' => $date]),
                     'thinkmotion' => '/thinkmotion/mypage',
                     default => '/pilates/mypage',
                 }
@@ -44,9 +59,13 @@ class UserLoginController extends Controller
     //ログアウト
     public function logout(Request $request)
     {
+        $isThinkmotion = $request->is('thinkmotion/*');
         Auth::guard('web')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('login');
+
+        return $isThinkmotion
+        ? redirect()->route('thinkmotion.login')
+        : redirect()->route('pilates.login');
     }
 }

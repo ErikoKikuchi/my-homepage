@@ -21,6 +21,7 @@ class Reservation extends Model
         'note',
         'status',
         'cancelled_at',
+        'cancelled_by'
     ];
 
     protected $casts = [
@@ -42,17 +43,20 @@ class Reservation extends Model
     }
 
 
-    //確定済の予約の絞り込み用
+    //未来の予約の絞り込み用
     #[Scope]
-    protected function confirmed(Builder $query): void
-    {
-        $query->where('status', 'confirmed');
-    }
+    protected function active(Builder $query): void
+{
+    $query->whereIn('status', [
+        'waiting_venue',
+        'confirmed',
+    ]);
+}
     //ユーザーがこれからの予約を確認用
     #[Scope]
     protected function upComing(Builder $query):void
     {
-        $query->whereHas('lessonSlot', fn($q) => $q->where('date', '>=', today()));
+        $query->whereHas('lessonSlot', fn($q) => $q->where('date', '>=', today()))->where('status', '!=', 'canceled');;
     }
     //過去の予約を確認用
     #[Scope]
@@ -68,4 +72,5 @@ class Reservation extends Model
         $user = auth('web')->user();
         $query->where('user_id', $user?->id);
     }
+
 }

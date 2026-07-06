@@ -9,6 +9,6 @@ class ViewerController extends Controller
 {
     public function index(Request $request){
         //新規の記録5件をもって
-        return view('thinkmotion.top');
+        return view('pages.thinkmotion.top');
     }
 }
