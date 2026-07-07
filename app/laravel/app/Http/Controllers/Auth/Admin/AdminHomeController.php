@@ -7,8 +7,9 @@ use Illuminate\Http\Request;
 
 class AdminHomeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('thinkmotion.admin.admin-dashboard');
+        $section = $request->attributes->get('section');
+        return view("{$section}.admin.admin-dashboard");
     }
 }

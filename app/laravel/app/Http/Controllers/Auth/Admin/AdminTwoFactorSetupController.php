@@ -10,13 +10,15 @@ use BaconQrCode\Renderer\Image\SvgImageBackEnd;
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
 use BaconQrCode\Writer;
 use PragmaRX\Google2FAQRCode\Google2FA;
+use Illuminate\Http\Request;
 
 class AdminTwoFactorSetupController extends Controller
 {
-    public function showSetupForm()
+    public function showSetupForm(Request $request)
     {
         /** @var \App\Models\Auth\Admin $admin */
         $admin = Auth::guard('admin')->user();
+        $section = $request->attributes->get('section');
         $google2fa = new Google2FA();
 
         if (empty($admin->two_factor_secret)) {
@@ -32,12 +34,13 @@ class AdminTwoFactorSetupController extends Controller
         $writer = new Writer($renderer);
         $qrCode = $writer->writeString($qrUrl);  // SVG文字列
 
-        return view('auth.admin-two-factor-setup', compact('qrCode'));
+        return view("auth.{$section}.admin-two-factor-setup", compact('qrCode'));
     }
     public function setup(AdminTwoFactorRequest $request)
     {
         /** @var \App\Models\Auth\Admin $admin */
         $admin = Auth::guard('admin')->user();
+        $section = $request->attributes->get('section');
         $google2fa = new Google2FA();
 
         $secret = session('two_factor_secret_temp') ?? $admin->two_factor_secret;
@@ -55,6 +58,6 @@ class AdminTwoFactorSetupController extends Controller
 
         session(['admin_two_factor_verified.auth_passed' => true]);
         session(['admin_two_factor_verified.auth_time' => \Carbon\Carbon::now()->toIso8601String()]);
-        return redirect()->route('admin.home');
+        return redirect()->route("{$section}.admin.home");
     }
 }

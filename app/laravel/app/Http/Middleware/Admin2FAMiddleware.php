@@ -16,7 +16,8 @@ class Admin2FAMiddleware
         if ($authenticator->isAuthenticated()) {
             return $next($request);
         }
+        $section = $request->attributes->get('section');
 
-        return redirect()->route('admin.two-factor');
+        return redirect()->route("{$section}.admin.two-factor");
     }
 }

@@ -22,6 +22,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
+            'admin.section' => \App\Http\Middleware\AdminSectionMiddleware::class,
             'admin.2fa' => \App\Http\Middleware\Admin2FAMiddleware::class,
         ]);
         $middleware->redirectGuestsTo(function (Request $request) {

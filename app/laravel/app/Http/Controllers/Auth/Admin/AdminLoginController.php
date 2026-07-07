@@ -12,12 +12,12 @@ class AdminLoginController extends Controller
     public function showPilatesForm(Request $request)
     {
         $request->session()->put('pilates_login_from', $request->query('from', 'pilates'));
-        return view("auth.pilates-admin-login");
+        return view("auth.pilates.admin-login");
     }
     public function showThinkmotionForm(Request $request)
     {
         $request->session()->put('thinkmotion_login_from', $request->query('from', 'thinkmotion'));
-        return view("auth.thinkmotion-admin-login");
+        return view("auth.thinkmotion.admin-login");
     }
     public function adminLogin(AdminLoginRequest $request)
     {
@@ -41,9 +41,10 @@ class AdminLoginController extends Controller
     }
     public function adminLogout(Request $request)
     {
+        $section = $request->attributes->get('section');
         Auth::guard('admin')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('auth.admin.login');
+        return redirect()->route("{$section}.admin.login");
     }
 }
