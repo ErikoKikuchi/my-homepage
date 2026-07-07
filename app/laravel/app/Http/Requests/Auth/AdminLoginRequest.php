@@ -40,4 +40,26 @@ class AdminLoginRequest extends FormRequest
             'password.string'=>'パスワードを正しく入力してください',
         ];
     }
+    public function authenticate(string $section): void
+    {
+        $credentials = $this->only('email', 'password');
+
+        if (! Auth::guard('admin')->attempt($credentials)) {
+            throw ValidationException::withMessages([
+                'email' => __('auth.failed'),
+            ]);
+        }
+
+        $admin = Auth::guard('admin')->user();
+
+        if (! $admin->sections->contains('key', $section)) {
+            Auth::guard('admin')->logout();
+
+            throw ValidationException::withMessages([
+                'email' => __('このセクションへのアクセス権限がありません'),
+            ]);
+        }
+
+        $this->session()->regenerate();
+    }
 }

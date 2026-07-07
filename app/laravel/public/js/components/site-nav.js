@@ -1,7 +1,7 @@
 // public/js/components/site-nav.js
 const staticUrl = window.STATIC_URL ?? "http://localhost:5173";
-const pilatesUrl = window.PILATES_URL ?? "http://pilates.localhost";
-const thinkmotionUrl = window.THINKMOTION_URL ?? "http://thinkmotion.localhost";
+const pilatesUrl = window.PILATES_URL ?? "http://localhost";
+const thinkmotionUrl = window.THINKMOTION_URL ?? "http://localhost";
 
 class SiteNav extends HTMLElement {
     connectedCallback() {

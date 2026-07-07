@@ -56,6 +56,27 @@
 
 ---
 
+### D-003 nginx単一ホスト統合
+
+- **決定**:localhost単一ホスト配下に /pilates・/thinkmotion・/pilates/admin・/thinkmotion/admin・/codeをパスベースで配置。サブドメイン（pilates.localhost等）は廃止。
+- code（ワールド・クック・クエスト構想）はパスの器だけ用意し、実装は将来着手時に着手する。
+- **ハマった点と対処**:
+
+.php用locationをlocation ~ ^/(pilates|thinkmotion|code)内にネストすると、内部リライト後のURI（/index.php）が正規表現に再マッチせずlocation /（static側）にフォールバックしてしまう。→ .php用locationをトップレベルの独立ブロックに分離して解決。
+public/直下を絶対パスで参照している箇所（/js/components/_.js、/css/style.css、/images/_.png）が、単一ホスト化後はlocation /（static側dist）にフォールバックし404になっていた。→ /js/・/css/・/images/をLaravel側public/に振るlocation ^~ブロックを追加して解決。
+
+- **注意**:nginx単一ホスト化時は、public/直下への絶対パス参照が静的サイト側にフォールバックしやすい。同様の統合を行う際はgrep -rn 'src="/\|href="/' resources/viewsで事前に洗い出すこと。
+
+---
+
+### D-004 環境変数
+
+- **決定**:Laravel側 .env：THINKMOTION_URL / PILATES_URL を http://localhost に統一（旧: http://thinkmotion.localhost 等）。ホスト名＋パス付与（${url}/thinkmotion等）という既存のテンプレート構造は変更していない。
+- STATIC_URL=http://localhost:5173 はVite dev server用のため変更不要（nginx統合はLaravel側の話であり、開発用HMRサーバーとは無関係）。
+- static側 .env：VITE_THINKMOTION_URL / VITE_PILATES_URL も同様に http://localhost に統一。
+- Windows側 hosts ファイルから pilates.localhost / thinkmotion.localhost のエントリを削除。code.localhost は将来のため残置。
+- WSL2 + Docker Desktop環境のため、ブラウザ（Windows側）の名前解決はWindows側のhostsファイルに依存する点に注意。WSL側の/etc/hostsは自動生成されるため編集しても再起動で消える。
+
 ## 認証関連(D-A-001~)
 
 ### D-A-001 usersテーブルの共有
@@ -104,6 +125,37 @@
 
 - **決定**: 氏名は登録時に必須入力し `users.name` に保存する
 - **理由**: 予約者の名寄せを登録時点から可能にする。管理画面での識別も容易になる
+
+---
+
+### D-A-005 管理者認証の構造
+
+- **決定**: admins / sections / admin_section
+
+管理者は admins テーブルで一元管理し、Pilates/ThinkMotionのセクション区分は sections テーブル＋admin_section 中間テーブル（多対多）で持つ。
+ガードは admin 単一。セクションごとにガードを分けない。
+理由：将来的にアプリ（ピザ屋アプリ等）が増える可能性を考慮し、adminsテーブルへのスキーマ変更なしでsectionsに1行追加するだけで拡張できる設計にした。
+boolean列（is_pilates_admin等）ではなく中間テーブルを選んだ理由：管理対象アプリの集合がオープンエンド（今後増える前提）であり、業務ロジックに直結するフラグ（ユーザー側のis_pilates_user等）とは性質が異なるため。
+
+- **ユーザー側フラグとの違い**:
+
+ユーザー側（is_pilates_user / is_client / is_medical）は固定的な3値・業務ロジック直結のためboolean列のまま。
+管理者側（sections）は拡張前提のアクセス権限グルーピングのため中間テーブル。
+判断基準：「集合が固定か拡張前提か」「業務ロジックの分岐条件か、権限のグルーピングか」。
+
+- **「売却」シナリオとテーブル分割の関係**:
+
+Pilates/ThinkMotionを同一施設の従業員・同僚と共有する程度であれば、admin/thinkmotion管理画面を別ルートにするだけで十分（テーブル分割は不要）。
+「Pilates側のホームページを丸ごと買いたい」という第三者への売却は、コードベースの複製で対応する話であり、adminsテーブルの事前分割とは無関係。将来分離を見込んだテーブル設計の先回りは不要と結論。
+
+---
+
+### D-A-006 ログイン・2FAフロー
+
+- **決定**: Pilates/ThinkMotionでログインビュー・ルートは別（/pilates/admin/login, /thinkmotion/admin/login）だが、認証処理（adminLogin）は共通メソッドで処理し、$request->is('thinkmotion', 'thinkmotion/\*') でセクション判定する。
+- 判定方法はユーザー側View Composerと同じパターンに統一（ルート名判定ではなくパス判定）。
+- AdminLoginRequestはauthenticate(string $section)でセクションチェックまで行う。ログイン時点のチェックはリクエストクラスで完結し、ログイン後の各ルートアクセスはadmin.sectionミドルウェアが担当する（役割分担を明確化）。
+- pilates_login_from / thinkmotion_login_from はユーザー側の予約導線専用のセッションキーであり、admin側のログインフローとは独立（干渉しない）。
 
 ---
 

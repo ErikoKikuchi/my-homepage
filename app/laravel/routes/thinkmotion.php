@@ -17,6 +17,11 @@ Route::prefix('thinkmotion')->middleware(['auth:web','verified'])->group(functio
     Route::get('/mypage',[ThinkMotionMyPageController::class, 'index'])->name('thinkmotion.mypage');
 });
 
+Route::prefix('pilates/admin')->middleware(['auth:admin', 'admin.2fa', 'admin.section:thinkmotion'])->group(function () {
+
+});
+
+
 //Route::middleware(['auth', 'room.admin.verified'])->group(function(){
 //    Route::get('/rooms/{room}/admin', ...);
 //    Route::get('/rooms/{room}/admin/posts', ...);

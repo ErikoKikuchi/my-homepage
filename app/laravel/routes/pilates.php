@@ -33,7 +33,7 @@ Route::prefix('pilates')->middleware(['auth:web', 'verified'])->group(function (
 });
 
 //管理者
-Route::prefix('pilates/admin')->middleware(['auth:admin', 'admin.2fa'])->group(function () {
+Route::prefix('pilates/admin')->middleware(['auth:admin', 'admin.2fa', 'admin.section:pilates'])->group(function () {
     Route::get('/',[PilatesAdminController::class,'index'])->name('pilates.admin');
     Route::get('/schedules',[PilatesAdminScheduleController::class,'index'])->name('pilates.admin.schedule');
     Route::get('/reservations',[PilatesAdminReservationController::class,'index'])->name('pilates.admin.reservation');

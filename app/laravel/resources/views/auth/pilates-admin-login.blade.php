@@ -11,7 +11,7 @@
 @section ('content')
     <form
         class="max-w-md mx-auto bg-forest text-paper p-8 rounded-sm shadow-sm"
-        action="/pilates/login"
+        action="/pilates/admin/login"
         method="post"
     >
         @csrf

@@ -25,18 +25,22 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin.2fa' => \App\Http\Middleware\Admin2FAMiddleware::class,
         ]);
         $middleware->redirectGuestsTo(function (Request $request) {
-            if ($request->is('admin', 'admin/*')) {
-                return route('admin.login');
+            if ($request->is('pilates/admin', 'pilates/admin/*')) {
+                return route('pilates.admin.login');
             }
-        
+
+            if ($request->is('thinkmotion/admin', 'thinkmotion/admin/*')) {
+                return route('thinkmotion.admin.login');
+            }
+
             $from = match (true) {
                 $request->is('pilates/reservations/create') => 'pilates-reservation',
                 $request->is('thinkmotion/*') => 'thinkmotion',
                 default => null,
             };
-        
+
             $query = $from ? '?from=' . $from : '';
-        
+
             return $request->is('thinkmotion', 'thinkmotion/*')
                 ? route('thinkmotion.login') . $query
                 : route('pilates.login') . $query;

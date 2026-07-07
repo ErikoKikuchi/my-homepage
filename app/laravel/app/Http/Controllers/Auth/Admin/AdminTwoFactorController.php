@@ -12,12 +12,13 @@ class AdminTwoFactorController extends Controller
     public function showForm()
     {
         $admin = Auth::guard('admin')->user();
+        $section = $request->attributes->get('section');
 
         if (empty($admin->two_factor_secret)) {
             return redirect()->route('two-factor-setup');
         }
 
-        return view('auth.admin-two-factor-verify');
+        return view('auth.{section}.admin-two-factor-verify');
     }
 
     public function verify(AdminTwoFactorRequest $request)
@@ -29,7 +30,7 @@ class AdminTwoFactorController extends Controller
         // DBに保存済みのsecretで検証
         $valid = $google2fa->verifyKey(
             $admin->two_factor_secret,  // DBから取得
-            $request->two_factor_secret // 入力値
+            $request->one_time_password // 入力値
         );
 
         if (!$valid) {
@@ -38,7 +39,9 @@ class AdminTwoFactorController extends Controller
         session(['admin_two_factor_verified.auth_passed' => true]);
         session(['admin_two_factor_verified.auth_time' => \Carbon\Carbon::now()->toIso8601String()]);
 
-        return redirect()->route('admin.home');
+        $section = $request->session()->pull('admin_login_section');
+
+        return redirect("/{$section}/admin/dashboard");
     }
 }
 
