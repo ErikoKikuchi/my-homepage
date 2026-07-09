@@ -34,7 +34,7 @@ class AdminTwoFactorSetupController extends Controller
         $writer = new Writer($renderer);
         $qrCode = $writer->writeString($qrUrl);  // SVG文字列
 
-        return view("auth.{$section}.admin-two-factor-setup", compact('qrCode'));
+        return view("auth.{$section}.admin-two-factor-setup", compact('qrCode', 'section'));
     }
     public function setup(AdminTwoFactorRequest $request)
     {

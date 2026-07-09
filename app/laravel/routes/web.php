@@ -30,16 +30,16 @@ Route::middleware('guest')->group(function(){
 
 Route::prefix('pilates')->middleware(['auth:admin','admin.section:pilates'])->group(function(){
     Route::get('/admin/two-factor', [AdminTwoFactorController::class, 'showForm'])->name('pilates.admin.two-factor');
-    Route::post('/admin/two-factor/verify', [AdminTwoFactorController::class, 'verify']);
+    Route::post('/admin/two-factor/verify', [AdminTwoFactorController::class, 'verify'])->name('pilates.admin.two-factor.verify');
     Route::get('/admin/two-factor/setup', [AdminTwoFactorSetupController::class, 'showSetupForm'])->name('pilates.admin.two-factor.setup');
-    Route::post('/admin/two-factor/setup', [AdminTwoFactorSetupController::class, 'setup']);
+    Route::post('/admin/two-factor/setup', [AdminTwoFactorSetupController::class, 'setup'])->name('pilates.admin.two-factor.setup.attempt');
 });
 
 Route::prefix('thinkmotion')->middleware(['auth:admin','admin.section:thinkmotion'])->group(function(){
     Route::get('/admin/two-factor', [AdminTwoFactorController::class, 'showForm'])->name('thinkmotion.admin.two-factor');
-    Route::post('/admin/two-factor/verify', [AdminTwoFactorController::class, 'verify']);
+    Route::post('/admin/two-factor/verify', [AdminTwoFactorController::class, 'verify'])->name('thinkmotion.admin.two-factor.verify');
     Route::get('/admin/two-factor/setup', [AdminTwoFactorSetupController::class, 'showSetupForm'])->name('thinkmotion.admin.two-factor.setup');
-    Route::post('/admin/two-factor/setup', [AdminTwoFactorSetupController::class, 'setup']);
+    Route::post('/admin/two-factor/setup', [AdminTwoFactorSetupController::class, 'setup'])->name('thinkmotion.admin.two-factor.setup.attempt');
 });
 
 Route::prefix('pilates')->middleware(['auth:admin','admin.section:pilates', 'admin.2fa'])->group(function(){

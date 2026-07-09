@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('sections', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('key')->unique(); // 'pilates', 'thinkmotion', 'pizza' など
             $table->string('label');
             $table->timestamps();

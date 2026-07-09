@@ -19,7 +19,7 @@ class AdminTwoFactorController extends Controller
             return redirect()->route("{$section}.admin.two-factor.setup");
         }
 
-        return view("auth.{$section}.admin-two-factor-verify");
+        return view("auth.{$section}.admin-two-factor-verify", compact('section'));
     }
 
     public function verify(AdminTwoFactorRequest $request)

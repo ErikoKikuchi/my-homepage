@@ -10,6 +10,6 @@ class AdminHomeController extends Controller
     public function index(Request $request)
     {
         $section = $request->attributes->get('section');
-        return view("{$section}.admin.admin-dashboard");
+        return view("pages.{$section}.admin.admin-dashboard");
     }
 }

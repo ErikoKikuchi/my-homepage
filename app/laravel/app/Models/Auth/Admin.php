@@ -38,4 +38,8 @@ class Admin extends Authenticatable
             }
         });
     }
+    public function sections()
+    {
+        return $this->belongsToMany(Section::class, 'admin_section');
+    }
 }

@@ -14,7 +14,11 @@
             <p class="text-sm/1.8">認証アプリでQRコードを読み込んでください</p>
             <div class="my-10 mx-auto">{!! $qrCode !!}</div>
         </div>
-        <form class="p-5" action="/admin/two-factor/setup" method="post">
+        <form
+            class="p-5"
+            action="{{ route("{$section}.admin.two-factor.setup.attempt") }}"
+            method="post"
+        >
             @csrf
             <label class="text-sm/1.8" for="two_factor_secret"
                 >認証コード（6桁）</label

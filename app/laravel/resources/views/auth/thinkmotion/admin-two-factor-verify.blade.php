@@ -10,7 +10,11 @@
 
 @section ('content')
     <div class="max-w-md mx-auto">
-        <form class="p-5" action="/admin/two-factor/verify" method="post">
+        <form
+            class="p-5"
+            action="{{ route("{$section}.admin.two-factor.verify") }}"
+            method="post"
+        >
             @csrf
             <label class="text-sm/1.8" for="two_factor_secret"
                 >認証コード（6桁）</label

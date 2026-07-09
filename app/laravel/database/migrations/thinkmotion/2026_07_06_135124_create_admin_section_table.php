@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('admin_section', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('admin_id')->constrained();
-            $table->foreignId('section_id')->constrained();
+            $table->foreignUuid('admin_id')->constrained()->restrictOnDelete();
+            $table->foreignUuid('section_id')->constrained()->restrictOnDelete();
             $table->timestamps();
         });
     }
