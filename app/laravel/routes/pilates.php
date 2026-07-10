@@ -12,6 +12,7 @@ use App\Http\Controllers\Pilates\Admin\ScheduleController as PilatesAdminSchedul
 use App\Http\Controllers\Pilates\Admin\ReservationController as PilatesAdminReservationController;
 use App\Http\Controllers\Pilates\Admin\ClientController as PilatesAdminClientController;
 use App\Http\Controllers\Pilates\Admin\TrainingLogController as PilatesAdminTrainingLogController;
+use App\Http\Controllers\Auth\User\UserLoginController;
 
 
 
@@ -30,6 +31,7 @@ Route::prefix('pilates')->middleware(['auth:web', 'verified'])->group(function (
     Route::patch('/reservations/{reservation}/cancel', [PilatesCancellationController::class,'cancel'])->name('pilates.user.reservation.cancel');
     Route::resource('/reservations', PilatesReservationController::class)->only(['index', 'show', 'create','store'])->names('pilates.user.reservation');
     Route::resource('/training-logs',PilatesTrainingLogController::class)->only(['index', 'show','create', 'store','edit','update','destroy'])->names('pilates.user.training-log');
+    Route::post('/logout', [UserLoginController::class, 'logout'])->name('pilates.logout');
 });
 
 //管理者

@@ -31,7 +31,7 @@ class AdminTwoFactorController extends Controller
         // DBに保存済みのsecretで検証
         $valid = $google2fa->verifyKey(
             $admin->two_factor_secret,  // DBから取得
-            $request->one_time_password // 入力値
+            $request->two_factor_secret // 入力値
         );
 
         if (!$valid) {
@@ -40,7 +40,7 @@ class AdminTwoFactorController extends Controller
         session(['admin_two_factor_verified.auth_passed' => true]);
         session(['admin_two_factor_verified.auth_time' => \Carbon\Carbon::now()->toIso8601String()]);
 
-        return redirect("/{$section}.admin.home");
+        return redirect()->route("{$section}.admin.home");
     }
 }
 

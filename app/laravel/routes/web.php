@@ -14,32 +14,32 @@ use App\Http\Controllers\Auth\User\UserLoginController;
 
 Route::middleware('guest')->group(function(){
     Route::get('/pilates/login', [UserLoginController::class, 'showPilatesForm'])->name('pilates.login');
-    Route::post('/pilates/login', [UserLoginController::class, 'login'])->name('pilates.login.attempt');
+    Route::post('/pilates/login', [UserLoginController::class, 'login'])->name('pilates.login.attempt')->middleware('throttle:login');
 
     Route::get('/thinkmotion/login', [UserLoginController::class, 'showThinkmotionForm'])->name('thinkmotion.login');
-    Route::post('/thinkmotion/login', [UserLoginController::class, 'login'])->name('thinkmotion.login.attempt');
+    Route::post('/thinkmotion/login', [UserLoginController::class, 'login'])->name('thinkmotion.login.attempt')->middleware('throttle:login');
 
     Route::post('/register',[UserRegisterController::class,'register']);
     Route::get('/pilates/admin/login', [AdminLoginController::class,'showPilatesForm'])->name('pilates.admin.login');
-    Route::post('/pilates/admin/login',[AdminLoginController::class,'adminLogin'])->name('pilates.admin.login.attempt');
+    Route::post('/pilates/admin/login',[AdminLoginController::class,'adminLogin'])->name('pilates.admin.login.attempt')->middleware('throttle:login');
     Route::get('/thinkmotion/admin/login', [AdminLoginController::class,'showThinkmotionForm'])->name('thinkmotion.admin.login');
-    Route::post('/thinkmotion/admin/login',[AdminLoginController::class,'adminLogin'])->name('thinkmotion.admin.login.attempt');
+    Route::post('/thinkmotion/admin/login',[AdminLoginController::class,'adminLogin'])->name('thinkmotion.admin.login.attempt')->middleware('throttle:login');
 }); 
 
 
 
 Route::prefix('pilates')->middleware(['auth:admin','admin.section:pilates'])->group(function(){
     Route::get('/admin/two-factor', [AdminTwoFactorController::class, 'showForm'])->name('pilates.admin.two-factor');
-    Route::post('/admin/two-factor/verify', [AdminTwoFactorController::class, 'verify'])->name('pilates.admin.two-factor.verify');
+    Route::post('/admin/two-factor/verify', [AdminTwoFactorController::class, 'verify'])->name('pilates.admin.two-factor.verify')->middleware('throttle:two-factor');
     Route::get('/admin/two-factor/setup', [AdminTwoFactorSetupController::class, 'showSetupForm'])->name('pilates.admin.two-factor.setup');
-    Route::post('/admin/two-factor/setup', [AdminTwoFactorSetupController::class, 'setup'])->name('pilates.admin.two-factor.setup.attempt');
+    Route::post('/admin/two-factor/setup', [AdminTwoFactorSetupController::class, 'setup'])->name('pilates.admin.two-factor.setup.attempt')->middleware('throttle:two-factor');
 });
 
 Route::prefix('thinkmotion')->middleware(['auth:admin','admin.section:thinkmotion'])->group(function(){
     Route::get('/admin/two-factor', [AdminTwoFactorController::class, 'showForm'])->name('thinkmotion.admin.two-factor');
-    Route::post('/admin/two-factor/verify', [AdminTwoFactorController::class, 'verify'])->name('thinkmotion.admin.two-factor.verify');
+    Route::post('/admin/two-factor/verify', [AdminTwoFactorController::class, 'verify'])->name('thinkmotion.admin.two-factor.verify')->middleware('throttle:two-factor');
     Route::get('/admin/two-factor/setup', [AdminTwoFactorSetupController::class, 'showSetupForm'])->name('thinkmotion.admin.two-factor.setup');
-    Route::post('/admin/two-factor/setup', [AdminTwoFactorSetupController::class, 'setup'])->name('thinkmotion.admin.two-factor.setup.attempt');
+    Route::post('/admin/two-factor/setup', [AdminTwoFactorSetupController::class, 'setup'])->name('thinkmotion.admin.two-factor.setup.attempt')->middleware('throttle:two-factor');
 });
 
 Route::prefix('pilates')->middleware(['auth:admin','admin.section:pilates', 'admin.2fa'])->group(function(){
@@ -69,6 +69,4 @@ Route::middleware('auth:web')->group(function () {
     })->middleware(['auth:web'])->name('verification.verify');
 });
 
-Route::middleware(['auth:web', 'verified'])->group(function(){
-    Route::post('/logout', [UserLoginController::class, 'logout'])->name('logout');
-});
+

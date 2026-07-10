@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Pilates\User\StoreReservationRequest;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Models\Auth\User;
+
 
 class ReservationController extends Controller
 {
@@ -83,6 +85,7 @@ class ReservationController extends Controller
     public function show(Reservation $reservation)
     {
         $user=auth('web')->user();
+        $this->authorize('view', $reservation);
         $booking=[
             'participants' => $reservation->participants,
             'date' => $reservation->lessonSlot->date->format('Y年m月d日'),
@@ -103,6 +106,7 @@ class ReservationController extends Controller
 
     public function archive(Request $request)
     {
+        /** @var User $user */
         $user=auth('web')->user();
 
         $query = $user->reservations()

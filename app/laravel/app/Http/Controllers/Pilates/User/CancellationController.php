@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\Pilates\User;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Pilates\Reservation;
-use LaravelLang\Publisher\Console\Update;
 
 class CancellationController extends Controller
 {
     public function cancel(Reservation $reservation)
     {
         $user=auth('web')->user();
+        $this->authorize('cancel', $reservation);
+
         $cutoff = $reservation->lessonSlot->date->copy()->subDay()->setTime(12, 0);
 
         if (now()->greaterThan($cutoff)) {
