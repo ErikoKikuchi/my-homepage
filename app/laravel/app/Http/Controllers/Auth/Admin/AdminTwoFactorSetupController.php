@@ -54,10 +54,9 @@ class AdminTwoFactorSetupController extends Controller
         // 検証成功後にDBへ保存
         $admin->two_factor_secret = $secret;
         $admin->save();
+
         session()->forget('two_factor_secret_temp');
 
-        session(['admin_two_factor_verified.auth_passed' => true]);
-        session(['admin_two_factor_verified.auth_time' => \Carbon\Carbon::now()->toIso8601String()]);
-        return redirect()->route("{$section}.admin.home");
+        return redirect()->route("{$section}.admin.two-factor");
     }
 }

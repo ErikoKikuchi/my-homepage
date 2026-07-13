@@ -13,7 +13,7 @@ Route::get('/thinkmotion', [UserViewerController::class, 'index']);
 Route::get('/thinkmotion/posts',[ThinkMotionGuestController::class,'index'])->name('thinkmotion.guest.index');
 
 //ユーザーログイン後
-Route::prefix('thinkmotion')->middleware(['auth:web','verified'])->group(function () {
+Route::prefix('thinkmotion')->middleware(['auth:web','verified', 'section.user:thinkmotion'])->group(function () {
     Route::get('/profile/register',[UserProfileController::class,'register'])->name('profile.register');
     Route::get('/mypage',[ThinkMotionMyPageController::class, 'index'])->name('thinkmotion.mypage');
     Route::post('/logout', [UserLoginController::class, 'logout'])->name('thinkmotion.logout');

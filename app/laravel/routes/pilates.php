@@ -24,7 +24,7 @@ Route::get('/pilates/slots',[PilatesGuestController::class,'show'])->name('pilat
 
 
 // ログイン後
-Route::prefix('pilates')->middleware(['auth:web', 'verified'])->group(function () {
+Route::prefix('pilates')->middleware(['auth:web', 'verified', 'section.user:pilates'])->group(function () {
     Route::get('/mypage', [PilatesMyPageController::class, 'index'])->name('pilates.mypage');
     Route::get('/archive',[PilatesReservationController::class,'archive'])->name('pilates.past.reservation');
     Route::get('/tickets', [PilatesTicketsController::class, 'index'])->name('pilates.tickets');

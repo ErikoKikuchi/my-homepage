@@ -25,11 +25,11 @@ class RedirectIfAuthenticated
                 $isThinkmotion = $request->is('thinkmotion', 'thinkmotion/*');
 
                 if ($isThinkmotion && $admin->sections->contains('key', 'thinkmotion')) {
-                    return redirect('/thinkmotion/admin/dashboard');
+                    return redirect()->route('thinkmotion.admin.home');
                 }
 
                 if (!$isThinkmotion && $admin->sections->contains('key', 'pilates')) {
-                    return redirect('/pilates/admin/dashboard');
+                    return redirect()->route('pilates.admin.home');
                 }
 
                 // どちらのセクション権限もない場合はログアウトさせて再ログインを促す
