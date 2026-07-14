@@ -19,7 +19,7 @@ Route::prefix('thinkmotion')->middleware(['auth:web','verified', 'section.user:t
     Route::post('/logout', [UserLoginController::class, 'logout'])->name('thinkmotion.logout');
 });
 
-Route::prefix('thinkmotion/admin')->middleware(['auth:admin', 'admin.2fa', 'admin.section:thinkmotion'])->group(function () {
+Route::prefix('thinkmotion/admin')->middleware(['auth:admin', 'admin.section:thinkmotion', 'admin.2fa'])->group(function () {
 
 });
 

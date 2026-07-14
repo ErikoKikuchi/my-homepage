@@ -24,6 +24,8 @@ class Location extends Model
     protected $casts = [
         'is_active'=>'boolean',
         'is_bookable'=>'boolean',
+        'base_fee' => 'integer',
+        'price_addon_per_session'=> 'integer',
     ];
 
     public function reservations()

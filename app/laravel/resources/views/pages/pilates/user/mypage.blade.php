@@ -16,6 +16,7 @@
             <p class="pl-3 text-forest-dark whitespace-pre-line">{{session('message')}}</p>
         </div>
     @endif
+    <!--クイックメニュー-->
     <section
         class="max-w-200 my-0 mx-auto py-16 px-8 border-t border-forest-dark/12"
     >
@@ -30,24 +31,28 @@
                 </a>
             @endif
             <a
-                href="#reservation"
+                href="{{ route('pilates.guest.index') }}"
                 class="px-4 py-2 rounded border border-forest bg-forest hover:bg-forest-dark text-white"
             >
-                予約
+                予約する
             </a>
-
             <a
-                href="#reservation-index"
+                href="{{ route('pilates.past.reservation') }}"
                 class="px-4 py-2 rounded border border-forest bg-forest hover:bg-forest-dark text-white"
             >
-                予約一覧
+                過去の予約
             </a>
-
             <a
-                href="#tickets"
+                href="{{ route('pilates.tickets') }}"
                 class="px-4 py-2 rounded border border-forest bg-forest hover:bg-forest-dark text-white"
             >
                 回数券購入
+            </a>
+            <a
+                href="{{ route('pilates.user.bodymind.index') }}"
+                class="px-4 py-2 rounded border border-forest bg-forest hover:bg-forest-dark text-white"
+            >
+                自主トレログ～BodyMind～
             </a>
         </div>
     </section>
@@ -56,16 +61,12 @@
         class="max-w-200 my-0 mx-auto py-16 px-8 border-t border-forest-dark/12"
     >
         <p class="font-gothic text-xs tracking-[0.18em] uppercase text-forest mb-10">次回のご予約</p>
-        <div
-            class="border border-forest-dark rounded-lg p-6 bg-forest/20"
-            id="line"
-        >
+        <div class="border border-forest-dark rounded-lg p-6 bg-forest/20">
             @if ($nextReservationInfo)
                 <p>予約日：{{ $nextReservationInfo['date'] }}</p>
                 <p>開催場所：{{ $nextReservationInfo['location'] }}</p>
                 <p>回数券残数：{{ $remainingTicketCounts }}枚</p>
                 <p>ご予約は、現在の回数券残数に1回分を加えた回数までを目安にお願いいたします。 目安を超えるご予約をご希望の場合はご相談ください。</p>
-
             @else
                 <p>次回のご予約はありません</p>
                 <p>回数券残数：{{ $remainingTicketCounts }}枚</p>
@@ -73,46 +74,13 @@
             @endif
         </div>
     </section>
-    <!--LINE登録案内（フラグたってない人）-->
-    @if ($notLineLinkedClient)
-        <section
-            class="max-w-200 my-0 mx-auto py-16 px-8 border-t border-forest-dark/12"
-        >
-            <p class="font-gothic text-xs tracking-[0.18em] uppercase text-forest mb-10">LINE登録</p>
-            <div class="flex flex-col gap-10 items-center">
-                <img
-                    class="w-30 h-30"
-                    src="
-                {{ "/images/line-qr.png" }}"
-                    alt="LINE登録用QRコード"
-                />
-                <p>予約後の場所のご案内・リマインド等の直接のやり取りは LINEで行っておりますので、ご登録お願いいたします。</p>
-            </div>
-        </section>
-    @else
-
-    @endif
-    <!--ご予約-->
+    <!--今後の予約一覧テーブル-->
     <section
         class="max-w-200 my-0 mx-auto py-16 px-8 border-t border-forest-dark/12"
-        id="reservation"
     >
-        <p class="font-gothic text-xs tracking-[0.18em] uppercase text-forest mb-10">ご予約はこちら</p>
-        <a
-            href="{{ route('pilates.guest.index') }}"
-            class="px-4 py-2 rounded border border-accent bg-forest-dark text-white pointer hover:bg-forest"
-            >ご予約はこちら</a
-        >
-    </section>
-    <!--ご予約一覧-->
-    <section
-        class="max-w-200 my-0 mx-auto py-16 px-8 border-t border-forest-dark/12"
-        id="reservation-index"
-    >
-        <p class="font-gothic text-xs tracking-[0.18em] uppercase text-forest mb-10">ご予約一覧はこちら</p>
+        <p class="font-gothic text-xs tracking-[0.18em] uppercase text-forest mb-10">今後のご予約</p>
         <div class="flex gap-5 flex-col">
-            <p>今後のご予約</p>
-            @foreach ( $upcomingReservations as $upcoming)
+            @forelse ($upcomingReservations as $upcoming)
                 <table class="table-fixed">
                     <tr class="w-full h-10 border rounded">
                         <th class="text-center">日付</th>
@@ -131,35 +99,28 @@
                         </td>
                     </tr>
                 </table>
-            @endforeach
-
-            <p>過去のご予約</p>
-            <a
-                href="{{ route('pilates.past.reservation') }}"
-                class="px-4 py-2 rounded border border-accent bg-forest text-white pointer hover:bg-forest/80"
-                >過去のご予約はこちら</a
-            >
+            @empty
+                <p>今後のご予約はありません</p>
+            @endforelse
         </div>
     </section>
-    <!--回数券購入-->
-    <section
-        class="max-w-200 my-0 mx-auto py-16 px-8 border-t border-forest-dark/12"
-        id="tickets"
-    >
-        <p class="font-gothic text-xs tracking-[0.18em] uppercase text-forest mb-10">回数券購入</p>
-        <a
-            href="{{ route('pilates.tickets') }}"
-            class="px-4 py-2 rounded border border-accent bg-forest-dark text-white pointer hover:bg-forest"
-            >回数券の購入はこちら</a
+    <!--LINE登録案内（フラグたってない人）-->
+    @if ($notLineLinkedClient)
+        <section
+            class="max-w-200 my-0 mx-auto py-16 px-8 border-t border-forest-dark/12"
+            id="line"
         >
-    </section>
-    <!--自主トレログへのリンク-->
-    <section
-        class="max-w-200 my-0 mx-auto py-16 px-8 border-t border-forest-dark/12"
-        id="training-log"
-    >
-        <p class="font-gothic text-xs tracking-[0.18em] uppercase text-forest mb-10">自主トレログ</p>
-    </section>
+            <p class="font-gothic text-xs tracking-[0.18em] uppercase text-forest mb-10">LINE登録</p>
+            <div class="flex flex-col gap-10 items-center">
+                <img
+                    class="w-30 h-30"
+                    src="{{ "/images/line-qr.png" }}"
+                    alt="LINE登録用QRコード"
+                />
+                <p>予約後の場所のご案内・リマインド等の直接のやり取りは LINEで行っておりますので、ご登録お願いいたします。</p>
+            </div>
+        </section>
+    @endif
     <footer class="site-footer">
         <div class="flex items-center justify-between mb-4">
             <a
