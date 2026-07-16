@@ -11,7 +11,7 @@ class LocationController extends Controller
 {
     public function index()
     {
-        $locations = Location::orderBy('is_active', 'desc')
+        $locations = Location::where('is_active', true)
             ->orderBy('name')
             ->get();
 
@@ -53,5 +53,30 @@ class LocationController extends Controller
         return redirect()
             ->route('pilates.admin.location.index')
             ->with('message', '場所を削除しました。');
+    }
+
+    public function show()
+    {
+        $locations = Location::where('is_active', false)
+            ->orderBy('name')
+            ->get();
+
+        return view('pages.pilates.admin.locations-archive', compact('locations'));
+    }
+
+    public function archive(Location $location)
+    {
+        $location->update(['is_active' => false]);
+        return redirect()
+            ->route('pilates.admin.location.index')
+            ->with('message', '場所をアーカイブしました。');
+    }
+    public function restore(Location $location)
+    {
+        $location->update(['is_active' => true]);
+
+        return redirect()
+            ->route('pilates.admin.location.index')
+            ->with('message', '場所を有効化しました。');
     }
 }

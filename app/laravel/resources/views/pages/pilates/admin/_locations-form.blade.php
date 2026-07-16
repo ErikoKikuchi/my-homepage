@@ -95,14 +95,5 @@
             />
             予約可能にする
         </label>
-        <label class="flex items-center gap-2 text-sm text-forest-dark">
-            <input
-                type="checkbox"
-                name="is_active"
-                value="1"
-                {{ old('is_active', $location->is_active ?? true) ? 'checked' : '' }}
-            />
-            有効にする
-        </label>
     </div>
 </div>

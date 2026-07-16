@@ -33,6 +33,38 @@
                 >
             </div>
         </form>
+        @if ($location->is_active)
+            <form
+                method="POST"
+                action="{{ route('pilates.admin.location.archive', $location) }}"
+                onsubmit="return confirm('この場所をアーカイブしますか？');"
+                class="mt-4"
+            >
+                @csrf
+                @method ('PATCH')
+                <button
+                    type="submit"
+                    class="px-4 py-2 rounded border border-red-400 text-red-600 hover:bg-red-50"
+                >
+                    アーカイブする
+                </button>
+            </form>
+        @else
+            <form
+                method="POST"
+                action="{{ route('pilates.admin.location.restore', $location) }}"
+                class="mt-4"
+            >
+                @csrf
+                @method ('PATCH')
+                <button
+                    type="submit"
+                    class="px-4 py-2 rounded border border-forest text-forest hover:bg-forest/10"
+                >
+                    有効にする
+                </button>
+            </form>
+        @endif
 
         <form
             method="POST"
