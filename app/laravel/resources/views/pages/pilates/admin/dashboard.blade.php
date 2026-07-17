@@ -22,7 +22,7 @@
                 >セッション一覧</a
             >
             <a
-                href="{{ route('pilates.admin.schedule.index') }}"
+                href="{{ route('pilates.admin.lesson-slots.index') }}"
                 class="px-4 py-2 rounded border border-forest bg-forest hover:bg-forest-dark text-white"
                 >スケジュール管理</a
             >

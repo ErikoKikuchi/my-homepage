@@ -40,10 +40,9 @@ Route::prefix('pilates')->middleware(['auth:web', 'verified'])->group(function (
 //管理者
 Route::prefix('pilates/admin')->middleware(['auth:admin', 'admin.section:pilates', 'admin.2fa'])->group(function () {
     Route::get('/',[PilatesAdminController::class,'index'])->name('pilates.admin.home');
-    Route::resource('/lesson-templates',PilatesAdminLessonTemplateController::class)->only(['index', 'create', 'store','edit','update'])->names('pilates.admin.lesson-templates');
+    Route::resource('/lesson-templates',PilatesAdminLessonTemplateController::class)->only(['index', 'create', 'store','edit','update','destroy'])->names('pilates.admin.lesson-templates');
     Route::get('/lesson-slots/{slot}/confirm-location',[PilatesAdminClientController::class,'archive'])->name('pilates.admin.location.confirm');
-    Route::get('/lesson-slots/{slot}/archive',[PilatesAdminLessonSlotController::class,'archive'])->name('pilates.admin.slots.archive');
-    Route::resource('/lesson-slots',PilatesAdminLessonSlotController::class)->only(['index', 'create', 'store','destroy'])->names('pilates.admin.lesson-slots');
+    Route::resource('/lesson-slots',PilatesAdminLessonSlotController::class)->only(['index', 'create', 'store','edit','update', 'destroy'])->names('pilates.admin.lesson-slots');
     Route::resource('/sessions',PilatesAdminReservationController::class)->only(['index','show', 'create', 'store','edit','update'])->names('pilates.admin.session');
     Route::resource('/accounting',PilatesAdminAccountingController::class)->only(['index','show', 'create', 'store','edit','update'])->names('pilates.admin.accounting');
     Route::get('/clients/archive',[PilatesAdminClientController::class,'archive'])->name('pilates.admin.clients.archive');
