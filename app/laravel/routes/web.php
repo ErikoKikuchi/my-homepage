@@ -44,12 +44,12 @@ Route::prefix('thinkmotion')->middleware(['auth:admin','admin.section:thinkmotio
 
 Route::prefix('pilates')->middleware(['auth:admin','admin.section:pilates', 'admin.2fa'])->group(function(){
     Route::get('/admin/home', [AdminHomeController::class,'index'])->name('pilates.admin.home');
-    Route::post('/admin/logout', [AdminLoginController::class, 'adminLogout']);
+    Route::post('/admin/logout', [AdminLoginController::class, 'adminLogout'])->name('pilates.admin.logout');
 });
 
 Route::prefix('thinkmotion')->middleware(['auth:admin','admin.section:thinkmotion', 'admin.2fa'])->group(function(){
     Route::get('/admin/home', [AdminHomeController::class,'index'])->name('thinkmotion.admin.home');
-    Route::post('/admin/logout', [AdminLoginController::class, 'adminLogout']);
+    Route::post('/admin/logout', [AdminLoginController::class, 'adminLogout'])->name('thinkmotion.admin.logout');;
 });
 
 Route::middleware('auth:web')->group(function () {

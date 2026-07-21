@@ -4,7 +4,12 @@
     <nav
         class="thinkmotion-subnav mt-(--site-nav-height) flex gap-4 justify-end pr-2 text-nav-text bg-nav-bg border-b border-muted/10 sticky top-(--site-nav-height)"
     >
-        @auth
+        @if (Auth::guard('admin')->check())
+            <a href="{{ route('thinkmotion.admin.home') }}"
+                >管理ダッシュボード</a
+            >
+            @include ('partials.admin-logout-form', ['section' => 'thinkmotion'])
+        @elseif (Auth::check())
             <a href="{{ route('thinkmotion.mypage') }}">マイページ</a>
             <!--マイページの中に投稿・プロフィール編集の動線-->
             <!--るーむへの動線-->
@@ -13,10 +18,9 @@
             @if (auth()->user()->is_pilates_user)
                 <a href="{{ route('pilates.mypage') }}">Pilatesマイページへ</a>
             @endif
-            @include ('partials.logout-form')
         @else
             @include ('partials.login-link')
-        @endauth
+        @endif
     </nav>
 @endsection
 

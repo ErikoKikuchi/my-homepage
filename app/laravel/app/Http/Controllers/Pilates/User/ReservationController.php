@@ -42,6 +42,7 @@ class ReservationController extends Controller
     public function store(StoreReservationRequest $request)
     {
         $reservationData = $request->validated();
+        /** @var \App\Models\Auth\User $user */
         $user = auth('web')->user();
 
         DB::transaction(function() use ($reservationData, $user, $request) {
@@ -58,11 +59,15 @@ class ReservationController extends Controller
             if ($alreadyReserved) {
                 throw new \Exception('このスロットはすでに予約済みです');
             }
+            if (isset($reservationData['phone']) && $user->phone !== $reservationData['phone']) {
+                $user->update(['phone' => $reservationData['phone']]);
+            }
 
             $slots->reservations()->create([
                 'user_id'          => $user->id,
                 'participants'=>$reservationData['participants'],
                 'participants_name'=>$reservationData['participants_name'] ,
+                'participants_phone'=>$reservationData['participants_phone'] ,
                 'note'=>$reservationData['note'] ,
                 'status'=>'waiting_venue',
             ]);

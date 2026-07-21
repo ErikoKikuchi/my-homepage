@@ -29,8 +29,7 @@ class ReservationAvailabilityService
         $startOfMonth = Carbon::parse($month)->startOfMonth();
         $minDate = $this->minBookableDate();
 
-        $slots = LessonSlot::where('is_active', true)
-            ->whereBetween('date', [
+        $slots = LessonSlot::whereBetween('date', [
                 $startOfMonth->format('Y-m-d'),
                 $startOfMonth->copy()->endOfMonth()->format('Y-m-d'),
             ])
@@ -53,8 +52,7 @@ class ReservationAvailabilityService
 
     public function getAvailableTimes(string $date): array
     {
-        return LessonSlot::where('is_active', true)
-            ->where('date', $date)
+        return LessonSlot::where('date', $date)
             ->with('lessonTemplate')
             ->get()
             ->filter(fn($slot) => $this->isSlotAvailable($slot))

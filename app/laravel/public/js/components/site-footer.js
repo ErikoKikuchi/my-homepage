@@ -3,7 +3,7 @@ class e extends HTMLElement {
         this.innerHTML = `
         <footer class="site-footer">
             <p class="copyright">© 2026 からだ散歩</p>
-            <img src="/images/icon-footer.png" class="bottom-image">
+            <img src="/images/footer-pic.png" class="bottom-image">
         </footer>
         `;
     }
