@@ -16,6 +16,8 @@ use App\Http\Controllers\Pilates\Admin\BodyMindController as PilatesAdminBodyMin
 use App\Http\Controllers\Auth\User\UserLoginController;
 use App\Http\Controllers\Pilates\Admin\AccountingController as PilatesAdminAccountingController;
 use App\Http\Controllers\Pilates\Admin\LocationController as PilatesAdminLocationController;
+use App\Http\Controllers\Pilates\Admin\SessionController as PilatesAdminSessionController;
+use App\Http\Controllers\Pilates\Admin\LocationConfirmController as PilatesAdminLocationConfirmController;
 
 
 
@@ -41,9 +43,10 @@ Route::prefix('pilates')->middleware(['auth:web', 'verified'])->group(function (
 Route::prefix('pilates/admin')->middleware(['auth:admin', 'admin.section:pilates', 'admin.2fa'])->group(function () {
     Route::get('/',[PilatesAdminController::class,'index'])->name('pilates.admin.home');
     Route::resource('/lesson-templates',PilatesAdminLessonTemplateController::class)->only(['index', 'create', 'store','edit','update','destroy'])->names('pilates.admin.lesson-templates');
-    Route::get('/lesson-slots/{slot}/confirm-location',[PilatesAdminClientController::class,'archive'])->name('pilates.admin.location.confirm');
+    Route::get('/lesson-slots/{slot}/confirm-location', [PilatesAdminLocationConfirmController::class, 'confirm'])
+    ->name('pilates.admin.location.confirm');
     Route::resource('/lesson-slots',PilatesAdminLessonSlotController::class)->only(['index', 'create', 'store','edit','update', 'destroy'])->names('pilates.admin.lesson-slots');
-    Route::resource('/sessions',PilatesAdminReservationController::class)->only(['index','show', 'create', 'store','edit','update'])->names('pilates.admin.session');
+    Route::resource('/sessions',PilatesAdminSessionController::class)->only(['index','show', 'create', 'store','edit','update'])->names('pilates.admin.session');
     Route::resource('/accounting',PilatesAdminAccountingController::class)->only(['index','show', 'create', 'store','edit','update'])->names('pilates.admin.accounting');
     Route::get('/clients/archive',[PilatesAdminClientController::class,'archive'])->name('pilates.admin.clients.archive');
     Route::resource('/clients',PilatesAdminClientController::class)->only(['index','show', 'create', 'store','edit','update'])->names('pilates.admin.clients');
@@ -55,4 +58,5 @@ Route::prefix('pilates/admin')->middleware(['auth:admin', 'admin.section:pilates
     Route::patch('/locations/{location}/restore', [PilatesAdminLocationController::class, 'restore'])
         ->name('pilates.admin.location.restore');
     Route::resource('/location',PilatesAdminLocationController::class)->only(['index', 'create', 'store','edit','update','destroy'])->names('pilates.admin.location');
+    Route::resource('/reservations',PilatesAdminReservationController::class)->only(['index', 'create', 'store','edit','update','destroy'])->names('pilates.admin.reservation');
 });

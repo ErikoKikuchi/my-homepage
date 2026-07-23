@@ -13,6 +13,7 @@ class Reservation extends Model
 {
     use HasUuids;
     protected $connection = 'client_db';
+    protected $table = 'client_db.reservations';
 
     protected $fillable = [
         'user_id',

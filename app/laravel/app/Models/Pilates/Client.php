@@ -13,6 +13,7 @@ class Client extends Model
 {
     use HasUuids;
     protected $connection = 'client_db';
+    protected $table = 'client_db.clients';
 
     protected $fillable = [
         'name',

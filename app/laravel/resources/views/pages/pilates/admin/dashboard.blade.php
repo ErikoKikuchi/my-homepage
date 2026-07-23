@@ -22,6 +22,11 @@
                 >セッション一覧</a
             >
             <a
+                href="{{ route('pilates.admin.reservation.index') }}"
+                class="px-4 py-2 rounded border border-forest bg-forest hover:bg-forest-dark text-white"
+                >予約管理</a
+            >
+            <a
                 href="{{ route('pilates.admin.lesson-slots.index') }}"
                 class="px-4 py-2 rounded border border-forest bg-forest hover:bg-forest-dark text-white"
                 >スケジュール管理</a

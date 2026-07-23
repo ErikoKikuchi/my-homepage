@@ -23,7 +23,7 @@ class MyPageController extends Controller
         $remainingTicketCounts=$client?->remainingGuestPassCount()?? 0;
 
         //LINE登録
-        $notLineLinkedClient=$user->clients()->notLineLinked()->get();
+        $notLineLinkedClient=$user->client()->notLineLinked()->get();
         //予約履歴
         $upcomingReservations=$user->reservations()->upComing()->get()->sortBy(fn($reservation) => $reservation->lessonSlot->date)->values()->map(fn ($reservation) => [
             'uuid' => $reservation->id,

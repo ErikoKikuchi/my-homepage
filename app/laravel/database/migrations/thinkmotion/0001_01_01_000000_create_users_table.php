@@ -18,7 +18,6 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('phone')->nullable();
-            $table->string('line_user_id')->nullable();
             $table->rememberToken();
             $table->boolean('profile_completed')->default(false);
             $table->boolean('bookshelf_public')->default(true);
