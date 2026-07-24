@@ -43,13 +43,13 @@ Route::prefix('pilates')->middleware(['auth:web', 'verified'])->group(function (
 Route::prefix('pilates/admin')->middleware(['auth:admin', 'admin.section:pilates', 'admin.2fa'])->group(function () {
     Route::get('/',[PilatesAdminController::class,'index'])->name('pilates.admin.home');
     Route::resource('/lesson-templates',PilatesAdminLessonTemplateController::class)->only(['index', 'create', 'store','edit','update','destroy'])->names('pilates.admin.lesson-templates');
-    Route::get('/lesson-slots/{slot}/confirm-location', [PilatesAdminLocationConfirmController::class, 'confirm'])
+    Route::post('/lesson-slots/{slot}/confirm-location', [PilatesAdminLocationConfirmController::class, 'confirm'])
     ->name('pilates.admin.location.confirm');
     Route::resource('/lesson-slots',PilatesAdminLessonSlotController::class)->only(['index', 'create', 'store','edit','update', 'destroy'])->names('pilates.admin.lesson-slots');
     Route::resource('/sessions',PilatesAdminSessionController::class)->only(['index','show', 'create', 'store','edit','update'])->names('pilates.admin.session');
     Route::resource('/accounting',PilatesAdminAccountingController::class)->only(['index','show', 'create', 'store','edit','update'])->names('pilates.admin.accounting');
     Route::get('/clients/archive',[PilatesAdminClientController::class,'archive'])->name('pilates.admin.clients.archive');
-    Route::resource('/clients',PilatesAdminClientController::class)->only(['index','show', 'create', 'store','edit','update'])->names('pilates.admin.clients');
+    Route::resource('/clients',PilatesAdminClientController::class)->parameters(['clients' => 'user'])->only(['index','show', 'create', 'store','edit','update'])->names('pilates.admin.clients');
     Route::get('/bodymind/archive',[PilatesAdminBodyMindController::class,'archive'])->name('pilates.admin.bodymind.archive');
     Route::resource('/bodymind',PilatesAdminBodyMindController::class)->only(['index','show', 'create', 'store','edit','update'])->names('pilates.admin.bodymind');
     Route::get('/locations/archive',[PilatesAdminLocationController::class,'show'])->name('pilates.admin.location.show');

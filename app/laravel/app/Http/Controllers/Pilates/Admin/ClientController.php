@@ -14,6 +14,9 @@ class ClientController extends Controller
     {
         $clients = User::query()
             ->where('is_pilates_user', true)
+            ->whereDoesntHave('client', function ($q) {
+                $q->where('is_active', false);
+            })
             ->withMax('lessonSlotsViaReservations', 'date')
             ->with('client')
             ->orderByDesc('is_client')

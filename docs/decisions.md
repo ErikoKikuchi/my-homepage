@@ -290,9 +290,25 @@ Pilates/ThinkMotionを同一施設の従業員・同僚と共有する程度で�
 3. **クライアント化の動線は2箇所(セッション一覧・クライアント一覧)から同じ`store`を叩く共有モーダル**として実装する。
    - 理由: 実質的な処理(user_id + genderでclientsレコード作成、`is_client`をtrueに更新)は1つで足り、動線ごとにコントローラーを分ける必要がない。
 4. **クライアント一覧の表示項目**: name, phone, is_client(バッジ表示), 直近予約日, line_linked(アイコン表示), 未払いフラグ(赤旗表示、`clients.has_unpaid_fee`)。
+5. **showアクションの実装範囲**:
 
-- **未確定事項**:
-- `is_client`フラグの同期処理(Client作成時に`users.is_client`をtrueにする処理)の実装場所(モデルイベント/Observerか、Controller内で明示的に行うか)
+- 今回実装する: 基本情報(name編集、gender表示、line_linkedトグル、is_active切替)、body_notes/personality_notes(表示のみ・読み取り専用。編集はカルテ機能実装時に別対応。カルテ記載がメインの更新経路のため)
+- リンクのみ(別タスクへの導線、実体未実装): ゴール設定(ゴール/アウトルック/ホープの展開)、セッション履歴、予約履歴、初回問診情報、会計情報(回数券購入等)、トレーニングログの緊急メッセージ一覧
+- showはis_client = trueのユーザーのみアクセス可能とし、abort_unless($user->is_client, 404)でガードする。index側の「詳細」ボタンもis_client済みのみ表示(未登録は「クライアント化」ボタンのみ表示、排他表示)。
+
+6. **name / line_linked / is_active の更新方式**:
+
+- 3項目とも同一のupdateルート(PATCH /clients/{user})を使い、送られてきたフィールドのみ更新する部分更新方式(UpdateClientRequestでsometimesバリデーション)。
+- line_linked / is_activeはトグル操作で即時fetch送信。nameは編集フォーム(表示⇄編集切替)から保存ボタンで送信。
+- name未入力を防ぐため、messages()で氏名必須のエラーメッセージを明示している。
+
+7. **is_activeとアーカイブの関係**:
+
+- is_active = falseが、そのままアーカイブ判定を兼ねる。別途「アーカイブ確定」処理は挟まない(値がそのまま状態を表す、シンプルな1カラム設計)。
+- is_activeをfalseにする操作(UI上のトグルOFF)は、確認ダイアログ(confirm())を挟んでから送信する。
+- archiveアクションはis_pilates_user = true かつ is_client = true かつ clients.is_active = false のユーザー一覧を返すシンプルな実装。ページネーションあり、indexとほぼ同一のBlade構造を流用。
+- アーカイブ一覧からもshowへの遷移(詳細確認・編集)が可能。show側のガード(is_clientチェック)はアーカイブ経由でも共通してそのまま機能する。
+- index画面にアーカイブ一覧へのリンクを設置。
 
 ---
 
@@ -339,6 +355,16 @@ Pilates/ThinkMotionを同一施設の従業員・同僚と共有する程度で�
 - Googleフォーム送信時のLINE/メール通知(Laravelアプリ範囲外、Google Apps Script等での別途対応)
 
 ---
+
+### D-P-013 LocationConfirmControllerの分離(D-P-011関連の前提整理)
+
+**背景**:
+
+- レッスン枠の場所確定操作(waiting_venue → confirmed)を、既存のReservationController(またはAdminReservationController)に実装すると、コントローラーの責務が肥大化する懸念があった。
+  **決定**:
+- 場所確定処理はReservationController系には実装せず、専用のLocationConfirmControllerを新設する。メソッド名はconfirm。
+  **理由**:
+- D-P-009で確立した「管理者が別人格として操作するフローは別コントローラーに分離する」という単一責任の考え方と一貫性を持たせるため。
 
 ## ThinkMotion関連(D-T-001~)
 

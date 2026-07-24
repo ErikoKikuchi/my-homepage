@@ -55,6 +55,9 @@ class User extends Authenticatable implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_client'=>'boolean',
+            'is_pilates_user'=>'boolean',
+            'is_medical'=>'boolean',
         ];
     }
     //uuidの自動生成
