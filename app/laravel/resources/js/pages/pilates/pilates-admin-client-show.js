@@ -11,6 +11,7 @@ lineLinked.addEventListener("change", async (event) => {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
+                Accept: "application/json",
                 "X-CSRF-Token": csrfToken, // ← ここでトークンを渡す
             },
             body: JSON.stringify({ line_linked: value }),
@@ -42,12 +43,60 @@ isActive.addEventListener("change", async (event) => {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
+                Accept: "application/json",
                 "X-CSRF-Token": csrfToken, // ← ここでトークンを渡す
             },
             body: JSON.stringify({ is_active: value }),
         });
         if (!response.ok) {
             event.target.checked = !value;
+        }
+    } catch (error) {
+        console.error("エラー：", error);
+    }
+});
+//名前変更
+const startEditButton = document.querySelector(".js-start-edit");
+startEditButton.addEventListener("click", () => {
+    const items = document.querySelector(".js-display");
+    items.classList.add("hidden");
+    const editForm = document.querySelector(".js-edit-form");
+    editForm.classList.remove("hidden");
+    editForm.classList.add("flex");
+});
+//キャンセル処理
+const cancelButton = document.querySelector(".js-cancel-edit");
+cancelButton.addEventListener("click", () => {
+    const originalName =
+        document.querySelector(".js-display-value").textContent;
+    document.querySelector(".js-name-input").value = originalName;
+    document.querySelector(".js-edit-form").classList.add("hidden");
+    document.querySelector(".js-display").classList.remove("hidden");
+});
+//保存処理
+const editForm = document.querySelector(".js-edit-form");
+const namePatchUrl = editForm.dataset.patchUrl;
+editForm.addEventListener("submit", async (event) => {
+    try {
+        event.preventDefault();
+        const newName = document.querySelector(".js-name-input").value;
+        const response = await fetch(namePatchUrl, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                "X-CSRF-Token": csrfToken, // ← ここでトークンを渡す
+            },
+            body: JSON.stringify({ name: newName }),
+        });
+        if (!response.ok) {
+            const errorEl = document.querySelector(".js-name-error");
+            errorEl.classList.remove("hidden");
+            errorEl.textContent = "氏名を記入してください";
+        } else {
+            document.querySelector(".js-display-value").textContent = newName;
+            document.querySelector(".js-edit-form").classList.add("hidden");
+            document.querySelector(".js-display").classList.remove("hidden");
         }
     } catch (error) {
         console.error("エラー：", error);
