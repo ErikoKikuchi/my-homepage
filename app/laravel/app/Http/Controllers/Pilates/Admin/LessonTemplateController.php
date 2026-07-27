@@ -13,12 +13,12 @@ class LessonTemplateController extends Controller
     {
         $lessonTemplates = LessonTemplate::orderBy('start_time')->get();
 
-        return view('pages.pilates.admin.lesson-templates-index', compact('lessonTemplates'));
+        return view('pages.pilates.admin.lesson-templates.index', compact('lessonTemplates'));
     }
 
     public function create()
     {
-        return view('pages.pilates.admin.lesson-templates-create');
+        return view('pages.pilates.admin.lesson-templates.create');
     }
 
     public function store(StoreLessonTemplateRequest $request)
@@ -34,7 +34,7 @@ class LessonTemplateController extends Controller
 
     public function edit(LessonTemplate $lessonTemplate)
     {
-        return view('pages.pilates.admin.lesson-templates-edit', compact('lessonTemplate'));
+        return view('pages.pilates.admin.lesson-templates.edit', compact('lessonTemplate'));
     }
 
     public function update(UpdateLessonTemplateRequest $request, LessonTemplate $lessonTemplate)

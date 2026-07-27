@@ -18,7 +18,7 @@
             >アーカイブを見る</a
         >
     </div>
-    <div class="flex flex-col gap-4">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
         @forelse ($clients as $user)
             <div
                 class="border border-forest-dark/20 rounded-lg p-6 flex items-center justify-between"
@@ -58,7 +58,7 @@
                 <div class="flex gap-2">
                     @if ($user->is_client)
                         <a
-                            href="{{ route('pilates.admin.clients.show', $user) }}"
+                            href="{{ route('pilates.admin.clients.show', $user->client) }}"
                             class="px-4 py-2 rounded border border-forest-dark text-forest-dark hover:bg-forest-dark hover:text-white"
                             >詳細</a
                         >

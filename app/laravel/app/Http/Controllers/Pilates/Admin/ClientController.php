@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Auth\User;
 use App\Http\Requests\Pilates\Admin\StoreClientRequest;
 use App\Http\Requests\Pilates\Admin\UpdateClientRequest;
+use App\Models\Pilates\Client;
 
 class ClientController extends Controller
 {
@@ -25,13 +26,12 @@ class ClientController extends Controller
 
         return view('pages.pilates.admin.clients.index', compact('clients'));
     }
-    public function show(User $user)
+    public function show(Client $client)
     {
-        abort_unless($user->is_client, 404);
     
-        $user->load('client');
+        $client->load('user');
     
-        return view('pages.pilates.admin.clients.show', compact('user'));
+        return view('pages.pilates.admin.clients.show', compact('client'));
     }
     public function store(StoreClientRequest $request)
     {
@@ -63,22 +63,22 @@ class ClientController extends Controller
             'gender' => $validated['gender'],
             'error' => $e->getMessage(),
         ]);
+        return response()->json(['message' => '登録処理に失敗しました。'], 500);
     }
-
         return response()->json(['message' => 'クライアント登録が完了しました。'], 201);
     }
 
-    public function update(UpdateClientRequest $request, User $user)
+    public function update(UpdateClientRequest $request, Client $client)
     {
-        abort_unless($user->is_client, 404);
+        abort_unless($client->is_client, 404);
 
         $validated = $request->validated();
 
-        $user->client->update($validated);
+        $client->client->update($validated);
 
         return response()->json([
             'message' => '更新しました。',
-            'client' => $user->client->fresh(),
+            'client' => $client->client->fresh(),
         ]);
     }
     public function archive(Request $request)

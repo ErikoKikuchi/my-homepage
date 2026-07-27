@@ -4,15 +4,16 @@ namespace App\Http\Controllers\Pilates\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Pilates\Hope;
 
-class SessionController extends Controller
+class HopeController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('pages.pilates.admin.session.index');
+        return view('pages.pilates.admin.hopes.index');
     }
 
     /**

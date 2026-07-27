@@ -1,15 +1,17 @@
-const button = document.querySelector("[data-client-register-modal]");
+const buttons = document.querySelectorAll("[data-client-register-modal]");
 const modal = document.getElementById("client-register-modal");
 const cancelBtn = document.getElementById("client-modal-cancel");
 const submitBtn = document.getElementById("client-modal-submit");
 
 let currentUserId = null;
 
-button.addEventListener("click", () => {
-    currentUserId = button.dataset.userId;
-    document.getElementById("modal-user-name").textContent =
-        button.dataset.userName;
-    modal.classList.remove("hidden");
+buttons.forEach((btn) => {
+    btn.addEventListener("click", (event) => {
+        currentUserId = event.currentTarget.dataset.userId;
+        document.getElementById("modal-user-name").textContent =
+            event.currentTarget.dataset.userName;
+        modal.classList.remove("hidden");
+    });
 });
 
 // キャンセル

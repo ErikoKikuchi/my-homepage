@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Pilates\Admin;
+namespace App\Http\Controllers\Pilates\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class SessionController extends Controller
+class TrainingLogController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('pages.pilates.admin.session.index');
+        return view('pages.pilates.user.training-logs');
     }
 
     /**

@@ -17,7 +17,7 @@
             action="{{ route('pilates.admin.location.update', $location) }}"
         >
             @method ('PUT')
-            @include ('pages.pilates.admin._locations-form')
+            @include ('pages.pilates.admin.locations._form')
 
             <div class="flex gap-2 mt-10">
                 <button

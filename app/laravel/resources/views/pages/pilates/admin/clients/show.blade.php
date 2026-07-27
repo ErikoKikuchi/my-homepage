@@ -35,7 +35,7 @@
                     <div class="js-display flex items-center gap-3">
                         <span
                             class="js-display-value text-forest-dark"
-                            >{{ $user->name }}</span
+                            >{{ $client->user->name }}</span
                         >
                         <button
                             type="button"
@@ -47,14 +47,14 @@
 
                     <form
                         class="js-edit-form hidden items-center gap-3"
-                        data-patch-url="{{ route('pilates.admin.clients.update', $user) }}"
+                        data-patch-url="{{ route('pilates.admin.clients.update', $client) }}"
                     >
                         @csrf
                         @method ('PATCH')
                         <input
                             type="text"
                             name="name"
-                            value="{{ $user->name }}"
+                            value="{{ $client->user->name }}"
                             class="js-name-input border border-forest-dark/20 rounded px-3 py-1.5 text-sm focus:outline-none focus:border-forest"
                         />
                         <button
@@ -81,17 +81,14 @@
                 <span class="w-28 shrink-0 text-sm text-forest-dark/60"
                     >性別</span
                 >
-                <span
-                    class="text-forest-dark"
-                    >{{ $user->client->gender }}</span
-                >
+                <span class="text-forest-dark">{{ $client->gender }}</span>
             </div>
 
             {{-- line_linked: トグル --}}
             <div
                 class="flex items-center gap-4"
                 data-field="line_linked"
-                data-patch-url="{{ route('pilates.admin.clients.update', $user) }}"
+                data-patch-url="{{ route('pilates.admin.clients.update', $client) }}"
             >
                 <span class="w-28 shrink-0 text-sm text-forest-dark/60"
                     >LINE連携</span
@@ -101,7 +98,7 @@
                         type="checkbox"
                         name="line_linked"
                         class="js-toggle-input sr-only peer"
-                        {{ $user->client->line_linked ? 'checked' : '' }}
+                        {{ $client->line_linked ? 'checked' : '' }}
                     />
                     <span
                         class="w-10 h-5 rounded-full bg-forest-dark/20 peer-checked:bg-forest transition-colors relative before:content-[''] before:absolute before:top-0.5 before:left-0.5 before:w-4 before:h-4 before:bg-white before:rounded-full before:transition-transform peer-checked:before:translate-x-5"
@@ -113,7 +110,7 @@
             <div
                 class="flex items-center gap-4"
                 data-field="is_active"
-                data-patch-url="{{ route('pilates.admin.clients.update', $user) }}"
+                data-patch-url="{{ route('pilates.admin.clients.update', $client) }}"
                 data-confirm-message="アーカイブ状態に変更します。よろしいですか？"
             >
                 <span class="w-28 shrink-0 text-sm text-forest-dark/60"
@@ -124,14 +121,14 @@
                         type="checkbox"
                         name="is_active"
                         class="js-toggle-input sr-only peer"
-                        {{ $user->client->is_active ? 'checked' : '' }}
+                        {{ $client->is_active ? 'checked' : '' }}
                     />
                     <span
                         class="w-10 h-5 rounded-full bg-forest-dark/20 peer-checked:bg-forest transition-colors relative before:content-[''] before:absolute before:top-0.5 before:left-0.5 before:w-4 before:h-4 before:bg-white before:rounded-full before:transition-transform peer-checked:before:translate-x-5"
                     ></span>
                 </label>
                 <span class="text-xs text-forest-dark/50">
-                    {{ $user->client->is_active ? '（有効）' : '（アーカイブ済み）' }}
+                    {{ $client->is_active ? '（有効）' : '（アーカイブ済み）' }}
                 </span>
             </div>
         </div>
@@ -146,35 +143,34 @@
             <div>
                 <p class="text-sm text-forest-dark/60 mb-2">身体の特徴・所見</p>
                 <p class="text-forest-dark whitespace-pre-wrap">
-                    {{ $user->client->body_notes ?: '記録なし' }}
+                    {{ $client->body_notes ?: '記録なし' }}
                 </p>
             </div>
             <div>
                 <p class="text-sm text-forest-dark/60 mb-2">性格・傾向</p>
                 <p class="text-forest-dark whitespace-pre-wrap">
-                    {{ $user->client->personality_notes ?: '記録なし' }}
+                    {{ $client->personality_notes ?: '記録なし' }}
                 </p>
             </div>
         </div>
 
         <p class="text-xs text-forest-dark/40 mt-6">※ 編集はカルテ機能実装後、カルテ記載画面から行ってください。</p>
     </section>
-    {{-- 3. 導線のみ（実体未実装） --}}
+    {{-- 3. 関連情報 --}}
     <section
         class="max-w-200 my-0 mx-auto py-16 px-8 border-t border-forest-dark/12"
     >
         <p class="font-gothic text-xs tracking-[0.18em] uppercase text-forest mb-10">関連情報</p>
 
         <div class="flex flex-wrap gap-2">
-            {{-- 実体未実装のため一旦 href="#"。各機能実装時に route() へ差し替え --}}
             <a
-                href="#"
-                class="px-4 py-2 rounded border border-forest-dark/20 text-forest-dark/40 cursor-not-allowed pointer-events-none"
+                href="{{ route('pilates.admin.goal.index', $client) }}"
+                class="px-4 py-2 rounded border border-forest-dark/20 text-forest-dark/40"
                 >ゴール設定</a
             >
             <a
-                href="#"
-                class="px-4 py-2 rounded border border-forest-dark/20 text-forest-dark/40 cursor-not-allowed pointer-events-none"
+                href="{{ route('pilates.admin.session.index', $client)}}"
+                class="px-4 py-2 rounded border border-forest-dark/20 text-forest-dark/40"
                 >セッション履歴</a
             >
             <a
@@ -183,19 +179,19 @@
                 >予約履歴</a
             >
             <a
-                href="#"
-                class="px-4 py-2 rounded border border-forest-dark/20 text-forest-dark/40 cursor-not-allowed pointer-events-none"
+                href="{{ route('pilates.admin.intake-forms.index', $client) }}"
+                class="px-4 py-2 rounded border border-forest-dark/20 text-forest-dark/40"
                 >初回問診情報</a
             >
             <a
-                href="#"
-                class="px-4 py-2 rounded border border-forest-dark/20 text-forest-dark/40 cursor-not-allowed pointer-events-none"
+                href="{{ route('pilates.admin.accounting.index', $client) }}"
+                class="px-4 py-2 rounded border border-forest-dark/20 text-forest-dark/40"
                 >会計情報</a
             >
             <a
-                href="#"
-                class="px-4 py-2 rounded border border-forest-dark/20 text-forest-dark/40 cursor-not-allowed pointer-events-none"
-                >トレーニングログ緊急メッセージ</a
+                href="{{ route('pilates.admin.training-logs.index', $client) }}"
+                class="px-4 py-2 rounded border border-forest-dark/20 text-forest-dark/40"
+                >BodyMind緊急メッセージ</a
             >
         </div>
     </section>

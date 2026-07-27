@@ -5,19 +5,22 @@ use App\Http\Controllers\Pilates\User\MyPageController as PilatesMyPageControlle
 use App\Http\Controllers\Pilates\User\ViewerController as PilatesViewerController;
 use App\Http\Controllers\Pilates\User\ReservationController as PilatesReservationController;
 use App\Http\Controllers\Pilates\User\CancellationController as PilatesCancellationController;
-use App\Http\Controllers\Pilates\User\BodyMindController as PilatesBodyMindController;
+use App\Http\Controllers\Pilates\User\TrainingLogController as PilatesTrainingLogController;
 use App\Http\Controllers\Pilates\User\TicketController as PilatesTicketsController;
 use App\Http\Controllers\Pilates\Admin\AdminController as PilatesAdminController;
 use App\Http\Controllers\Pilates\Admin\LessonSlotController as PilatesAdminLessonSlotController;
 use App\Http\Controllers\Pilates\Admin\LessonTemplateController as PilatesAdminLessonTemplateController;
 use App\Http\Controllers\Pilates\Admin\ReservationController as PilatesAdminReservationController;
 use App\Http\Controllers\Pilates\Admin\ClientController as PilatesAdminClientController;
-use App\Http\Controllers\Pilates\Admin\BodyMindController as PilatesAdminBodyMindController;
+use App\Http\Controllers\Pilates\Admin\TrainingLogController as PilatesAdminTrainingLogController;
 use App\Http\Controllers\Auth\User\UserLoginController;
 use App\Http\Controllers\Pilates\Admin\AccountingController as PilatesAdminAccountingController;
 use App\Http\Controllers\Pilates\Admin\LocationController as PilatesAdminLocationController;
 use App\Http\Controllers\Pilates\Admin\SessionController as PilatesAdminSessionController;
 use App\Http\Controllers\Pilates\Admin\LocationConfirmController as PilatesAdminLocationConfirmController;
+use App\Http\Controllers\Pilates\Admin\GoalController as PilatesAdminGoalController;
+use App\Http\Controllers\Pilates\Admin\HopeController as PilatesAdminHopeController;
+use App\Http\Controllers\Pilates\Admin\IntakeFormController as PilatesAdminIntakeFormController;
 
 
 
@@ -35,28 +38,56 @@ Route::prefix('pilates')->middleware(['auth:web', 'verified'])->group(function (
     Route::get('/tickets', [PilatesTicketsController::class, 'index'])->name('pilates.tickets');
     Route::patch('/reservations/{reservation}/cancel', [PilatesCancellationController::class,'cancel'])->name('pilates.user.reservation.cancel');
     Route::resource('/reservations', PilatesReservationController::class)->only(['index', 'show', 'create','store'])->names('pilates.user.reservation');
-    Route::resource('/bodymind', PilatesBodyMindController::class)->only(['index', 'show', 'create', 'store', 'edit', 'update', 'destroy'])->names('pilates.user.bodymind');
+    Route::resource('/training-logs', PilatesTrainingLogController::class)->only(['index', 'show', 'create', 'store', 'edit', 'update', 'destroy'])->names('pilates.user.training-logs');
     Route::post('/logout', [UserLoginController::class, 'logout'])->name('pilates.logout');
+
 });
 
 //管理者
 Route::prefix('pilates/admin')->middleware(['auth:admin', 'admin.section:pilates', 'admin.2fa'])->group(function () {
-    Route::get('/',[PilatesAdminController::class,'index'])->name('pilates.admin.home');
     Route::resource('/lesson-templates',PilatesAdminLessonTemplateController::class)->only(['index', 'create', 'store','edit','update','destroy'])->names('pilates.admin.lesson-templates');
     Route::post('/lesson-slots/{slot}/confirm-location', [PilatesAdminLocationConfirmController::class, 'confirm'])
     ->name('pilates.admin.location.confirm');
     Route::resource('/lesson-slots',PilatesAdminLessonSlotController::class)->only(['index', 'create', 'store','edit','update', 'destroy'])->names('pilates.admin.lesson-slots');
-    Route::resource('/sessions',PilatesAdminSessionController::class)->only(['index','show', 'create', 'store','edit','update'])->names('pilates.admin.session');
-    Route::resource('/accounting',PilatesAdminAccountingController::class)->only(['index','show', 'create', 'store','edit','update'])->names('pilates.admin.accounting');
+    Route::resource('clients.sessions', PilatesAdminSessionController::class)
+    ->shallow()->parameters(['clients' => 'client'])
+    ->only(['index','show','create','store','edit','update'])
+    ->names('pilates.admin.session');
+    Route::resource('clients.accounting', PilatesAdminAccountingController::class)
+    ->shallow()->parameters(['clients' => 'client'])
+    ->only(['index','show','create','store','edit','update'])
+    ->names('pilates.admin.accounting');
     Route::get('/clients/archive',[PilatesAdminClientController::class,'archive'])->name('pilates.admin.clients.archive');
-    Route::resource('/clients',PilatesAdminClientController::class)->parameters(['clients' => 'user'])->only(['index','show', 'create', 'store','edit','update'])->names('pilates.admin.clients');
-    Route::get('/bodymind/archive',[PilatesAdminBodyMindController::class,'archive'])->name('pilates.admin.bodymind.archive');
-    Route::resource('/bodymind',PilatesAdminBodyMindController::class)->only(['index','show', 'create', 'store','edit','update'])->names('pilates.admin.bodymind');
+    Route::resource('/clients',PilatesAdminClientController::class)->parameters(['clients' => 'client'])->only(['index','show', 'create', 'store','edit','update'])->names('pilates.admin.clients');
+    Route::get('/training-logs/archive',[PilatesAdminTrainingLogController::class,'archive'])->name('pilates.admin.training-logs.archive');
+    Route::resource('clients.training-logs', PilatesAdminTrainingLogController::class)
+    ->shallow()->parameters(['clients' => 'client'])
+    ->only(['index','show','create','store','edit','update'])
+    ->names('pilates.admin.training-logs');
     Route::get('/locations/archive',[PilatesAdminLocationController::class,'show'])->name('pilates.admin.location.show');
     Route::patch('/locations/{location}/archive', [PilatesAdminLocationController::class, 'archive'])
     ->name('pilates.admin.location.archive');
     Route::patch('/locations/{location}/restore', [PilatesAdminLocationController::class, 'restore'])
         ->name('pilates.admin.location.restore');
     Route::resource('/location',PilatesAdminLocationController::class)->only(['index', 'create', 'store','edit','update','destroy'])->names('pilates.admin.location');
-    Route::resource('/reservations',PilatesAdminReservationController::class)->only(['index', 'create', 'store','edit','update','destroy'])->names('pilates.admin.reservation');
+    Route::resource('lesson-slots.reservations', PilatesAdminReservationController::class)
+    ->shallow()
+    ->only(['index','create','store','edit','update','destroy'])
+    ->names('pilates.admin.reservation');
+    Route::patch('/goals/{goal}/toggle-active', [PilatesAdminGoalController::class, 'toggleActive'])
+    ->name('pilates.admin.goal.toggle-active');
+    Route::resource('clients.goals', PilatesAdminGoalController::class)
+    ->shallow()->parameters(['clients' => 'client'])
+    ->only(['index','show','create','store','edit','update'])
+    ->names('pilates.admin.goal');
+    Route::patch('/hopes/{hope}/toggle-active', [PilatesAdminHopeController::class, 'toggleActive'])
+    ->name('pilates.admin.hope.toggle-active');
+    Route::resource('clients.hopes', PilatesAdminHopeController::class)
+    ->shallow()->parameters(['clients' => 'client'])
+    ->only(['index','show','create','store','edit','update'])
+    ->names('pilates.admin.hope');
+    Route::resource('clients.intake-forms', PilatesAdminIntakeFormController::class)
+    ->shallow()->parameters(['clients' => 'client'])
+    ->only(['index','show','create','store','edit','update'])
+    ->names('pilates.admin.intake-forms');
 });

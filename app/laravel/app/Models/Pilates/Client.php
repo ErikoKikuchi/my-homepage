@@ -34,15 +34,23 @@ class Client extends Model
     {
         return $this->belongsTo(\App\Models\Auth\User::class);
     }
-    public function reservation():HasMany
+    public function reservations():HasMany
     {
         return $this->hasMany(Reservation::class);
     }
-    public function trainingLog():HasMany
+    public function goals():HasMany
+    {
+        return $this->hasMany(ClientGoal::class);
+    }
+    public function hopes():HasMany
+    {
+        return $this->hasMany(ClientHope::class);
+    }
+    public function trainingLogs():HasMany
     {
         return $this->hasMany(TrainingLog::class);
     }
-    public function pilatesSession():HasMany
+    public function pilatesSessions():HasMany
     {
         return $this->hasMany(PilatesSession::class);
     }

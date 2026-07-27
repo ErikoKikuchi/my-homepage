@@ -4,15 +4,17 @@ namespace App\Http\Controllers\Pilates\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Pilates\Client;
 
-class SessionController extends Controller
+class GoalController extends Controller
 {
-    /**
+/**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Client $client)
     {
-        return view('pages.pilates.admin.session.index');
+        $goals = $client->goals; 
+        return view('pages.pilates.admin.goals.index', compact('client', 'goals'));
     }
 
     /**
@@ -34,9 +36,9 @@ class SessionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Client $client)
     {
-        //
+    //
     }
 
     /**

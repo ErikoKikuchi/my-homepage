@@ -16,7 +16,7 @@ class LessonSlotController extends Controller
         ->whereNowOrFuture('date')
         ->orderBy('date')->get();
     
-        return view('pages.pilates.admin.lesson-slots-index', compact('lessonSlots'));
+        return view('pages.pilates.admin.lesson-slots.index', compact('lessonSlots'));
     }
     public function create()
     {
@@ -24,7 +24,7 @@ class LessonSlotController extends Controller
             ->orderBy('start_time')
             ->get();
     
-        return view('pages.pilates.admin.lesson-slots-create', compact('lessonTemplates'));
+        return view('pages.pilates.admin.lesson-slots.create', compact('lessonTemplates'));
     }
 
     public function store(StoreLessonSlotRequest $request)
@@ -46,7 +46,7 @@ class LessonSlotController extends Controller
             ->orderBy('start_time')
             ->get();
     
-        return view('pages.pilates.admin.lesson-slots-edit', compact('lessonSlot', 'lessonTemplates'));
+        return view('pages.pilates.admin.lesson-slots.edit', compact('lessonSlot', 'lessonTemplates'));
     }
 
     public function update(UpdateLessonSlotRequest $request, LessonSlot $lessonSlot)

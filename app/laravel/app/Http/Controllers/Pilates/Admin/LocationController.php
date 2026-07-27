@@ -15,12 +15,12 @@ class LocationController extends Controller
             ->orderBy('name')
             ->get();
 
-        return view('pages.pilates.admin.locations-index', compact('locations'));
+        return view('pages.pilates.admin.locations.index', compact('locations'));
     }
 
     public function create()
     {
-        return view('pages.pilates.admin.locations-create');
+        return view('pages.pilates.admin.locations.create');
     }
 
     public function store(StoreLocationRequest $request)
@@ -34,7 +34,7 @@ class LocationController extends Controller
 
     public function edit(Location $location)
     {
-        return view('pages.pilates.admin.locations-edit', compact('location'));
+        return view('pages.pilates.admin.locations.edit', compact('location'));
     }
 
     public function update(UpdateLocationRequest $request, Location $location)
@@ -61,7 +61,7 @@ class LocationController extends Controller
             ->orderBy('name')
             ->get();
 
-        return view('pages.pilates.admin.locations-archive', compact('locations'));
+        return view('pages.pilates.admin.locations.archive', compact('locations'));
     }
 
     public function archive(Location $location)

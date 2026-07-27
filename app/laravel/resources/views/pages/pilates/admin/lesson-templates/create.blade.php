@@ -4,7 +4,7 @@
     <h1
         class="font-light text-2xl tracking-[0.04em] leading-[1.4] text-forest-dark text-center mt-10"
     >
-        レッスン時間帯テンプレート編集
+        レッスン時間帯テンプレート作成
     </h1>
 @endsection
 
@@ -14,17 +14,16 @@
     >
         <form
             method="POST"
-            action="{{ route('pilates.admin.lesson-templates.update', $lessonTemplate) }}"
+            action="{{ route('pilates.admin.lesson-templates.store') }}"
         >
-            @method ('PUT')
-            @include ('pages.pilates.admin._lesson-templates-form')
+            @include ('pages.pilates.admin.lesson-templates._form')
 
             <div class="mt-8 flex gap-4">
                 <button
                     type="submit"
                     class="px-4 py-2 rounded border border-forest bg-forest hover:bg-forest-dark text-white"
                 >
-                    更新する
+                    作成する
                 </button>
                 <a
                     href="{{ route('pilates.admin.lesson-templates.index') }}"
