@@ -5,6 +5,7 @@ namespace App\Services\Pilates;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use App\Models\Pilates\LessonSlot;
+use App\Enums\Pilates\ReservationStatus;
 
 class ReservationAvailabilityService
 {
@@ -19,7 +20,7 @@ class ReservationAvailabilityService
     public function isSlotAvailable(LessonSlot $slot): bool
     {
         return $slot->reservations
-            ->whereNotIn('status', ['canceled'])
+            ->whereNotIn('reservations.status', [ReservationStatus::Canceled])
             ->count() === 0;
     }
 

@@ -19,7 +19,7 @@
         >
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        @forelse ($clients as $user)
+        @forelse ($users as $user)
             <div
                 class="border border-forest-dark/20 rounded-lg p-6 flex items-center justify-between"
             >
@@ -79,7 +79,7 @@
             <p class="text-sm text-forest-dark/70">対象のユーザーがいません。</p>
         @endforelse
     </div>
-    <div class="mt-8">{{ $clients->links() }}</div>
+    <div class="mt-8">{{ $users->links() }}</div>
     {{-- クライアント化モーダル --}}
     <div
         id="client-register-modal"

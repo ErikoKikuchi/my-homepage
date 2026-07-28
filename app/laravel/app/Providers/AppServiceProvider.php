@@ -6,7 +6,8 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Gate;
 use App\Models\Pilates\Reservation;
-use App\Policies\ReservationPolicy;
+use App\Policies\User\ReservationPolicy as UserReservationPolicy;
+use App\Policies\Admin\ReservationPolicy as AdminReservationPolicy;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,7 +24,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Gate::policy(Reservation::class, ReservationPolicy::class);
+        // 顧客側
+        Gate::define('reservation.view', [UserReservationPolicy::class, 'view']);
+        Gate::define('reservation.cancel', [UserReservationPolicy::class, 'cancel']);
+
+        // 管理者側
+        Gate::define('reservation.confirm', [AdminReservationPolicy::class, 'confirm']);
 
         $this->loadMigrationsFrom([
             database_path('migrations/thinkmotion'),

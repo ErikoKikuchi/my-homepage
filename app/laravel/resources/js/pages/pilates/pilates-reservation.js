@@ -59,6 +59,12 @@ function renderSchedule(date, dayOfWeek, times, status) {
         notice.innerHTML = `
             <p class="mb-2">直前のご予約は下記のQRコードよりお問い合わせください。</p>
             <img src="/images/line-qr.png" alt="LINE QRコード" class="mx-auto w-32 h-32">
+            <a
+                href="https://lin.ee/9E3PPH9"
+                class="inline-block border border-forest-dark bg-forest-dark text-white px-4 py-2 rounded hover:bg-forest"
+            >
+                LINEで問い合わせる
+            </a>
         `;
         container.parentElement.appendChild(notice);
     }

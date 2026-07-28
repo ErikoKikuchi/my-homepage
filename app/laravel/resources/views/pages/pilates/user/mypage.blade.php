@@ -49,7 +49,7 @@
                 回数券購入
             </a>
             <a
-                href="{{ route('pilates.user.bodymind.index') }}"
+                href="{{ route('pilates.user.training-logs.index') }}"
                 class="px-4 py-2 rounded border border-forest bg-forest hover:bg-forest-dark text-white"
             >
                 自主トレログ～BodyMind～
@@ -112,6 +112,12 @@
         >
             <p class="font-gothic text-xs tracking-[0.18em] uppercase text-forest mb-10">LINE登録</p>
             <div class="flex flex-col gap-10 items-center">
+                <a
+                    href="https://lin.ee/9E3PPH9"
+                    class="inline-block border border-forest-dark bg-forest-dark text-white px-4 py-2 rounded hover:bg-forest"
+                >
+                    LINEで問い合わせる
+                </a>
                 <img
                     class="w-30 h-30"
                     src="{{ "/images/line-qr.png" }}"

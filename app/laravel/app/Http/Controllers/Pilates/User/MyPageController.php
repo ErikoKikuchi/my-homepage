@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Pilates\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Enums\Pilates\ReservationStatus;
 
 class MyPageController extends Controller
 {
@@ -16,7 +17,9 @@ class MyPageController extends Controller
         if($nextReservation){
             $nextReservationInfo=[
                 'date' =>$nextReservation->lessonSlot->date->format('Y年m月d日'),
-                'location'=>$nextReservation->status==='waiting_venue'?'施設調整中':$nextReservation->reservations()->location->name,
+                'location' => $nextReservation->status === ReservationStatus::WaitingVenue
+                ? '施設調整中'
+                : $nextReservation->location->name,
             ];
         };
         //回数券残数
@@ -28,7 +31,7 @@ class MyPageController extends Controller
         $upcomingReservations=$user->reservations()->upComing()->get()->sortBy(fn($reservation) => $reservation->lessonSlot->date)->values()->map(fn ($reservation) => [
             'uuid' => $reservation->id,
             'date' => $reservation->lessonSlot->date->format('Y年m月d日'),
-            'location' => $reservation->status === 'waiting_venue'
+            'location' => $reservation->status === ReservationStatus::WaitingVenue
                 ? '施設調整中'
                 : $reservation->lessonSlot->location?->name,
         ])

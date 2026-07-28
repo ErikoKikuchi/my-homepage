@@ -13,7 +13,7 @@ class ClientController extends Controller
 {
     public function index(Request $request)
     {
-        $clients = User::query()
+        $users = User::query()
             ->where('is_pilates_user', true)
             ->whereDoesntHave('client', function ($q) {
                 $q->where('is_active', false);
@@ -24,7 +24,7 @@ class ClientController extends Controller
             ->orderBy('name')
             ->paginate(20);
 
-        return view('pages.pilates.admin.clients.index', compact('clients'));
+        return view('pages.pilates.admin.clients.index', compact('users'));
     }
     public function show(Client $client)
     {
@@ -70,15 +70,17 @@ class ClientController extends Controller
 
     public function update(UpdateClientRequest $request, Client $client)
     {
-        abort_unless($client->is_client, 404);
-
         $validated = $request->validated();
 
-        $client->client->update($validated);
+        if (array_key_exists('name', $validated)) {
+            $client->user->update(['name' => $validated['name']]);
+        }
+
+        $client->update(collect($validated)->except('name')->toArray());
 
         return response()->json([
             'message' => '更新しました。',
-            'client' => $client->client->fresh(),
+            'client' => $client->fresh(),
         ]);
     }
     public function archive(Request $request)

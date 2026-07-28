@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
+use App\Enums\Pilates\ReservationStatus;
 
 /**
  * @property string $id
@@ -75,17 +76,21 @@ class LessonSlot extends Model
     {
         $query->where('is_active', true)
         ->whereDoesntHave('reservations', function (Builder $q) {
-            $q->whereIn('status',['waiting_venue', 'confirmed']);
+            $q->whereIn('reservations.status', [
+                ReservationStatus::WaitingVenue,
+                ReservationStatus::Confirmed,
+            ]);
         });
     }
 
     //レッスン日が本日より前のもののみを表示する
-    #[Scope]
-    protected function upcoming(Builder $query):void
-    {
-        $query->whereHas('lessonSlot', function ($q) {
-            $q->where('date', '>', now()->toDateString());
-        })
-        ->where('status', '!=', 'canceled');
-    }
+    //#[Scope]
+    //protected function upcoming(Builder $query):void
+    //{
+    //    $query->whereHas('lessonSlot', function ($q) {
+    //        $q->where('date', '>', now()->toDateString());
+    //    })
+    //    ->where('status', '!=', ReservationStatus::Canceled);
+    //}
+
 }

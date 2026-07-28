@@ -7,7 +7,6 @@ use App\Http\Controllers\Pilates\User\ReservationController as PilatesReservatio
 use App\Http\Controllers\Pilates\User\CancellationController as PilatesCancellationController;
 use App\Http\Controllers\Pilates\User\TrainingLogController as PilatesTrainingLogController;
 use App\Http\Controllers\Pilates\User\TicketController as PilatesTicketsController;
-use App\Http\Controllers\Pilates\Admin\AdminController as PilatesAdminController;
 use App\Http\Controllers\Pilates\Admin\LessonSlotController as PilatesAdminLessonSlotController;
 use App\Http\Controllers\Pilates\Admin\LessonTemplateController as PilatesAdminLessonTemplateController;
 use App\Http\Controllers\Pilates\Admin\ReservationController as PilatesAdminReservationController;
@@ -17,10 +16,10 @@ use App\Http\Controllers\Auth\User\UserLoginController;
 use App\Http\Controllers\Pilates\Admin\AccountingController as PilatesAdminAccountingController;
 use App\Http\Controllers\Pilates\Admin\LocationController as PilatesAdminLocationController;
 use App\Http\Controllers\Pilates\Admin\SessionController as PilatesAdminSessionController;
-use App\Http\Controllers\Pilates\Admin\LocationConfirmController as PilatesAdminLocationConfirmController;
 use App\Http\Controllers\Pilates\Admin\GoalController as PilatesAdminGoalController;
 use App\Http\Controllers\Pilates\Admin\HopeController as PilatesAdminHopeController;
 use App\Http\Controllers\Pilates\Admin\IntakeFormController as PilatesAdminIntakeFormController;
+use App\Http\Controllers\Pilates\Admin\ReservationConfirmationController as PilatesAdminReservationConfirmationController;
 
 
 
@@ -46,8 +45,6 @@ Route::prefix('pilates')->middleware(['auth:web', 'verified'])->group(function (
 //管理者
 Route::prefix('pilates/admin')->middleware(['auth:admin', 'admin.section:pilates', 'admin.2fa'])->group(function () {
     Route::resource('/lesson-templates',PilatesAdminLessonTemplateController::class)->only(['index', 'create', 'store','edit','update','destroy'])->names('pilates.admin.lesson-templates');
-    Route::post('/lesson-slots/{slot}/confirm-location', [PilatesAdminLocationConfirmController::class, 'confirm'])
-    ->name('pilates.admin.location.confirm');
     Route::resource('/lesson-slots',PilatesAdminLessonSlotController::class)->only(['index', 'create', 'store','edit','update', 'destroy'])->names('pilates.admin.lesson-slots');
     Route::resource('clients.sessions', PilatesAdminSessionController::class)
     ->shallow()->parameters(['clients' => 'client'])
@@ -70,6 +67,10 @@ Route::prefix('pilates/admin')->middleware(['auth:admin', 'admin.section:pilates
     Route::patch('/locations/{location}/restore', [PilatesAdminLocationController::class, 'restore'])
         ->name('pilates.admin.location.restore');
     Route::resource('/location',PilatesAdminLocationController::class)->only(['index', 'create', 'store','edit','update','destroy'])->names('pilates.admin.location');
+    Route::get('reservations/pending', [PilatesAdminReservationConfirmationController::class, 'index'])
+        ->name('pilates.admin.reservation.pending');
+    Route::patch('reservations/{reservation}/confirm', [PilatesAdminReservationConfirmationController::class, 'confirm'])
+        ->name('pilates.admin.reservation.confirm');
     Route::resource('lesson-slots.reservations', PilatesAdminReservationController::class)
     ->shallow()
     ->only(['index','create','store','edit','update','destroy'])

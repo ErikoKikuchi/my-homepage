@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use App\Enums\Pilates\ReservationStatus;
 
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -89,7 +90,10 @@ class User extends Authenticatable implements MustVerifyEmail
             'id',              // lesson_slots.id (LessonSlot側の主キー)
             'id',              // users.id (User側のローカルキー)
             'lesson_slot_id'   // reservations.lesson_slot_id (Reservation側のローカルキー)
-        )->whereIn('reservations.status', ['waiting_venue', 'confirmed']);
+        )->whereIn('reservations.status', [
+            ReservationStatus::WaitingVenue,
+            ReservationStatus::Confirmed,
+        ]);
     }
     protected function latestReservationDate(): Attribute
     {

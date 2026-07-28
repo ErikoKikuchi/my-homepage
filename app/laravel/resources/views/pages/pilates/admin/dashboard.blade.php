@@ -17,7 +17,7 @@
         <p class="font-gothic text-xs tracking-[0.18em] uppercase text-forest mb-10">クイックメニュー</p>
         <div class="grid grid-cols-3 gap-2">
             <a
-                href="#"
+                href="{{ route('pilates.admin.reservation.pending') }}"
                 class="px-4 py-2 rounded border border-forest bg-forest hover:bg-forest-dark text-white"
                 >予約管理</a
             >
@@ -44,7 +44,12 @@
             <a
                 href="{{ route('pilates.admin.location.index') }}"
                 class="px-4 py-2 rounded border border-forest bg-forest hover:bg-forest-dark text-white"
-                >マスタ管理</a
+                >場所管理</a
+            >
+            <a
+                href="#"
+                class="px-4 py-2 rounded border border-forest bg-forest hover:bg-forest-dark text-white"
+                >分析</a
             >
         </div>
     </section>
@@ -58,9 +63,20 @@
     >
         <p class="font-gothic text-xs tracking-[0.18em] uppercase text-forest mb-10">やることリスト</p>
         <ul class="space-y-3">
-            <li class="text-sm text-forest-dark/80">
-                （プレースホルダー：後で動的化）
-            </li>
+            @if ($pendingReservationCount > 0)
+                <li class="text-sm text-forest-dark/80">
+                    <a
+                        href="{{ route('pilates.admin.reservation.pending') }}"
+                        class="underline hover:text-forest-dark"
+                    >
+                        会場確認待ちが{{ $pendingReservationCount }}件あります
+                    </a>
+                </li>
+            @else
+                <li class="text-sm text-forest-dark/80">
+                    会場確認待ちの予約はありません
+                </li>
+            @endif
         </ul>
     </section>
     <!--開発メモ（サイト機能要望・お客さんからのフィードバック等はNotionで管理）-->

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::connection('client_db')->create('guest_passes_usages', function (Blueprint $table) {
+        Schema::connection('client_db')->create('guest_pass_usages', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('guest_pass_purchase_id')->constrained()->cascadeOnDelete();
             $table->foreignUuid('client_id')->constrained()->cascadeOnDelete();
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::connection('client_db')->dropIfExists('guest_passes_usages');
+        Schema::connection('client_db')->dropIfExists('guest_pass_usages');
     }
 };
