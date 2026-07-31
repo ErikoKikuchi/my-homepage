@@ -12,10 +12,14 @@ use Carbon\Carbon;
 use App\Models\Auth\User;
 use Illuminate\Support\Facades\Gate;
 use App\Enums\Pilates\ReservationStatus;
+use App\Services\Pilates\ReservationService;
 
 
 class ReservationController extends Controller
 {
+    public function __construct(
+        private ReservationService $reservationService
+    ) {}
     public function index(Request $request){
         return view('pilates.mypage');
     }
@@ -38,6 +42,7 @@ class ReservationController extends Controller
             'dateFormatted' => $carbonDate->isoFormat('M月D日(ddd)'), // 表示用
             'timeFormatted' => $carbonTime->format('H:i'),   
             'venueNote' => $slot->venueNote(),
+            'venueFixed' => (bool) $slot->location_id, 
             'name'=>$user->name,
         ]);
     }
@@ -48,13 +53,13 @@ class ReservationController extends Controller
         $user = auth('web')->user();
 
         DB::transaction(function() use ($reservationData, $user, $request) {
-            $slots = LessonSlot::where('date', $reservationData['date'])
+            $slot = LessonSlot::where('date', $reservationData['date'])
             ->whereHas('lessonTemplate', function($q) use ($reservationData) {
                 $q->whereTime('start_time', $reservationData['time']);
             })->lockForUpdate() ->firstOrFail();
 
             // そのスロットにすでに予約があるかチェック
-            $alreadyReserved = $slots->reservations()
+            $alreadyReserved = $slot->reservations()
                 ->where('reservations.status', '!=', ReservationStatus::Canceled)
                 ->exists();
             
@@ -65,21 +70,19 @@ class ReservationController extends Controller
                 $user->update(['phone' => $reservationData['phone']]);
             }
 
-            $slots->reservations()->create([
-                'user_id'          => $user->id,
-                'participants'=>$reservationData['participants'],
-                'participants_name'=>$reservationData['participants_name'] ,
-                'participants_phone'=>$reservationData['participants_phone'] ,
-                'note'=>$reservationData['note'] ,
-                'status'=>ReservationStatus::WaitingVenue,
+            $this->reservationService->createReservation($slot, [
+                'user_id' => $user->id,
+                'participants' => $reservationData['participants'],
+                'participants_name' => $reservationData['participants_name'],
+                'participants_phone' => $reservationData['participants_phone'],
+                'note' => $reservationData['note'],
             ]);
-
         });
 
         if ($request->expectsJson()) {
             session()->flash(
                 'message',
-                "予約申請を受け付けました。\n施設を確保後、LINEにて予約確定のご連絡をいたします。\n通常1〜2日以内にご連絡いたします。"
+                "予約申請を受け付けました。\n施設が未定の場合は確保後、LINEにて予約確定のご連絡をいたします。\n通常1〜2日以内にご連絡いたします。"
             );
         
             return response()->json([

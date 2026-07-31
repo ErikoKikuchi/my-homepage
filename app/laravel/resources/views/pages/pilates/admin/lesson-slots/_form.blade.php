@@ -53,4 +53,27 @@
             <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
         @enderror
     </div>
+    <div>
+        <label class="block text-sm text-forest-dark mb-1" for="location_id"
+            >開催場所(固定する場合のみ選択)</label
+        >
+        <select
+            name="location_id"
+            id="location_id"
+            class="w-full border border-forest-dark/30 rounded px-3 py-2"
+        >
+            <option value="">未定(予約時に確保)</option>
+            @foreach ($locations as $location)
+                <option
+                    value="{{ $location->id }}"
+                    {{ old('location_id', $lessonSlot->location_id ?? '') === $location->id ? 'selected' : '' }}
+                >
+                    {{ $location->name }}
+                </option>
+            @endforeach
+        </select>
+        @error ('location_id')
+            <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+        @enderror
+    </div>
 </div>

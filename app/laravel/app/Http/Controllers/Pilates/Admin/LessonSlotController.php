@@ -7,13 +7,14 @@ use App\Http\Requests\Pilates\Admin\StoreLessonSlotRequest;
 use App\Http\Requests\Pilates\Admin\UpdateLessonSlotRequest;
 use App\Models\Pilates\LessonSlot;
 use App\Models\Pilates\LessonTemplate;
+use App\Models\Pilates\Location;
 
 class LessonSlotController extends Controller
 {
     public function index()
     {
         $lessonSlots = LessonSlot::with('lessonTemplate')
-        ->whereNowOrFuture('date')
+        ->where('date', '>=', now()->startOfDay())
         ->orderBy('date')->get();
     
         return view('pages.pilates.admin.lesson-slots.index', compact('lessonSlots'));
@@ -23,8 +24,9 @@ class LessonSlotController extends Controller
         $lessonTemplates = LessonTemplate::where('is_active', true)
             ->orderBy('start_time')
             ->get();
-    
-        return view('pages.pilates.admin.lesson-slots.create', compact('lessonTemplates'));
+        $locations = Location::where('is_active', true)->orderBy('name')->get(); 
+
+        return view('pages.pilates.admin.lesson-slots.create', compact('lessonTemplates', 'locations'));
     }
 
     public function store(StoreLessonSlotRequest $request)
@@ -33,6 +35,10 @@ class LessonSlotController extends Controller
         $lessonTemplate = LessonTemplate::findOrFail($request->validated('lesson_template_id'));
         $lessonSlot->lessonTemplate()->associate($lessonTemplate);
     
+        if ($request->validated('location_id')) {
+            $location = Location::findOrFail($request->validated('location_id'));
+            $lessonSlot->location()->associate($location);
+        }
         $lessonSlot->save();
 
         return redirect()
@@ -45,8 +51,9 @@ class LessonSlotController extends Controller
         $lessonTemplates = LessonTemplate::where('is_active', true)
             ->orderBy('start_time')
             ->get();
+            $locations = Location::where('is_active', true)->orderBy('name')->get(); 
     
-        return view('pages.pilates.admin.lesson-slots.edit', compact('lessonSlot', 'lessonTemplates'));
+        return view('pages.pilates.admin.lesson-slots.edit', compact('lessonSlot', 'lessonTemplates','locations'));
     }
 
     public function update(UpdateLessonSlotRequest $request, LessonSlot $lessonSlot)
@@ -56,6 +63,10 @@ class LessonSlotController extends Controller
         $lessonTemplate = LessonTemplate::findOrFail($request->validated('lesson_template_id'));
         $lessonSlot->lessonTemplate()->associate($lessonTemplate);
     
+        if ($request->validated('location_id')) {
+            $location = Location::findOrFail($request->validated('location_id'));
+            $lessonSlot->location()->associate($location);
+        } 
         $lessonSlot->save();
 
 

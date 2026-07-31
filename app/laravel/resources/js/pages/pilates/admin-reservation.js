@@ -12,9 +12,12 @@ const week = document.getElementById("admin-calendar").dataset.week;
 loadWeek(week);
 
 async function loadWeek(week) {
-    const response = await fetch(`?week_start=${week}`, {
-        headers: { Accept: "application/json" },
-    });
+    const response = await fetch(
+        `/pilates/admin/calendar/events?week_start=${week}`,
+        {
+            headers: { Accept: "application/json" },
+        },
+    );
     currentData = await response.json();
     renderWeeklyCalendar();
 }
@@ -57,22 +60,46 @@ function renderWeeklyCalendar() {
 
 function renderSlotBlock(slot) {
     const block = document.createElement("div");
-    block.classList.add("slot-block", `status-${slot.status}`);
+    block.className =
+        "flex flex-col gap-1 p-2 mb-1 border border-forest-light rounded bg-paper";
 
-    const timeLabel = document.createElement("span");
+    // 1. 日付・時間
+    const timeLabel = document.createElement("div");
+    timeLabel.className = "font-bold text-forest-dark";
     timeLabel.textContent = slot.time;
     block.appendChild(timeLabel);
 
-    if (slot.reservations.length > 0) {
-        const nameLabel = document.createElement("span");
-        nameLabel.textContent = slot.reservations[0].name;
-        block.appendChild(nameLabel);
+    const hasReservation = slot.reservations.length > 0;
+    // 2. 名前 or 予約ボタン
+    const nameRow = document.createElement("div");
+    nameRow.className = "text-sm";
+
+    if (hasReservation) {
+        nameRow.textContent = slot.reservations[0].name;
+    } else {
+        const reserveBtn = document.createElement("button");
+        reserveBtn.textContent = "予約";
+        reserveBtn.className = "btn btn-outline btn-sm";
+        reserveBtn.addEventListener("click", () => goToReservationCreate(slot));
+        nameRow.appendChild(reserveBtn);
+    }
+    block.appendChild(nameRow);
+
+    const locationRow = document.createElement("div");
+    locationRow.className = "text-sm";
+    locationRow.textContent = slot.location ? slot.location.name : "";
+    block.appendChild(locationRow);
+
+    if (hasReservation) {
+        const detailBtn = document.createElement("button");
+        detailBtn.textContent = "詳細";
+        detailBtn.className = "btn btn-primary btn-sm";
+        detailBtn.addEventListener("click", () => showSlotDetail(slot));
+        block.appendChild(detailBtn);
     }
 
-    const detailBtn = document.createElement("button");
-    detailBtn.textContent = "詳細";
-    detailBtn.addEventListener("click", () => showSlotDetail(slot));
-    block.appendChild(detailBtn);
-
     return block;
+}
+function goToReservationCreate(slot) {
+    window.location.href = `/pilates/admin/lesson-slots/${slot.id}/reservations/create`;
 }

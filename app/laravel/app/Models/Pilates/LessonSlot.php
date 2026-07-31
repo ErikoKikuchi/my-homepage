@@ -48,7 +48,7 @@ class LessonSlot extends Model
 
     protected $casts = [
         'is_active' => 'boolean',
-        'date' => 'datetime',
+        'date' => 'date',
     ];
 
     //リレーション先
@@ -60,14 +60,21 @@ class LessonSlot extends Model
     {
         return $this->belongsTo(LessonTemplate::class);
     }
+    public function location ():BelongsTo
+    {
+        return $this->belongsTo(Location::class);
+    }
 
     public function venueNote(): string
     {
-        if ($this->is_paid_venue) {
-            return "外部施設({$this->location->name}さん)のため、料金に1回あたり+{$this->location->price_addon_per_session}円が上乗せされています。";
+        if ($this->location) {
+            if ($this->location->is_paid_venue) {
+                return "外部施設({$this->location->name}さん)のため、料金に1回あたり+{$this->location->price_addon_per_session}円が上乗せされています。";
+            }
+            return "こちらのレッスンは{$this->location->name}での開催です。";
         }
-    
-        return '遠浅公民館・町民会館・安平町スポーツセンターのいずれかで開催予定です。施設利用料は一部ご負担いただいています（詳細は予約時にご案内します）。';
+
+        return '遠浅公民館・町民会館・安平町スポーツセンターのいずれかで開催予定です。施設利用料は一部ご負担いただいています（詳細は予約時にご案内します）。特定の場所を希望する場合は備考欄にご記入ください。';
     }
 
     //レッスンスロットがアクティブで空のものだけ表示

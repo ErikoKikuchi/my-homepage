@@ -20,6 +20,7 @@ return new class extends Migration
             $table->unsignedInteger('base_fee')->nullable();
             $table->string('map_url')->nullable();
             $table->boolean('is_active')->default(true);
+            $table->boolean('is_paid_venue')->default(false);
             $table->timestamps();
         });
     }

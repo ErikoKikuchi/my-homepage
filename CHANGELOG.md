@@ -58,3 +58,23 @@
   - React/Next.jsともにTypeScriptで統一する方針
   - 静的サイトのビルド・デプロイパイプラインはこの終着点を見据えて設計予定
 - 秘匿情報管理方針: `.env`（`.gitignore`対象）に加え、Bitwarden等へのバックアップを運用
+
+## v0.8.0
+
+- OWASP Top 10監査の是正完了（1〜8番目、9番目の静的サイトパイプラインはNext.js移行時に対応予定として保留）
+- 管理者2FAの不具合修正（`Admin2FAMiddleware`、`AdminTwoFactorController::verify()`）
+- 会場管理CRUD実装
+- レッスンテンプレート・レッスンスロットCRUD実装（`PilatesAdminLessonTemplateController`、`PilatesAdminLessonSlotController`）
+  - UUID主キー、forestカラートークンによるデザインシステム、FormRequestベースの日本語バリデーションメッセージ
+- 予約フロー実装（3経路: Googleフォーム、ThinkMotion共通登録画面経由の通常登録、管理者による電話予約代行登録）
+  - 仮登録ユーザー機能（氏名・電話番号のみ、パスワードはランダム生成、メール任意）
+  - `StoreReservationRequest::prepareForValidation()`での電話番号正規化
+  - グループレッスンは代表者予約制(最大4名)、予約サイト上で複数人数選択時はグループレッスンのみ対応と明記済み
+- ThinkMotion設計確定
+  - 3本柱構成（症例検討／Readings／My Studies）
+  - Readings機能: 3層データモデル（`readings`→`reading_units`→`reading_extracts`）による抽出と解釈の分離
+  - book-spineビジュアルモチーフ、forest greenパレット、スタンスベースの`purpose`タグ
+  - ポリモーフィックいいね機構、Readingsへのコメント機能なし
+  - 臨床ドメインを超えた抽象化はピラティスセクション完成後に先送り
+- フロントエンド方針の確定（案A）: 管理画面→React/Inertia.js（TypeScript）、静的サイト→Next.js（TypeScript）、両者間の型共有パッケージは不要と判断
+- 認証・認可の設計思想に関する技術ブログ記事を公開

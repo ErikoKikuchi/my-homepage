@@ -20,6 +20,8 @@ use App\Http\Controllers\Pilates\Admin\GoalController as PilatesAdminGoalControl
 use App\Http\Controllers\Pilates\Admin\HopeController as PilatesAdminHopeController;
 use App\Http\Controllers\Pilates\Admin\IntakeFormController as PilatesAdminIntakeFormController;
 use App\Http\Controllers\Pilates\Admin\ReservationConfirmationController as PilatesAdminReservationConfirmationController;
+use App\Http\Controllers\Pilates\Admin\CalendarController as PilatesAdminCalendarController;
+use App\Http\Controllers\Pilates\Admin\ReservationNoshowController as PilatesAdminReservationNoshowController;
 
 
 
@@ -91,4 +93,12 @@ Route::prefix('pilates/admin')->middleware(['auth:admin', 'admin.section:pilates
     ->shallow()->parameters(['clients' => 'client'])
     ->only(['index','show','create','store','edit','update'])
     ->names('pilates.admin.intake-forms');
+    // カレンダー表示(1-2)
+    Route::get('/calendar', [PilatesAdminCalendarController::class, 'index'])
+        ->name('pilates.admin.calendar');
+    // カレンダー用イベントデータ取得(JS側でfetchする想定)
+    Route::get('/calendar/events', [PilatesAdminCalendarController::class, 'index'])
+        ->name('pilates.admin.calendar.events');
+    Route::patch('reservations/{reservation}/noshow', [PilatesAdminReservationNoshowController::class, 'update'])
+    ->name('pilates.admin.reservation.noshow');
 });

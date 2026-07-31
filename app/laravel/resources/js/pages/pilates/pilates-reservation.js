@@ -21,7 +21,7 @@ function renderSchedule(date, dayOfWeek, times, status) {
 
     times.forEach((time) => {
         const row = document.createElement("div");
-        row.className = "text-xl m-2 items-center flex";
+        row.className = "text-xl m-2 items-center flex gap-2";
         row.textContent = `${time.start} ～ ${time.end}`;
         const button = document.createElement("button");
         button.className = "time-btn text-xl m-1 text-white w-30 h-10 ";
@@ -47,6 +47,13 @@ function renderSchedule(date, dayOfWeek, times, status) {
             });
         }
         row.appendChild(button);
+
+        if (time.locationName) {
+            const noteEl = document.createElement("span");
+            noteEl.className = "text-sm text-muted ";
+            noteEl.textContent = `${time.locationName}開催`;
+            row.appendChild(noteEl);
+        }
         container.appendChild(row);
     });
     // contact_onlyの場合はQR案内を末尾に追加

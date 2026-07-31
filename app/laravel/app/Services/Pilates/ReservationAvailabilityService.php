@@ -39,16 +39,22 @@ class ReservationAvailabilityService
 
         return $slots->groupBy(fn($slot) => $slot->date->format('Y-m-d'))
             ->map(function ($daySlots, $dateString) use ($minDate) {
+                $date = Carbon::parse($dateString);
+
+                if ($date->lt(now()->startOfDay())) {
+                    return null; // 過去日は表示なし
+                }
+
                 $availableSlots = $daySlots->filter(fn($slot) => $this->isSlotAvailable($slot));
 
                 if ($availableSlots->isEmpty()) {
                     return 'full';
                 }
 
-                return Carbon::parse($dateString)->greaterThanOrEqualTo($minDate)
+                return $date->greaterThanOrEqualTo($minDate)
                     ? 'available'
                     : 'contact_only';
-            });
+        });
     }
 
     public function getAvailableTimes(string $date): array
@@ -60,7 +66,7 @@ class ReservationAvailabilityService
             ->map(fn($slot) => [
                 'start' => $slot->lessonTemplate->start_time,
                 'end'   => $slot->lessonTemplate->end_time,
-                'venueNote' => $slot->venueNote()
+                'locationName' => $slot->location?->name,
             ])
             ->values()
             ->toArray();

@@ -5,7 +5,7 @@ namespace App\Http\Requests\Pilates\Admin;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateLessonSlotRequest extends FormRequest
+class StoreAdminReservationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,16 +23,20 @@ class UpdateLessonSlotRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'date'=>['required','date_format:Y-m-d'],
-            'lesson_template_id' => ['required', 'uuid', 'exists:client_db.lesson_templates,id'],
-            'location_id' => ['nullable', 'uuid', 'exists:client_db.locations,id'],
+            'name' => ['required', 'string', 'max:255'],
+            'phone' => ['nullable', 'string', 'max:20'],
+            'participants' => ['required', 'integer', 'min:1', 'max:4'],
+            'participants_name' => ['nullable', 'string', 'max:255'],
+            'participants_phone' => ['nullable', 'string', 'max:20'],
+            'note' => ['nullable', 'string', 'max:1000'],
         ];
     }
+
     public function messages(): array
     {
         return [
-            'date.required'=>'日付を入力してください',
-            'date.date_format' => '日付の形式が正しくありません（例: 2025-04-07）',
+            'name.required' => '名前を入力してください',
+            'participants.required' => '参加人数を選択してください',
         ];
     }
 }

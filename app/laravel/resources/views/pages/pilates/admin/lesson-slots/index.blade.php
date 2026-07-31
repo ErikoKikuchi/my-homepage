@@ -27,20 +27,25 @@
             >
         </div>
     </div>
-    <div class="flex flex-col gap-4">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
         @forelse ($lessonSlots as $lessonSlot)
             <div
-                class="border border-forest-dark/20 rounded-lg p-6 flex items-center justify-between"
+                class="border border-forest-dark/20 rounded-lg p-6 flex justify-between"
             >
-                <div>
-                    <p class="font-medium text-forest-dark">
-                        {{ $lessonSlot->date->format('Y-m-d') }}
-                    </p>
-                    <p class="text-sm text-forest-dark/70">
-                        {{ $lessonSlot->lessonTemplate->start_time }} 〜 {{ $lessonSlot->lessonTemplate->end_time }}
-                    </p>
+                <div class="flex flex-col items-center gap-2">
+                    <div>
+                        <p class="font-medium text-forest-dark">
+                            {{ $lessonSlot->date->format('Y-m-d') }}
+                        </p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-forest-dark/70">
+                            {{ $lessonSlot->lessonTemplate->start_time }} 〜 {{ $lessonSlot->lessonTemplate->end_time }}
+                        </p>
+                        <p class="text-sm text-forest-dark/70">{{ $lessonSlot->location?->name }}</p>
+                    </div>
                 </div>
-                <div class="flex gap-2">
+                <div class="flex gap-2 items-center">
                     <a
                         href="{{ route('pilates.admin.lesson-slots.edit', $lessonSlot) }}"
                         class="px-4 py-2 rounded border border-forest-dark bg-forest-dark hover:bg-forest text-white"

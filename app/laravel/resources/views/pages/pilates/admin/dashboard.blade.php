@@ -1,7 +1,5 @@
 @extends ('layouts.pilates')
 
-@vite (['resources/js/pages/pilates/pilates-admin-dashboard.js'])
-
 @section ('pilates-header')
     <h1
         class="font-light text-2xl tracking-[0.04em] leading-[1.4] text-forest-dark text-center mt-10"
@@ -19,7 +17,12 @@
             <a
                 href="{{ route('pilates.admin.reservation.pending') }}"
                 class="px-4 py-2 rounded border border-forest bg-forest hover:bg-forest-dark text-white"
-                >予約管理</a
+                >会場確認待ち</a
+            >
+            <a
+                href="{{ route('pilates.admin.calendar') }}"
+                class="px-4 py-2 rounded border border-forest bg-forest hover:bg-forest-dark text-white"
+                >予約確認・代理予約</a
             >
             <a
                 href="{{ route('pilates.admin.lesson-slots.index') }}"

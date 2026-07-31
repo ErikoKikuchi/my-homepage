@@ -1,5 +1,5 @@
 @extends ('layouts.pilates')
-@vite (['resources/js/pages/pilates/pilates-admin-clients.js'])
+@vite (['resources/js/pages/pilates/admin-clients.js'])
 
 @section ('pilates-header')
     <h1

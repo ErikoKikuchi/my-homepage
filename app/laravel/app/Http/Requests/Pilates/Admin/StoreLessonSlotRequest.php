@@ -25,6 +25,7 @@ class StoreLessonSlotRequest extends FormRequest
         return [
             'date'=>['required','date_format:Y-m-d'],
             'lesson_template_id' => ['required', 'uuid', 'exists:client_db.lesson_templates,id'],
+            'location_id' => ['nullable', 'uuid', 'exists:client_db.locations,id'],
         ];
     }
     public function messages(): array

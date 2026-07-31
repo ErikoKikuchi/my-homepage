@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignUuid('lesson_template_id')->constrained();
             $table->date('date');
             $table->foreignUuid('location_id')->nullable()->constrained();
-            $table->boolean('is_paid_venue')->default(false);
             $table->timestamps();
         });
     }

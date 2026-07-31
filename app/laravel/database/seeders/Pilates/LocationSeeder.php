@@ -20,6 +20,7 @@ class LocationSeeder extends Seeder
             'price_addon_per_session' => '41',
             'map_url'=>'https://maps.app.goo.gl/5xw6EvLVEbQXa1qF6',
             'is_active'=>true,
+            'is_paid_venue'=>false,
         ]);
         Location::create([
             'name'=>'町民会館',
@@ -28,6 +29,7 @@ class LocationSeeder extends Seeder
             'price_addon_per_session' => '474',
             'map_url'=>'https://maps.app.goo.gl/tYqtUgUUpiK3MzKd7',
             'is_active'=>true,
+            'is_paid_venue'=>false,
         ]);
         Location::create([
             'name'=>'安平町スポーツセンター',
@@ -36,14 +38,16 @@ class LocationSeeder extends Seeder
             'price_addon_per_session' => '474',
             'map_url'=>'https://maps.app.goo.gl/sV1VfRBifaF6FEUr6',
             'is_active'=>true,
+            'is_paid_venue'=>false,
         ]);
         Location::create([
             'name'=>'beauty Ruby',
             'address'=>'〒053-0015 北海道苫小牧市本幸町２丁目３−１７ グランドール本幸町',
             'base_fee'=>'1000',
-            'price_addon_per_session' => '1480',
+            'price_addon_per_session' => '2000',
             'map_url'=>'https://maps.app.goo.gl/hsSLRavaoggXrwGt6',
             'is_active'=>true,
+            'is_paid_venue'=>true,
         ]);
     }
 }
