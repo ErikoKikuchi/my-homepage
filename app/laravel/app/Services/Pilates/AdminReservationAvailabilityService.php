@@ -5,17 +5,16 @@ namespace App\Services\Pilates;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use App\Models\Pilates\LessonSlot;
+use App\Models\Pilates\LessonTemplate;
+use App\Models\Pilates\Location;
 use App\Enums\Pilates\ReservationStatus;
 
 class AdminReservationAvailabilityService
 {
-    public function resolveSlotStatus(LessonSlot $slot): string
-    {
-        $reservation=$slot->reservations
-            ->firstWhere ('status','!=',ReservationStatus::Canceled);
-
-            return $reservation?->status?->value ?? 'available';
-    }
+    private const INACTIVE_STATUSES = [
+        ReservationStatus::Canceled,
+        ReservationStatus::Rescheduled,
+    ];
 
     public function adminBuildWeekMap(string $weekStart): Collection
     {
@@ -35,8 +34,9 @@ class AdminReservationAvailabilityService
                 'time' => $slot->lessonTemplate->start_time . '-' . $slot->lessonTemplate->end_time,
                 'location' => $this->resolveSlotLocation($slot),
                 'reservations' => $slot->reservations
-                    ->where('status', '!=', ReservationStatus::Canceled)
+                ->whereNotIn('status', self::INACTIVE_STATUSES)
                     ->map(fn($r) => [
+                        'id' => $r->id,
                         'name' => $r->user->name,
                         'phone' => $r->user->phone,
                         'participants' => $r->participants,
@@ -52,12 +52,23 @@ class AdminReservationAvailabilityService
 
         // 場所未定で予約が入り、後から確定した場合
         $reservation = $slot->reservations
-            ->firstWhere('status', '!=', ReservationStatus::Canceled);
+        ->whereNotIn('status', self::INACTIVE_STATUSES)->first();
 
         if ($reservation?->location) {
             return ['id' => $reservation->location->id, 'name' => $reservation->location->name];
         }
 
         return null;
+    }
+    public function hasConflict(string $date, LessonTemplate $template): bool
+    {
+
+        return LessonSlot::query()
+            ->whereDate('date', $date)
+            ->whereHas('lessonTemplate', function ($q) use ($template) {
+                $q->where('start_time', '<', $template->end_time)
+                  ->where('end_time', '>', $template->start_time);
+            })
+            ->exists();
     }
 }

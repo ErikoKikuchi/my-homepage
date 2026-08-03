@@ -23,7 +23,8 @@ class StoreLessonSlotRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'date'=>['required','date_format:Y-m-d'],
+            'dates'=> ['required', 'array', 'min:1'],
+            'dates.*' => ['date', 'after_or_equal:today'],
             'lesson_template_id' => ['required', 'uuid', 'exists:client_db.lesson_templates,id'],
             'location_id' => ['nullable', 'uuid', 'exists:client_db.locations,id'],
         ];
@@ -31,8 +32,8 @@ class StoreLessonSlotRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'date.required'=>'日付を入力してください',
-            'date.date_format' => '日付の形式が正しくありません（例: 2025-04-07）',
+            'dates.required'=>'日付を入力してください',
+            'dates.*.date' => '日付の形式が正しくありません',
         ];
     }
 }

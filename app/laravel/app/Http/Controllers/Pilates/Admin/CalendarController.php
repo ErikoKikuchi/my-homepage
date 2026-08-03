@@ -16,8 +16,8 @@ class CalendarController extends Controller
     {
         $weekStart = $request->input('week_start', now()->startOfWeek(Carbon::SUNDAY)->format('Y-m-d'));
         $weekMap = $this->availabilityService->adminBuildWeekMap($weekStart);
-        $previous=now()->parse($weekStart)->subWeek()->format('Y-m-d');
-        $next=now()->parse($weekStart)->addWeek()->format('Y-m-d');;
+        $previous = Carbon::parse($weekStart)->subWeek()->format('Y-m-d');
+        $next = Carbon::parse($weekStart)->addWeek()->format('Y-m-d');
 
         if ($request->expectsJson()) {
             return response()->json([

@@ -18,8 +18,11 @@ async function loadWeek(week) {
             headers: { Accept: "application/json" },
         },
     );
-    currentData = await response.json();
-    renderWeeklyCalendar();
+    const data = await response.json();
+    currentData = data;
+    document.getElementById("week-label").textContent = `${data.weekStart}の週`;
+
+    renderWeeklyCalendar(data);
 }
 
 function renderWeeklyCalendar() {
@@ -102,4 +105,10 @@ function renderSlotBlock(slot) {
 }
 function goToReservationCreate(slot) {
     window.location.href = `/pilates/admin/lesson-slots/${slot.id}/reservations/create`;
+}
+function showSlotDetail(slot) {
+    const reservation = slot.reservations[0];
+    if (!reservation) return;
+
+    window.location.href = `/pilates/admin/reservations/${reservation.id}/edit`;
 }

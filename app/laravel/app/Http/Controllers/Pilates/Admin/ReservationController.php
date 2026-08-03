@@ -6,10 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Pilates\Admin\StoreAdminReservationRequest;
 use App\Models\Pilates\LessonSlot;
 use App\Models\Pilates\Reservation;
+use App\Models\Pilates\LessonTemplate;
+use App\Models\Pilates\Location;
 use App\Services\Pilates\ReservationService;
 use App\Services\Pilates\UserProvisioningService;
 use App\Enums\Pilates\ReservationStatus;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\Pilates\Admin\UpdateAdminReservationRequest;
 
 class ReservationController extends Controller
 {   
@@ -79,25 +82,49 @@ class ReservationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Reservation $reservation)
     {
-        //
+        $reservation->load('lessonSlot.lessonTemplate', 'lessonSlot.location');
+
+        $lessonTemplates = LessonTemplate::where('is_active', true)->orderBy('start_time')->get();
+        $locations = Location::where('is_active', true)->orderBy('name')->get();
+
+        return view('pages.pilates.admin.reservations.edit', compact('reservation', 'lessonTemplates', 'locations'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(UpdateAdminReservationRequest $request, Reservation $reservation)
     {
-        //
+        $data = $request->validated();
+
+        $lessonTemplate = LessonTemplate::findOrFail($data['lesson_template_id']);
+        $location = $data['location_id'] ? Location::findOrFail($data['location_id']) : null;
+
+        try {
+            $this->reservationService->rescheduleReservation(
+                $reservation,
+                $data['date'],
+                $lessonTemplate,
+                $location
+            );
+        } catch (\RuntimeException $e) {
+            return back()->withInput()->with('error', $e->getMessage());
+        }
+
+        return redirect()
+            ->route('pilates.admin.calendar')
+            ->with('message', '予約を変更しました。');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Reservation $reservation)
     {
-        //
+        $reservation->update([
+            'status'       => ReservationStatus::Canceled,
+            'cancelled_at' => now(),
+            'cancelled_by' => 'admin',
+        ]);
+
+        return redirect()
+            ->route('pilates.admin.calendar')
+            ->with('message', '予約をキャンセルしました。');
     }
-    
 }

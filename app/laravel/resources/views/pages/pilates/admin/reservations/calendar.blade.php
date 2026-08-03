@@ -17,6 +17,7 @@
             <button id="prev-week-btn" class="btn btn-outline">前週</button>
             <button id="next-week-btn" class="btn btn-outline">翌週</button>
         </div>
+        <div id="week-label">{{ $weekStart }}の週</div>
         <div id="admin-calendar-form">
             <div
                 class="weekdays grid grid-cols-7 p-2 text-center text-xl border border-forest-dark bg-forest-dark text-white font-bold"

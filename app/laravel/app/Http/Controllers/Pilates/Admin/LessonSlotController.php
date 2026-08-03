@@ -8,9 +8,14 @@ use App\Http\Requests\Pilates\Admin\UpdateLessonSlotRequest;
 use App\Models\Pilates\LessonSlot;
 use App\Models\Pilates\LessonTemplate;
 use App\Models\Pilates\Location;
+use Illuminate\Support\Facades\DB;
+use App\Services\Pilates\AdminReservationAvailabilityService;
 
 class LessonSlotController extends Controller
 {
+    public function __construct(
+        private AdminReservationAvailabilityService $availabilityService
+    ){}
     public function index()
     {
         $lessonSlots = LessonSlot::with('lessonTemplate')
@@ -31,19 +36,41 @@ class LessonSlotController extends Controller
 
     public function store(StoreLessonSlotRequest $request)
     {
-        $lessonSlot = new LessonSlot($request->safe()->only('date'));
+        $dates = $request->validated('dates');
         $lessonTemplate = LessonTemplate::findOrFail($request->validated('lesson_template_id'));
-        $lessonSlot->lessonTemplate()->associate($lessonTemplate);
-    
+
+        $location = null;
         if ($request->validated('location_id')) {
             $location = Location::findOrFail($request->validated('location_id'));
-            $lessonSlot->location()->associate($location);
         }
-        $lessonSlot->save();
 
-        return redirect()
-            ->route('pilates.admin.lesson-slots.index')
-            ->with('message', 'レッスン枠を作成しました。');
+        $conflicts = [];
+        foreach ($dates as $date) {
+            if ($this->availabilityService->hasConflict($date, $lessonTemplate)) {
+                $conflicts[] = $date;
+            }
+        }
+
+        if (! empty($conflicts)) {
+            return back()
+                ->withInput()
+                ->with('error', '以下の日付は既存のレッスン枠と重複しています: '.implode(', ', $conflicts));
+        }
+
+        DB::transaction(function () use ($dates, $lessonTemplate, $location) {
+            foreach ($dates as $date) {
+                $lessonSlot = new LessonSlot(['date' => $date]);
+                $lessonSlot->lessonTemplate()->associate($lessonTemplate);
+                if ($location) {
+                    $lessonSlot->location()->associate($location);
+                }
+                $lessonSlot->save();
+            }
+        });
+
+    return redirect()
+        ->route('pilates.admin.lesson-slots.index')
+        ->with('message', count($dates).'件のレッスン枠を作成しました。');
     }
 
     public function edit(LessonSlot $lessonSlot)
