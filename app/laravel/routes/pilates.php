@@ -22,6 +22,7 @@ use App\Http\Controllers\Pilates\Admin\IntakeFormController as PilatesAdminIntak
 use App\Http\Controllers\Pilates\Admin\ReservationConfirmationController as PilatesAdminReservationConfirmationController;
 use App\Http\Controllers\Pilates\Admin\CalendarController as PilatesAdminCalendarController;
 use App\Http\Controllers\Pilates\Admin\ReservationNoshowController as PilatesAdminReservationNoshowController;
+use App\Http\Controllers\Pilates\Admin\ClientSearchController as PilatesAdminClientSearchController;
 
 
 
@@ -101,4 +102,5 @@ Route::prefix('pilates/admin')->middleware(['auth:admin', 'admin.section:pilates
         ->name('pilates.admin.calendar.events');
     Route::patch('reservations/{reservation}/noshow', [PilatesAdminReservationNoshowController::class, 'update'])
     ->name('pilates.admin.reservation.noshow');
+    Route::get('/client/search',[PilatesAdminClientSearchController::class,'search'])->name('pilates.admin.client.search');
 });

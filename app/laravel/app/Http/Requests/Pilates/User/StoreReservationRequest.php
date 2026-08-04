@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Pilates\User;
 
+use App\Services\PhoneNumberNormalizerService;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -27,10 +28,10 @@ class StoreReservationRequest extends FormRequest
     {
         if ($this->filled('phone')) {
             $this->merge([
-                'phone' => $this->normalizePhone($this->input('phone')),
+                'phone' => app(PhoneNumberNormalizerService::class)->normalize($this->input('phone')),
             ]);
         }
-    
+
         // participants_phoneは複数人分が混在しうる自由記述のため、正規化のみ行い、
         // 形式(regex)チェックは行わない
         if ($this->filled('participants_phone')) {
@@ -39,14 +40,7 @@ class StoreReservationRequest extends FormRequest
             ]);
         }
     }
-    
-    private function normalizePhone(string $value): string
-    {
-        $value = mb_convert_kana($value, 'n');
-        $value = preg_replace('/[\x{2010}-\x{2015}\x{2212}\x{FF0D}\x{30FC}-]/u', '', $value);
-        return trim($value);
-    }
-    
+
     private function normalizeParticipantsPhone(string $value): string
     {
         // 全角数字→半角、全角/半角ハイフンを半角ハイフンへ統一(区切りとして温存する必要があるため完全除去はしない)

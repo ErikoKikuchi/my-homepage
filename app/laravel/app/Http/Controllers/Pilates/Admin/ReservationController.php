@@ -8,6 +8,7 @@ use App\Models\Pilates\LessonSlot;
 use App\Models\Pilates\Reservation;
 use App\Models\Pilates\LessonTemplate;
 use App\Models\Pilates\Location;
+use App\Models\Auth\User;
 use App\Services\Pilates\ReservationService;
 use App\Services\Pilates\UserProvisioningService;
 use App\Enums\Pilates\ReservationStatus;
@@ -52,10 +53,18 @@ class ReservationController extends Controller
                 throw new \Exception('このスロットはすでに予約済みです');
             }
 
-            $user = $this->userProvisioningService->create(
+            $user = !empty($data['user_id'])
+            ? User::findOrFail($data['user_id'])
+            : $this->userProvisioningService->create(
                 $data['name'],
                 $data['phone'] ?? null,
             );
+            if (!empty($data['relationship_note'])) {
+                $prefix = $user->relationship_note ? $user->relationship_note . "\n" : '';
+                $user->update([
+                    'relationship_note' => $prefix . $data['relationship_note'],
+                ]);
+            }
 
             $this->reservationService->createReservation($lessonSlot, [
                 'user_id' => $user->id,

@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use App\Models\Pilates\LessonSlot;
 use App\Models\Pilates\LessonTemplate;
-use App\Models\Pilates\Location;
 use App\Enums\Pilates\ReservationStatus;
 
 class AdminReservationAvailabilityService

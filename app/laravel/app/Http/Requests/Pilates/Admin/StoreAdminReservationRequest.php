@@ -23,8 +23,10 @@ class StoreAdminReservationRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'user_id' => ['nullable', 'integer', 'exists:users,id'],
             'name' => ['required', 'string', 'max:255'],
             'phone' => ['nullable', 'string', 'max:20'],
+            'relationship_note' => ['nullable', 'string', 'max:255'],
             'participants' => ['required', 'integer', 'min:1', 'max:4'],
             'participants_name' => ['nullable', 'string', 'max:255'],
             'participants_phone' => ['nullable', 'string', 'max:20'],

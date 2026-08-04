@@ -1,4 +1,5 @@
 @extends ('layouts.pilates')
+@vite(['resources/js/pages/pilates/admin-client-search.js'])
 
 @section ('pilates-header')
     <h1
@@ -23,11 +24,8 @@
             @csrf
 
             <div class="flex flex-col gap-6">
-                <div>
-                    <label
-                        class="block text-sm text-forest-dark mb-1"
-                        for="name"
-                    >
+                <div class="relative">
+                    <label class="block text-sm text-forest-dark mb-1" for="name">
                         お名前 <span class="text-red-600">*</span>
                     </label>
                     <input
@@ -35,13 +33,19 @@
                         name="name"
                         id="name"
                         value="{{ old('name') }}"
+                        autocomplete="off"
+                        placeholder="名前・フリガナ・電話番号で検索可能"
                         class="w-full border border-forest-dark/30 rounded px-3 py-2"
                     />
+                    <ul
+                        id="client-search-results"
+                        class="hidden absolute z-10 w-full bg-white border border-forest-dark/30 rounded mt-1 max-h-60 overflow-y-auto"
+                    ></ul>
                     @error ('name')
                         <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-
+                <input type="hidden" name="user_id" id="user_id" value="{{ old('user_id') }}" />
                 <div>
                     <label
                         class="block text-sm text-forest-dark mb-1"
@@ -55,13 +59,31 @@
                         id="phone"
                         value="{{ old('phone') }}"
                         class="w-full border border-forest-dark/30 rounded px-3 py-2"
-                        placeholder="ご本人の連絡先、なければ紹介者の連絡先など"
+                        placeholder="ご本人の連絡先、なければ紹介者の連絡先など。電話番号の変更はクライアント一覧より。"
                     />
                     @error ('phone')
                         <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-
+                <div>
+                    <label
+                        class="block text-sm text-forest-dark mb-1"
+                        for="phone"
+                    >
+                        関係性メモ
+                    </label>
+                    <input
+                        type="text"
+                        name="relationship_note"
+                        id="relationship_note"
+                        value="{{ old('relationship_note') }}"
+                        class="w-full border border-forest-dark/30 rounded px-3 py-2"
+                        placeholder="紹介元・家族情報"
+                    />
+                    @error ('relationship_note')
+                        <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
                 <div>
                     <label
                         class="block text-sm text-forest-dark mb-1"
