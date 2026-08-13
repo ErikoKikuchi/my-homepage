@@ -22,7 +22,6 @@ return new class extends Migration
             $table->boolean('is_active')->default(false);
             $table->boolean('has_unpaid_fee')->default(false);
             $table->boolean('line_linked')->default(false);
-            $table->softDeletes();
             $table->timestamps();
         });
     }

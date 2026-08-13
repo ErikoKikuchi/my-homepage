@@ -15,24 +15,38 @@ class RedirectIfAuthenticated
      * @param  Closure(Request): (Response)  $next
      */
     public function handle(Request $request, Closure $next, string ...$guards): Response
-    {
-        $guards = empty($guards) ? [null] : $guards;
+{
+    $guards = empty($guards) ? [null] : $guards;
 
-        foreach ($guards as $guard) {
-            if (Auth::guard($guard)->check()) {
-                // ↓ ここを guard ごとに分岐させる
-                if ($guard === 'admin') {
-                    return redirect()->route('admin.home');
+    foreach ($guards as $guard) {
+        if (Auth::guard($guard)->check()) {
+            if ($guard === 'admin') {
+                $admin = Auth::guard('admin')->user();
+                $isThinkmotion = $request->is('thinkmotion', 'thinkmotion/*');
+
+                if ($isThinkmotion && $admin->sections->contains('key', 'thinkmotion')) {
+                    return redirect()->route('thinkmotion.admin.home');
                 }
 
-                if ($request->is('thinkmotion', 'thinkmotion/*')) {
-                    return redirect()->route('thinkmotion.mypage');
+                if (!$isThinkmotion && $admin->sections->contains('key', 'pilates')) {
+                    return redirect()->route('pilates.admin.home');
                 }
 
-                return redirect()->route('pilates.mypage');
+                // どちらのセクション権限もない場合はログアウトさせて再ログインを促す
+                Auth::guard('admin')->logout();
+                return redirect()->route(
+                    $isThinkmotion ? 'thinkmotion.admin.login' : 'pilates.admin.login'
+                );
             }
-        }
 
-        return $next($request);
+            if ($request->is('thinkmotion', 'thinkmotion/*')) {
+                return redirect()->route('thinkmotion.mypage');
+            }
+
+            return redirect()->route('pilates.mypage');
+        }
     }
+
+    return $next($request);
+}
 }

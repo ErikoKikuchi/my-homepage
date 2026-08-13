@@ -4,7 +4,7 @@ namespace App\Models\Pilates;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Carbon\Carbon;
+
 
 class Location extends Model
 {
@@ -18,12 +18,16 @@ class Location extends Model
         'base_fee',
         'is_active',
         'is_bookable',
-        'price_addon_per_session'
+        'price_addon_per_session',
+        'is_paid_venue'
     ];
 
     protected $casts = [
         'is_active'=>'boolean',
         'is_bookable'=>'boolean',
+        'is_paid_venue'=>'boolean',
+        'base_fee' => 'integer',
+        'price_addon_per_session'=> 'integer',
     ];
 
     public function reservations()

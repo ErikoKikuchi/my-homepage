@@ -1,0 +1,99 @@
+@extends ('layouts.pilates')
+
+@section ('pilates-header')
+    <h1
+        class="font-light text-2xl tracking-[0.04em] leading-[1.4] text-forest-dark text-center mt-10"
+    >
+        管理者ダッシュボード
+    </h1>
+@endsection
+
+@section ('pilates-content')
+    <section
+        class="max-w-200 my-0 mx-auto py-16 px-8 border-t border-forest-dark/12"
+    >
+        <p class="font-gothic text-xs tracking-[0.18em] uppercase text-forest mb-10">クイックメニュー</p>
+        <div class="grid grid-cols-3 gap-2">
+            <a
+                href="{{ route('pilates.admin.reservation.pending') }}"
+                class="px-4 py-2 rounded border border-forest bg-forest hover:bg-forest-dark text-white"
+                >会場確認待ち</a
+            >
+            <a
+                href="{{ route('pilates.admin.calendar') }}"
+                class="px-4 py-2 rounded border border-forest bg-forest hover:bg-forest-dark text-white"
+                >予約確認・代理予約</a
+            >
+            <a
+                href="{{ route('pilates.admin.lesson-slots.index') }}"
+                class="px-4 py-2 rounded border border-forest bg-forest hover:bg-forest-dark text-white"
+                >スケジュール管理</a
+            >
+            <a
+                href="{{ route('pilates.admin.clients.index') }}"
+                class="px-4 py-2 rounded border border-forest bg-forest hover:bg-forest-dark text-white"
+                >クライアント管理</a
+            >
+            <a
+                href="#"
+                class="px-4 py-2 rounded border border-forest bg-forest hover:bg-forest-dark text-white"
+                >会計管理</a
+            >
+            <a
+                href="#"
+                class="px-4 py-2 rounded border border-forest bg-forest hover:bg-forest-dark text-white"
+                >BodyMind管理</a
+            >
+            <a
+                href="{{ route('pilates.admin.location.index') }}"
+                class="px-4 py-2 rounded border border-forest bg-forest hover:bg-forest-dark text-white"
+                >場所管理</a
+            >
+            <a
+                href="#"
+                class="px-4 py-2 rounded border border-forest bg-forest hover:bg-forest-dark text-white"
+                >分析</a
+            >
+        </div>
+    </section>
+    <section
+        class="max-w-200 my-0 mx-auto py-16 px-8 border-t border-forest-dark/12"
+    >
+        <p class="font-gothic text-xs tracking-[0.18em] uppercase text-forest mb-10">今日のセッション</p>
+    </section>
+    <section
+        class="max-w-200 my-0 mx-auto py-16 px-8 border-t border-forest-dark/12"
+    >
+        <p class="font-gothic text-xs tracking-[0.18em] uppercase text-forest mb-10">やることリスト</p>
+        <ul class="space-y-3">
+            @if ($pendingReservationCount > 0)
+                <li class="text-sm text-forest-dark/80">
+                    <a
+                        href="{{ route('pilates.admin.reservation.pending') }}"
+                        class="underline hover:text-forest-dark"
+                    >
+                        会場確認待ちが{{ $pendingReservationCount }}件あります
+                    </a>
+                </li>
+            @else
+                <li class="text-sm text-forest-dark/80">
+                    会場確認待ちの予約はありません
+                </li>
+            @endif
+        </ul>
+    </section>
+    <!--開発メモ（サイト機能要望・お客さんからのフィードバック等はNotionで管理）-->
+    <section
+        class="max-w-200 my-0 mx-auto py-16 px-8 border-t border-forest-dark/12"
+    >
+        <p class="font-gothic text-xs tracking-[0.18em] uppercase text-forest mb-10">開発メモ</p>
+        <a
+            href="https://app.notion.com/p/39d63551227080bfb153fc77b48c4341?source=copy_link"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-4 py-2 rounded border border-forest bg-forest hover:bg-forest-dark text-white inline-block"
+            >Notionを開く</a
+        >
+    </section>
+
+@endsection

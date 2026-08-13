@@ -37,4 +37,7 @@ return [
     'mailtrap' => [
         'sandbox_url' => env('MAILTRAP_SANDBOX_URL'),
     ],
+    'line' => [
+        'url' => env('LINE_URL'),
+    ],
 ];

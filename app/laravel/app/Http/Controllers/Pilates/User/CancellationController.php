@@ -3,23 +3,30 @@
 namespace App\Http\Controllers\Pilates\User;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Pilates\Reservation;
-use LaravelLang\Publisher\Console\Update;
+use Illuminate\Support\Facades\Gate;
+use App\Enums\Pilates\ReservationStatus;
 
 class CancellationController extends Controller
 {
     public function cancel(Reservation $reservation)
     {
         $user=auth('web')->user();
+        Gate::authorize('reservation.cancel', $reservation);
+
+        if ($reservation->status === ReservationStatus::Canceled) {
+            abort(400, 'すでにキャンセル済みです');
+        }
+
         $cutoff = $reservation->lessonSlot->date->copy()->subDay()->setTime(12, 0);
 
         if (now()->greaterThan($cutoff)) {
-            $user->client->has_unpaid_fee = true;
-            $user->client->save();
-        }
+        // システムでは完結させず、LINE誘導のみ
+        return redirect()->route('pilates.mypage')
+            ->with('message', "前日正午以降のキャンセルはLINEにて承っております。\nキャンセル料¥500が発生いたします。");
+    }
         $reservation->update([
-            'status'=>'canceled',
+            'status'=>ReservationStatus::Canceled,
             'cancelled_at'=>now(),
             'cancelled_by'=>'user'
 

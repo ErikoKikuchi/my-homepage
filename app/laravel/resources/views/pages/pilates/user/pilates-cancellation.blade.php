@@ -47,18 +47,29 @@
     </table>
     </div>
     <div class="text-center">
-        <form
-            method="post"
-            action="{{ route('pilates.user.reservation.cancel', $reservation)}}"
-        >
-            @csrf
-            @method ('patch')
-            <button
-                type="submit"
-                class="border border-forest-dark bg-forest-dark text-white px-4 py-2 rounded hover:bg-forest"
+        @if ($isPastCutoff)
+            <p class="text-forest-dark mb-4 leading-relaxed">前日正午以降のキャンセルはLINEにて承っております。<br />
+            キャンセル料¥500が発生いたします。</p>
+            <a
+                href="https://lin.ee/9E3PPH9"
+                class="inline-block border border-forest-dark bg-forest-dark text-white px-4 py-2 rounded hover:bg-forest"
             >
-                キャンセル
-            </button>
-        </form>
+                LINEで問い合わせる
+            </a>
+        @else
+            <form
+                method="post"
+                action="{{ route('pilates.user.reservation.cancel', $reservation)}}"
+            >
+                @csrf
+                @method ('patch')
+                <button
+                    type="submit"
+                    class="border border-forest-dark bg-forest-dark text-white px-4 py-2 rounded hover:bg-forest"
+                >
+                    キャンセル
+                </button>
+            </form>
+        @endif
     </div>
 @endsection

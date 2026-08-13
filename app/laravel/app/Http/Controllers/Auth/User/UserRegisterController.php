@@ -27,6 +27,7 @@ class UserRegisterController extends Controller
             'is_client'         => false,
             ]);
 
+
         //メール認証
         event(new Registered($user));
         Auth::guard('web')->login($user);

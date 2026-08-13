@@ -5,6 +5,7 @@ namespace App\Services\Pilates;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use App\Models\Pilates\LessonSlot;
+use App\Enums\Pilates\ReservationStatus;
 
 class ReservationAvailabilityService
 {
@@ -19,7 +20,7 @@ class ReservationAvailabilityService
     public function isSlotAvailable(LessonSlot $slot): bool
     {
         return $slot->reservations
-            ->whereNotIn('status', ['canceled'])
+            ->whereNotIn('reservations.status', [ReservationStatus::Canceled])
             ->count() === 0;
     }
 
@@ -29,8 +30,7 @@ class ReservationAvailabilityService
         $startOfMonth = Carbon::parse($month)->startOfMonth();
         $minDate = $this->minBookableDate();
 
-        $slots = LessonSlot::where('is_active', true)
-            ->whereBetween('date', [
+        $slots = LessonSlot::whereBetween('date', [
                 $startOfMonth->format('Y-m-d'),
                 $startOfMonth->copy()->endOfMonth()->format('Y-m-d'),
             ])
@@ -39,29 +39,34 @@ class ReservationAvailabilityService
 
         return $slots->groupBy(fn($slot) => $slot->date->format('Y-m-d'))
             ->map(function ($daySlots, $dateString) use ($minDate) {
+                $date = Carbon::parse($dateString);
+
+                if ($date->lt(now()->startOfDay())) {
+                    return null; // 過去日は表示なし
+                }
+
                 $availableSlots = $daySlots->filter(fn($slot) => $this->isSlotAvailable($slot));
 
                 if ($availableSlots->isEmpty()) {
                     return 'full';
                 }
 
-                return Carbon::parse($dateString)->greaterThanOrEqualTo($minDate)
+                return $date->greaterThanOrEqualTo($minDate)
                     ? 'available'
                     : 'contact_only';
-            });
+        });
     }
 
     public function getAvailableTimes(string $date): array
     {
-        return LessonSlot::where('is_active', true)
-            ->where('date', $date)
+        return LessonSlot::where('date', $date)
             ->with('lessonTemplate')
             ->get()
             ->filter(fn($slot) => $this->isSlotAvailable($slot))
             ->map(fn($slot) => [
                 'start' => $slot->lessonTemplate->start_time,
                 'end'   => $slot->lessonTemplate->end_time,
-                'venueNote' => $slot->venueNote()
+                'locationName' => $slot->location?->name,
             ])
             ->values()
             ->toArray();

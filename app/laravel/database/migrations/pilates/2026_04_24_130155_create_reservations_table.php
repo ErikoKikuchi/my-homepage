@@ -18,10 +18,13 @@ return new class extends Migration
             $table->uuid('user_id');
             $table->unsignedTinyInteger('participants')->default(1);
             $table->text('participants_name')->nullable();
+            $table->text('participants_phone')->nullable();
             $table->text('note')->nullable();
-            $table->enum('status', ['waiting_venue','confirmed','canceled','no_show'])->default('waiting_venue');
+            $table->enum('status', ['waiting_venue','confirmed','canceled','no_show','rescheduled'])->default('waiting_venue');
             $table->timestamp('cancelled_at')->nullable();
             $table->enum('cancelled_by', ['user', 'admin'])->nullable();
+            $table->foreignUuid('rescheduled_from_id')->nullable()->constrained('reservations');
+            $table->foreignUuid('rescheduled_to_id')->nullable()->constrained('reservations');
             $table->timestamps();
         });
     }

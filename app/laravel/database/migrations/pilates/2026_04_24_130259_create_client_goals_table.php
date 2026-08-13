@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('goal')->nullable();
             $table->text('outlook')->nullable();
             $table->text('hope')->nullable();
-            $table->dateTime('achieved_at')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
