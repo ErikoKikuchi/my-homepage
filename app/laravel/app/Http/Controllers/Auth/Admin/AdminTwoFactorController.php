@@ -14,7 +14,7 @@ class AdminTwoFactorController extends Controller
         $admin = Auth::guard('admin')->user();
 
         if (empty($admin->two_factor_secret)) {
-            return redirect()->route('two-factor-setup');
+            return redirect()->route("{$admin->section}.admin.two-factor-setup");
         }
 
         return view('auth.admin-two-factor-verify');
@@ -38,7 +38,7 @@ class AdminTwoFactorController extends Controller
         session(['admin_two_factor_verified.auth_passed' => true]);
         session(['admin_two_factor_verified.auth_time' => \Carbon\Carbon::now()->toIso8601String()]);
 
-        return redirect()->route('admin.home');
+        return redirect()->route("{$admin->section}.admin.home");
     }
 }
 

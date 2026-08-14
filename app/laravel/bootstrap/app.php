@@ -23,10 +23,19 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'admin.2fa' => \App\Http\Middleware\Admin2FAMiddleware::class,
+            'admin.section' => \App\Http\Middleware\AdminSectionMiddleware::class,
+            'inertia' => \App\Http\Middleware\HandleInertiaRequests::class,
+
         ]);
+        
+
         $middleware->redirectGuestsTo(function (Request $request) {
-            if ($request->is('admin', 'admin/*')) {
-                return route('admin.login');
+            if ($request->is('pilates/admin', 'pilates/admin/*')) {
+                return route('pilates.admin.login');
+            }
+    
+            if ($request->is('thinkmotion/admin', 'thinkmotion/admin/*')) {
+                return route('thinkmotion.admin.login');
             }
         
             $from = match (true) {

@@ -55,6 +55,6 @@ class AdminTwoFactorSetupController extends Controller
 
         session(['admin_two_factor_verified.auth_passed' => true]);
         session(['admin_two_factor_verified.auth_time' => \Carbon\Carbon::now()->toIso8601String()]);
-        return redirect()->route('admin.home');
+        return redirect()->route("{$admin->section}.admin.home");
     }
 }

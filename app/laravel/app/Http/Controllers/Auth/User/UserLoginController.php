@@ -21,13 +21,21 @@ class UserLoginController extends Controller
         $request->session()->put('thinkmotion_login_from', $request->query('from', 'thinkmotion'));
         return view('auth.thinkmotion-user-login');
     }
+    public function loginPilates(UserLoginRequest $request)
+    {
+        return $this->attemptLogin($request, 'pilates');
+    }
 
-    public function login(UserLoginRequest $request)
-        {
+    public function loginThinkmotion(UserLoginRequest $request)
+    {
+        return $this->attemptLogin($request, 'thinkmotion');
+    }
+
+    private function attemptLogin(UserLoginRequest $request, string $section)
+    {
             $credentials = $request->only(['email', 'password']);
-            $isThinkmotion = $request->is('thinkmotion','thinkmotion/*');
 
-            $from = $isThinkmotion
+            $from = $section === 'thinkmotion'
                 ? $request->session()->pull('thinkmotion_login_from')
                 : $request->session()->pull('pilates_login_from');
 

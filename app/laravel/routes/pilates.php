@@ -7,7 +7,6 @@ use App\Http\Controllers\Pilates\User\ReservationController as PilatesReservatio
 use App\Http\Controllers\Pilates\User\CancellationController as PilatesCancellationController;
 use App\Http\Controllers\Pilates\User\TrainingLogController as PilatesTrainingLogController;
 use App\Http\Controllers\Pilates\User\TicketController as PilatesTicketsController;
-use App\Http\Controllers\Pilates\Admin\AdminController as PilatesAdminController;
 use App\Http\Controllers\Pilates\Admin\ScheduleController as PilatesAdminScheduleController;
 use App\Http\Controllers\Pilates\Admin\ReservationController as PilatesAdminReservationController;
 use App\Http\Controllers\Pilates\Admin\ClientController as PilatesAdminClientController;
@@ -33,8 +32,7 @@ Route::prefix('pilates')->middleware(['auth:web', 'verified'])->group(function (
 });
 
 //管理者
-Route::prefix('pilates/admin')->middleware(['auth:admin', 'admin.2fa'])->group(function () {
-    Route::get('/',[PilatesAdminController::class,'index'])->name('pilates.admin');
+Route::prefix('pilates/admin')->middleware(['auth:admin', 'admin.section:pilates', 'admin.2fa', 'inertia'])->group(function () {
     Route::get('/schedules',[PilatesAdminScheduleController::class,'index'])->name('pilates.admin.schedule');
     Route::get('/reservations',[PilatesAdminReservationController::class,'index'])->name('pilates.admin.reservation');
     Route::get('/clients/archive',[PilatesAdminClientController::class,'archive'])->name('pilates.admin.clients.archive');

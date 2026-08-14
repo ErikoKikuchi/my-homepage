@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\Auth\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AdminHomeController extends Controller
 {
     public function index()
     {
-        return view('thinkmotion.admin.admin-dashboard');
+        $admin = Auth::guard('admin')->user();
+
+        // Inertia化を見据え、当面は暫定でセクション別に出し分け
+        // 将来的にはここが Inertia::render("{$admin->section}/Admin/Dashboard") に置き換わる想定
+        return view("{$admin->section}.admin.admin-dashboard");
     }
 }
