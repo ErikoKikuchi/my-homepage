@@ -21,29 +21,21 @@ class UserLoginController extends Controller
         $request->session()->put('thinkmotion_login_from', $request->query('from', 'thinkmotion'));
         return view('auth.thinkmotion-user-login');
     }
-    public function loginPilates(UserLoginRequest $request)
-    {
-        return $this->attemptLogin($request, 'pilates');
-    }
 
-    public function loginThinkmotion(UserLoginRequest $request)
-    {
-        return $this->attemptLogin($request, 'thinkmotion');
-    }
-
-    private function attemptLogin(UserLoginRequest $request, string $section)
-    {
+    public function login(UserLoginRequest $request)
+        {
             $credentials = $request->only(['email', 'password']);
-
-            $from = $section === 'thinkmotion'
-                ? $request->session()->pull('thinkmotion_login_from')
-                : $request->session()->pull('pilates_login_from');
+            $isThinkmotion = $request->is('thinkmotion','thinkmotion/*');
 
             if (!Auth::guard('web')->attempt($credentials, $request->boolean('remember'))) {
                 return back()
                     ->withErrors(['email' => 'ログイン情報が登録されていません'])
                     ->onlyInput('email');
             }
+
+            $from = $isThinkmotion
+                ? $request->session()->pull('thinkmotion_login_from')
+                : $request->session()->pull('pilates_login_from');
 
             $request->session()->regenerate();
             $request->session()->forget('url.intended');

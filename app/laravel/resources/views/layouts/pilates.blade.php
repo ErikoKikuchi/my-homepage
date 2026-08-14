@@ -4,7 +4,10 @@
     <nav
         class="pilates-subnav mt-(--site-nav-height) flex gap-4 justify-end pr-2 text-nav-text bg-nav-bg border-b border-muted/10 sticky top-(--site-nav-height)"
     >
-        @auth
+        @if (Auth::guard('admin')->check())
+            <a href="{{ route('pilates.admin.home') }}">管理ダッシュボード</a>
+            @include ('partials.admin-logout-form', ['section' => 'pilates'])
+        @elseif (Auth::check())
             <a href="{{ route('pilates.mypage') }}">マイページ</a>
             @if (auth()->user()->is_client && auth()->user()->client?->is_active)
                 <a href="{{ route('pilates.user.training-log.index') }}"
@@ -19,7 +22,7 @@
             @include ('partials.logout-form')
         @else
             @include ('partials.login-link')
-        @endauth
+        @endif
     </nav>
 @endsection
 

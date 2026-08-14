@@ -5,6 +5,7 @@ use App\Http\Controllers\ThinkMotion\Guest\GuestController as ThinkMotionGuestCo
 use App\Http\Controllers\ThinkMotion\User\MyPageController as ThinkMotionMyPageController;
 use App\Http\Controllers\ThinkMotion\User\ViewerController as UserViewerController;
 use App\Http\Controllers\ThinkMotion\User\UserProfileController;
+use App\Http\Controllers\Auth\User\UserLoginController;
 
 
 //ゲスト用
@@ -12,10 +13,16 @@ Route::get('/thinkmotion', [UserViewerController::class, 'index']);
 Route::get('/thinkmotion/posts',[ThinkMotionGuestController::class,'index'])->name('thinkmotion.guest.index');
 
 //ユーザーログイン後
-Route::prefix('thinkmotion')->middleware(['auth:web','verified'])->group(function () {
+Route::prefix('thinkmotion')->middleware(['auth:web','verified', 'section:thinkmotion'])->group(function () {
     Route::get('/profile/register',[UserProfileController::class,'register'])->name('profile.register');
     Route::get('/mypage',[ThinkMotionMyPageController::class, 'index'])->name('thinkmotion.mypage');
+    Route::post('/logout', [UserLoginController::class, 'logout'])->name('thinkmotion.logout');
 });
+
+Route::prefix('thinkmotion/admin')->middleware(['auth:admin', 'admin.section:thinkmotion', 'admin.2fa'])->group(function () {
+
+});
+
 
 //Route::middleware(['auth', 'room.admin.verified'])->group(function(){
 //    Route::get('/rooms/{room}/admin', ...);

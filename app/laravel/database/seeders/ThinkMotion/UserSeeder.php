@@ -21,7 +21,17 @@ class UserSeeder extends Seeder
             'profile_completed'=>false,
             'bookshelf_public'=>true,
             'is_pilates_user'=>true,
-            'is_client'=>true,
+            'is_client'=>false,
+            'is_medical'=>false,
+        ]);
+        User::create([
+            'name'=>'ピラティス太郎',
+            'email'=>'pilates-mania@example.com',
+            'password'=>Hash::make('password123456'),
+            'profile_completed'=>false,
+            'bookshelf_public'=>true,
+            'is_pilates_user'=>true,
+            'is_client'=>false,
             'is_medical'=>false,
         ]);
         User::create([
@@ -31,7 +41,7 @@ class UserSeeder extends Seeder
             'profile_completed'=>false,
             'bookshelf_public'=>true,
             'is_pilates_user'=>true,
-            'is_client'=>true,
+            'is_client'=>false,
             'is_medical'=>true,
         ]);
         User::create([

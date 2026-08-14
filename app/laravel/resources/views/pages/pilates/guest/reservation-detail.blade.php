@@ -17,6 +17,7 @@
         data-time="{{ $time }}"
         data-authenticated="{{ auth()->check() ? 'true' : 'false' }}"
         data-login-url="{{ route('pilates.login', ['from' => 'pilates-reservation']) }}"
+        data-phone="{{ auth()->check() ? auth()->user()->phone : '' }}"
     >
         <div class="font-bold p-2">
             {{ $name }}さん：{{ $dateFormatted}} {{ $timeFormatted }}のご予約
@@ -24,11 +25,30 @@
         <div class="text-xl m-2 flex-col items-start mb-5" id="reserve-place">
             <div class="font-bold">1、開催場所のご案内</div>
             <p class="text-xl m-2">{{ $venueNote }}</p>
-            <p class="text-sm text-gray-500 m-2">特定の場所を希望する場合は備考欄にご記入ください</p>
         </div>
+        @auth
+            <div
+                class="text-xl m-2 flex flex-col items-start mb-10 gap-2"
+                id="reserve-phone"
+            >
+                <label for="phone" class="font-bold">2、当日のご連絡先</label>
+                <input
+                    type="tel"
+                    name="phone"
+                    id="phone"
+                    value="{{ old('phone', auth()->user()->phone) }}"
+                    class="text-xl m-2 border border-forest h-10 w-full pl-2"
+                    placeholder="例：09012345678"
+                />
+                <p class="text-sm text-gray-500 m-2">＊ハイフンなしでご入力ください。変更内容は登録情報にも反映されます。</p>
+                @error ('phone')
+                    <p class="text-sm text-red-500 m-2">{{ $message }}</p>
+                @enderror
+            </div>
+        @endauth
         <div class="text-xl m-2 flex flex-col items-start mb-10 gap-4">
             <label for="participants" class="font-bold"
-                >2、参加人数を選択してください</label
+                >3、参加人数を選択してください</label
             >
             <select
                 class="text-xl m-2 border border-forest h-10 w-30 pl-2"
@@ -44,14 +64,24 @@
             参加者名(任意)
             <input
                 type="text"
-                name="name"
+                name="participants_name"
                 id="participants_name"
                 class="text-xl m-2 border border-forest h-10 w-full pl-2"
                 placeholder="＊2名以上でご予約した場合は参加者名をご入力ください。"
             />
         </div>
+        <div class="text-xl m-2 items-center mb-10 w-full">
+            参加者連絡先(任意)
+            <input
+                type="text"
+                name="participants_phone"
+                id="participants_phone"
+                class="text-xl m-2 border border-forest h-10 w-full pl-2"
+                placeholder="＊同伴者の連絡先が分かればご入力ください。"
+            />
+        </div>
         <div class="text-xl m-2 items-center mb-10 gap-4">
-            <div class="font-bold">3、備考(任意)</div>
+            <div class="font-bold">4、備考(任意)</div>
             <textarea
                 type="text"
                 name="text"
@@ -61,10 +91,12 @@
             ></textarea>
         </div>
         <div class="m-2 mb-10 gap-4 flex flex-col">
-            <p class="text-xl font-bold">4、ご確認事項/キャンセルポリシー</p>
-            <p class="text-xl">＊実施場所は予約申請後に確保し、確定後にご連絡いたします。施設状況等によりご希望に添えない場合は、別施設または日程をご相談させていただきます。</p>
+            <p class="text-xl font-bold">5、ご確認事項/キャンセルポリシー</p>
+            @unless ($venueFixed)
+                <p class="text-xl">＊実施場所は予約申請後に確保し、確定後にご連絡いたします。施設状況等によりご希望に添えない場合は、別施設または日程をご相談させていただきます。</p>
+                <p class="text-xl">＊公共施設では冠婚葬祭・選挙等により急な予定変更依頼がある可能性がありますので、ご了承ください。</p>
+            @endunless
             <p class="text-xl">＊LINEにて連絡をいたしますので、お済みでない方は事前にマイページにて登録をお願いいたします。</p>
-            <p class="text-xl">＊公共施設では冠婚葬祭・選挙等により急な予定変更依頼がある可能性がありますので、ご了承ください。</p>
             <p class="text-xl">＊キャンセルは前日の正午12：00までにお願いします。それ以降のお客様都合のキャンセルは一律500円いただきます。</p>
         </div>
         <div class="reserve-button text-xl m-2 text-center mb-10">
@@ -102,6 +134,10 @@
                 <span id="modal-time" class="text-muted text-xl"></span>
             </div>
             <div class="flex gap-4">
+                <span class="text-muted w-24 text-xl">連絡先</span>
+                <span id="modal-phone" class="text-muted text-xl"></span>
+            </div>
+            <div class="flex gap-4">
                 <span class="text-muted w-24 text-xl">人数</span>
                 <span id="modal-participants" class="text-muted text-xl"></span>
             </div>
@@ -109,6 +145,13 @@
                 <span class="text-muted w-24 text-xl">参加者名</span>
                 <span
                     id="modal-participants-name"
+                    class="text-muted text-xl"
+                ></span>
+            </div>
+            <div class="flex gap-4">
+                <span class="text-muted w-24 text-xl">参加者連絡先</span>
+                <span
+                    id="modal-participants-phone"
                     class="text-muted text-xl"
                 ></span>
             </div>

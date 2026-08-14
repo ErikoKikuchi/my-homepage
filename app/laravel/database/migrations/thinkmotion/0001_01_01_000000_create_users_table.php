@@ -14,17 +14,18 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
-            $table->string('email')->unique();
+            $table->string('name_kana')->nullable();
+            $table->string('email')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('phone')->nullable();
-            $table->string('line_user_id')->nullable();
             $table->rememberToken();
             $table->boolean('profile_completed')->default(false);
             $table->boolean('bookshelf_public')->default(true);
             $table->boolean('is_client')->default(false);
             $table->boolean('is_medical')->default(false);
             $table->boolean('is_pilates_user')->default(false);
+            $table->text('relationship_note')->nullable();
             $table->timestamp('agreed_at')->nullable();
             $table->softDeletes();
             $table->timestamps();

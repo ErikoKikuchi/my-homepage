@@ -1,6 +1,8 @@
 let dateString = null;
 let participants = null;
+let phone = null;
 let participantsName = null;
+let participantsPhone = null;
 let note = null;
 let selectedTime = null;
 
@@ -18,16 +20,22 @@ document.getElementById("reservation-confirm").addEventListener("click", () => {
         return;
     }
 
+    phone = document.getElementById("phone")?.value ?? null;
     participants = document.getElementById("participants").value;
     participantsName =
         document.getElementById("participants_name")?.value ?? null;
     note = document.getElementById("note")?.value ?? null;
+    participantsPhone =
+        document.getElementById("participants_phone")?.value ?? null;
 
     document.getElementById("modal-date").textContent = dateString;
     document.getElementById("modal-time").textContent = selectedTime;
+    document.getElementById("modal-phone").textContent = phone;
     document.getElementById("modal-participants").textContent = participants;
     document.getElementById("modal-participants-name").textContent =
         participantsName;
+    document.getElementById("modal-participants-phone").textContent =
+        participantsPhone;
     document.getElementById("modal-note").textContent = note;
     document.getElementById("confirm-modal").classList.remove("hidden");
 });
@@ -56,6 +64,8 @@ document.getElementById("modal-submit").addEventListener("click", async () => {
                 participants: participants,
                 participants_name: participantsName,
                 note: note,
+                participants_phone: participantsPhone,
+                phone: phone,
             }),
         });
         if (response.ok) {

@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\Auth\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use App\Models\Pilates\Reservation;
+use App\Enums\Pilates\ReservationStatus;
 
 class AdminHomeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $admin = Auth::guard('admin')->user();
-
-        // Inertia化を見据え、当面は暫定でセクション別に出し分け
-        // 将来的にはここが Inertia::render("{$admin->section}/Admin/Dashboard") に置き換わる想定
-        return view("{$admin->section}.admin.admin-dashboard");
+        $section = $request->attributes->get('section');
+        $pendingReservationCount = Reservation::where('status', ReservationStatus::WaitingVenue)->count();
+        return view("pages.{$section}.admin.dashboard",compact('pendingReservationCount'));
     }
 }

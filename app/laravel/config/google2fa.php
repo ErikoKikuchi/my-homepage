@@ -37,7 +37,7 @@ return [
     /*
      * One Time Password request input name.
      */
-    'otp_input' => 'one_time_password',
+    'otp_input' => 'two_factor_secret',
 
     /*
      * One Time Password Window.
