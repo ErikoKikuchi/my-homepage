@@ -31,4 +31,6 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
 
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 
+RUN mkdir -p /var/www/.composer && chown -R 1000:1000 /var/www/.composer
+
 WORKDIR /var/www/laravel
