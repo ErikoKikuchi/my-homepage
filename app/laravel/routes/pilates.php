@@ -34,7 +34,7 @@ Route::get('/pilates/slots',[PilatesGuestController::class,'show'])->name('pilat
 
 
 // ログイン後
-Route::prefix('pilates')->middleware(['auth:web', 'verified'])->group(function () {
+Route::prefix('pilates')->middleware(['auth:web', 'verified', 'section:pilates'])->group(function () {
     Route::get('/mypage', [PilatesMyPageController::class, 'index'])->name('pilates.mypage');
     Route::get('/archive',[PilatesReservationController::class,'archive'])->name('pilates.past.reservation');
     Route::get('/tickets', [PilatesTicketsController::class, 'index'])->name('pilates.tickets');
@@ -46,7 +46,7 @@ Route::prefix('pilates')->middleware(['auth:web', 'verified'])->group(function (
 });
 
 //管理者
-Route::prefix('pilates/admin')->middleware(['auth:admin', 'admin.section:pilates', 'admin.2fa'])->group(function () {
+Route::prefix('pilates/admin')->middleware(['auth:admin', 'admin.section:pilates', 'admin.2fa', 'inertia'])->group(function () {
     Route::resource('/lesson-templates',PilatesAdminLessonTemplateController::class)->only(['index', 'create', 'store','edit','update','destroy'])->names('pilates.admin.lesson-templates');
     Route::resource('/lesson-slots',PilatesAdminLessonSlotController::class)->only(['index', 'create', 'store','edit','update', 'destroy'])->names('pilates.admin.lesson-slots');
     Route::resource('clients.sessions', PilatesAdminSessionController::class)

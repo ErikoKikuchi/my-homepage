@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('admins', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->enum('section', ['pilates', 'thinkmotion']);
             $table->string('username');
             $table->string('email')->unique();
             $table->string('password');

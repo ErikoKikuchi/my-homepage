@@ -24,6 +24,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin.section' => \App\Http\Middleware\AdminSectionMiddleware::class,
             'admin.2fa' => \App\Http\Middleware\Admin2FAMiddleware::class,
+            'inertia' => \App\Http\Middleware\HandleInertiaRequests::class,
+            'section' => \App\Http\Middleware\UserSectionMiddleware::class,
         ]);
         $middleware->redirectGuestsTo(function (Request $request) {
             if ($request->is('pilates/admin', 'pilates/admin/*')) {
