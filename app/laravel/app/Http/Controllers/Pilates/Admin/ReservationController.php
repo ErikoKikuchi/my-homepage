@@ -46,7 +46,10 @@ class ReservationController extends Controller
 
         DB::transaction(function () use ($data, $lessonSlot) {
             $alreadyReserved = $lessonSlot->reservations()
-                ->where('status', '!=', ReservationStatus::Canceled)
+            ->whereNotIn('reservations.status', [
+                ReservationStatus::Canceled,
+                ReservationStatus::Rescheduled,
+            ])
                 ->exists();
 
             if ($alreadyReserved) {

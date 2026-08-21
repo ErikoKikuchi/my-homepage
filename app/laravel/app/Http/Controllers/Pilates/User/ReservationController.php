@@ -60,7 +60,8 @@ class ReservationController extends Controller
 
             // そのスロットにすでに予約があるかチェック
             $alreadyReserved = $slot->reservations()
-                ->where('reservations.status', '!=', ReservationStatus::Canceled)
+                ->whereNotIn('reservations.status', [ReservationStatus::Canceled,ReservationStatus::Rescheduled,
+                ])
                 ->exists();
             
             if ($alreadyReserved) {

@@ -21,23 +21,29 @@ class AdminLoginController extends Controller
     }
     public function adminLogin(AdminLoginRequest $request)
     {
+        $section = $request->is('thinkmotion/*') ? 'thinkmotion' : 'pilates';
         $credentials = $request->only(['email', 'password']);
-        $isThinkmotion = $request->is('thinkmotion','thinkmotion/*');
+        
 
         if (!Auth::guard('admin')->attempt($credentials, $request->boolean('remember'))) {
             return back()
                 ->withErrors(['email' => 'ログイン情報が登録されていません'])
                 ->onlyInput('email');
         }
+        $admin = Auth::guard('admin')->user();
+        if (! $admin->sections->contains('key', $section)) {
+        Auth::guard('admin')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return back()->withErrors(['email' => 'ログイン情報が登録されていません'])->onlyInput('email');
+    }
         $request->session()->regenerate();
         $request->session()->forget('url.intended');
 
-        $request->session()->put('admin_login_section', $isThinkmotion ? 'thinkmotion' : 'pilates');
+        $request->session()->put('admin_login_section', $section);
 
-        return match (true) {
-            $isThinkmotion => redirect()->route('thinkmotion.admin.two-factor'),
-            default => redirect()->route('pilates.admin.two-factor'),
-        };
+        return redirect()->route("{$section}.admin.two-factor");
     }
     public function adminLogout(Request $request)
     {

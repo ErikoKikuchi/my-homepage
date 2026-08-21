@@ -10,6 +10,7 @@ use App\Models\Pilates\LessonTemplate;
 use App\Models\Pilates\Location;
 use Illuminate\Support\Facades\DB;
 use App\Services\Pilates\AdminReservationAvailabilityService;
+use App\Enums\Pilates\ReservationStatus;
 
 class LessonSlotController extends Controller
 {
@@ -103,11 +104,18 @@ class LessonSlotController extends Controller
     }
     public function destroy(LessonSlot $lessonSlot)
     {
-        if ($lessonSlot->reservations()->exists()) {
-            return redirect()
-                ->route('pilates.admin.lesson-slots.index')
-                ->with('error', 'このレッスン枠は予約が入っているため削除できません。');
-        }
+        $hasActiveReservation = $lessonSlot->reservations()
+        ->whereNotIn('status', [
+            ReservationStatus::Canceled,
+            ReservationStatus::Rescheduled,
+        ])
+        ->exists();
+
+    if ($hasActiveReservation) {
+        return redirect()
+            ->route('pilates.admin.lesson-slots.index')
+            ->with('error', 'このレッスン枠は予約が入っているため削除できません。');
+    }
     
         $lessonSlot->delete();
     

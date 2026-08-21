@@ -32,9 +32,7 @@
                 </dd>
 
                 <dt class="text-forest-dark/60">開催場所</dt>
-                <dd>
-                    {{ $reservation->lessonSlot->location->name ?? '未定' }}
-                </dd>
+                <dd>{{ $reservation->location->name ?? '未定' }}</dd>
 
                 <dt class="text-forest-dark/60">お名前</dt>
                 <dd>{{ $reservation->user->name }}</dd>

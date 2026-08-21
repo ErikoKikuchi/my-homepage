@@ -20,8 +20,11 @@ class ReservationAvailabilityService
     public function isSlotAvailable(LessonSlot $slot): bool
     {
         return $slot->reservations
-            ->whereNotIn('reservations.status', [ReservationStatus::Canceled])
-            ->count() === 0;
+        ->whereNotIn('status', [
+            ReservationStatus::Canceled,
+            ReservationStatus::Rescheduled,
+        ])
+        ->count() === 0;
     }
 
     //月を受け取り、その月の日付ごとの空き状況を返す

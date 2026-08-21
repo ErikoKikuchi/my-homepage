@@ -34,3 +34,8 @@ COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 RUN mkdir -p /var/www/.composer && chown -R 1000:1000 /var/www/.composer
 
 WORKDIR /var/www/laravel
+
+ENV COMPOSER_HOME=/var/www/.composer
+ENV XDG_CONFIG_HOME=/var/www/.config
+
+RUN mkdir -p /var/www/.composer /var/www/.config && chown -R 1000:1000 /var/www/.composer /var/www/.config
