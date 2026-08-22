@@ -9,17 +9,24 @@ use App\Http\Controllers\Auth\Admin\AdminTwoFactorSetupController;
 use App\Http\Controllers\Auth\Admin\AdminHomeController;
 use App\Http\Controllers\Auth\User\UserRegisterController;
 use App\Http\Controllers\Auth\User\UserLoginController;
+use Laravel\Fortify\Http\Controllers\RegisteredUserController;
+use Laravel\Fortify\Http\Controllers\PasswordResetLinkController;
+use Laravel\Fortify\Http\Controllers\NewPasswordController;
 
 
 
-Route::middleware('guest')->group(function(){
+Route::middleware('guest:web')->group(function(){
     Route::get('/pilates/login', [UserLoginController::class, 'showPilatesForm'])->name('pilates.login');
     Route::post('/pilates/login', [UserLoginController::class, 'login'])->name('pilates.login.attempt')->middleware('throttle:login');
 
     Route::get('/thinkmotion/login', [UserLoginController::class, 'showThinkmotionForm'])->name('thinkmotion.login');
     Route::post('/thinkmotion/login', [UserLoginController::class, 'login'])->name('thinkmotion.login.attempt')->middleware('throttle:login');
-
+    Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
     Route::post('/register',[UserRegisterController::class,'register']);
+    Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
+    Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.email');
+    Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
+    Route::post('/reset-password', [NewPasswordController::class, 'store'])->name('password.update');
 });
 
 Route::middleware(['guest', 'inertia'])->group(function(){
