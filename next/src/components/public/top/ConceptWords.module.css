@@ -1,0 +1,52 @@
+.concept {
+  font-family: "Hiragino Mincho ProN", "Noto Serif JP", serif;
+  margin-top: 140px;
+  font-size: clamp(1rem, 5vw, 1.3rem);
+  font-weight: bold;
+  letter-spacing: 0.2em;
+  min-height: 2em;
+  text-align: center;
+  color: var(--color-paper);
+  text-shadow:
+    0 1px 10px rgba(0, 0, 0, 0.4),
+    0 2px 24px rgba(0, 0, 0, 0.25);
+  text-align: left;
+  align-self: flex-start;
+  padding-left: 20vw;
+}
+
+.fade-in {
+  animation: conceptFadeIn 1.5s ease forwards;
+}
+
+.fade-out {
+  animation: conceptFadeOut 0.8s ease forwards;
+}
+
+/* ===== アニメーション ===== */
+@keyframes conceptFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes conceptFadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}

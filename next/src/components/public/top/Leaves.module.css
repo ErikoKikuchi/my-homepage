@@ -1,0 +1,9 @@
+/* ===== 葉っぱメニュー ===== */
+.leafMenu {
+  list-style: none;
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 80px;
+}

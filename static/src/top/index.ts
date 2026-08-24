@@ -11,20 +11,6 @@ interface LeafData {
 const delay = (ms: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
-async function showConceptWords(el: HTMLElement): Promise<void> {
-  for (const word of conceptWords) {
-    el.textContent = word;
-    el.style.animation = "none";
-
-    void el.offsetHeight;
-    el.style.animation = "conceptFadeIn 1.5s ease forwards";
-    await delay(3000);
-    el.style.animation = "conceptFadeOut 0.8s ease forwards";
-    await delay(800);
-    el.textContent = "";
-  }
-}
-
 // ===== 葉っぱ落下制御 =====
 async function dropLeaves(leaves: LeafData[]): Promise<void> {
   for (const leaf of leaves) {

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import styles from "./ConceptWords.module.css";
 
 const CONCEPT_WORDS = [
   "あなたの身体には、理由がある。",
@@ -11,7 +12,11 @@ const CONCEPT_WORDS = [
   "からだ散歩、はじめましょう。",
 ];
 
-function ConceptWords() {
+interface ConceptWordsProps {
+  onComplete?: () => void;
+}
+
+function ConceptWords({ onComplete }: ConceptWordsProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   type AnimationPhase = "fade-in" | "visible" | "fade-out";
   const [phase, setPhase] = useState<AnimationPhase>("fade-in");
@@ -27,18 +32,25 @@ function ConceptWords() {
       delay = 3000;
       next = () => setPhase("fade-out");
     } else if (phase === "fade-out") {
-      if (currentIndex < CONCEPT_WORDS.length - 1) {
-        delay = 800;
-        next = () => {
-          setCurrentIndex(currentIndex + 1);
+      delay = 800;
+      next = () => {
+        if (currentIndex < CONCEPT_WORDS.length - 1) {
+          setCurrentIndex((prev) => prev + 1);
           setPhase("fade-in");
-        };
-      }
+        } else {
+          onComplete?.();
+        }
+      };
     }
 
-    console.log(`phase: ${phase}, index: ${currentIndex}, delay: ${delay}`);
     const timer = setTimeout(next, delay);
     return () => clearTimeout(timer);
-  }, [phase]);
-  return null;
+  }, [phase, currentIndex, onComplete]);
+  return (
+    // visible状態はアニメーションクラスがないため、styles[phase]はundefinedになり "" にフォールバックするように記載
+    <p className={`${styles.concept} ${styles[phase] ?? ""}`}>
+      {CONCEPT_WORDS[currentIndex]}
+    </p>
+  );
 }
+export default ConceptWords;
