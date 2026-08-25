@@ -1,0 +1,127 @@
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+}
+/* ===== シーン全体 ===== */
+.scene {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 140px 20px 260px;
+  background-image: url("/images/IMG_7034.JPG");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  position: relative;
+}
+
+/* 背景に深緑のオーバーレイ */
+.scene::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+/* scene内の要素をオーバーレイの上に */
+.sceneItem {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== タイトル ===== */
+.title {
+  font-family: "Hiragino Mincho ProN", "Noto Serif JP", serif;
+  font-size: clamp(2rem, 8vw, 3.5rem);
+  font-weight: 400;
+  letter-spacing: 0.25em;
+  color: var(--color-paper);
+  margin-bottom: 10px;
+  opacity: 0;
+  animation: fadeIn 2s ease forwards;
+  text-shadow:
+    0 1px 12px rgba(0, 0, 0, 0.45),
+    0 2px 32px rgba(0, 0, 0, 0.3);
+}
+
+.subtitle {
+  font-family: "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+  font-size: clamp(0.75rem, 3vw, 0.95rem);
+  letter-spacing: 0.35em;
+  color: var(--color-accent);
+  opacity: 0;
+  animation: fadeIn 1.5s ease 1.3s forwards;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.28);
+  background-color: var(--color-forest);
+  padding: 4px 16px;
+  border-radius: 20px;
+}
+
+/* ===== ボトムナビ ===== */
+.bottomNav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: var(--color-nav-bg);
+  backdrop-filter: blur(8px);
+  padding: 12px 8px;
+  border-top: 1px solid rgba(92, 107, 80, 0.2);
+  z-index: 100;
+}
+
+.bottomNav a {
+  font-family: "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+  color: var(--color-nav-text);
+  text-decoration: none;
+  font-size: clamp(0.6rem, 2.3vw, 0.75rem);
+  letter-spacing: 0.05em;
+  padding: 4px 6px;
+  transition:
+    color 0.2s ease,
+    opacity 0.2s ease,
+    letter-spacing 0.2s ease;
+  opacity: 0.8;
+}
+
+.bottomNav a:hover {
+  color: var(--color-forest-dark);
+  opacity: 1;
+  letter-spacing: 0.08em;
+}
+/* ===== 動線 ===== */
+.startHere {
+  margin: 50px auto 30px;
+  display: flex;
+  flex-direction: column;
+}
+.guide {
+  text-align: center;
+  color: var(--color-text);
+  margin: 8px 0;
+}
+.entranceButton {
+  display: inline-block;
+  align-self: center;
+  text-align: center;
+  text-decoration: none;
+  background-color: var(--color-forest);
+  color: var(--color-paper);
+  letter-spacing: 0.05em;
+  border: 1px solid var(--color-accent);
+  border-radius: 20px;
+  padding: 10px 20px;
+  margin-top: 20px;
+}
+.entranceButton:hover {
+  opacity: 0.8;
+}

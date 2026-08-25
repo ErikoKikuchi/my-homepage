@@ -28,7 +28,7 @@ export const leafItems: LeafItem[] = [
   {
     id: "code",
     label: "Code",
-    page: "/coming-soon",
+    page: "/code",
     description: "ITを学び始めて。子供に伝えたいことをまとめた場所。",
   },
 ];

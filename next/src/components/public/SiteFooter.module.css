@@ -1,0 +1,44 @@
+/* ===== フッター ===== */
+.siteFooter {
+  position: relative;
+  border-top: 1px solid var(--color-border);
+  padding: 32px 40px;
+  font-size: 0.78rem;
+  color: #a09890;
+  letter-spacing: 0.05em;
+}
+
+.bottomImage {
+  position: absolute;
+  bottom: 50;
+  right: 0;
+  width: auto;
+  height: auto;
+}
+.footerLinks {
+  padding: 60px 20px 180px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background-color: var(--color-paper);
+}
+
+.footerLinks a {
+  font-family: "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+  color: var(--color-text);
+  text-decoration: none;
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  transition: color 0.2s ease;
+}
+
+.footerLinks a:hover {
+  color: var(--color-accent);
+}
+
+.copyright {
+  font-size: 0.68rem;
+  color: var(--color-text);
+  margin-top: 8px;
+}

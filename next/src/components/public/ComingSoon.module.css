@@ -1,0 +1,34 @@
+/* next/src/components/public/ComingSoon.module.css */
+
+.container {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.label {
+  font-family: var(--font-gothic);
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  color: var(--color-forest);
+  text-transform: uppercase;
+}
+
+.heading {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 5vw, 2.2rem);
+  color: var(--color-text);
+  margin-top: 16px;
+}
+
+.description {
+  font-family: var(--font-gothic);
+  font-size: 0.95rem;
+  color: var(--color-muted);
+  line-height: 1.8;
+  margin-top: 20px;
+}
