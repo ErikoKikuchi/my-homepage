@@ -1,0 +1,33 @@
+/* ===== メインコンテンツ ===== */
+.main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 80px 40px 120px;
+}
+
+/* ── セクション共通 ── */
+.section {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+  border-top: 1px solid rgba(47, 92, 63, 0.12);
+}
+
+.sectionTitle {
+  font-family: var(--font-gothic);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-forest);
+  margin-bottom: 2.5rem;
+}
+.section p {
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  line-height: 2.1;
+  color: var(--color-text);
+}
+
+.section p + p {
+  margin-top: 1.4em;
+}

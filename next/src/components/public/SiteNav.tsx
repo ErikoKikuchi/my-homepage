@@ -44,7 +44,7 @@ export default function SiteNav() {
           <Link href="/thinkmotion">ThinkMotion</Link>
         </li>
         <li>
-          <Link href="/coming-soon">Code</Link>
+          <Link href="/code">Code</Link>
         </li>
         <li>
           <Link href="/contact">Contact</Link>

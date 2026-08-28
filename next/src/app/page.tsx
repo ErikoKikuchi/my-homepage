@@ -26,6 +26,7 @@ export default function Page() {
         <Link href="/pilates">Pilates</Link>
         <Link href="/thinkmotion">ThinkMotion</Link>
         <Link href="/code">Code</Link>
+        <Link href="/contact">Contact</Link>
       </nav>
 
       <div className={styles.startHere}>

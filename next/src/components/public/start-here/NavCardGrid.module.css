@@ -1,0 +1,12 @@
+.navGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 8px;
+}
+
+@media (max-width: 520px) {
+  .navGrid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,49 @@
+/* start-here/page.module.css */
+.main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 80px 40px 120px;
+}
+
+.catch {
+  font-family: var(--font-serif);
+  font-size: clamp(1.4rem, 4vw, 1.9rem);
+  font-weight: 400;
+  color: var(--color-forest-dark);
+  letter-spacing: 0.15em;
+  line-height: 1.6;
+  margin-bottom: 64px;
+  opacity: 0;
+  animation: fadeUp 1s ease forwards;
+}
+
+.fadeSection {
+  opacity: 0;
+  animation: fadeUp 1s ease forwards;
+}
+/* start-here/page.module.css に追加 */
+
+.sectionLabelDecorated {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sectionLabelDecorated::after {
+  content: "";
+  display: block;
+  height: 1px;
+  width: 40px;
+  background-color: var(--color-accent);
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
