@@ -1,10 +1,3 @@
-/* ===== メインコンテンツ ===== */
-.main {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 80px 40px 120px;
-}
-
 /* ── セクション共通 ── */
 .section {
   max-width: 800px;
@@ -21,13 +14,13 @@
   color: var(--color-forest);
   margin-bottom: 2.5rem;
 }
-.section p {
+.section p:not(.sectionTitle) {
   font-family: var(--font-serif);
   font-size: 0.95rem;
   line-height: 2.1;
   color: var(--color-text);
 }
 
-.section p + p {
+.section p:not(.sectionTitle) + p {
   margin-top: 1.4em;
 }

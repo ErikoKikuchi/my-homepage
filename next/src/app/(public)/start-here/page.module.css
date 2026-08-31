@@ -21,9 +21,13 @@
   opacity: 0;
   animation: fadeUp 1s ease forwards;
 }
-/* start-here/page.module.css に追加 */
 
 .sectionLabelDecorated {
+  font-size: 0.72rem;
+  letter-spacing: 0.25em;
+  color: var(--color-forest);
+  text-transform: uppercase;
+  margin-bottom: 20px;
   display: flex;
   align-items: center;
   gap: 12px;

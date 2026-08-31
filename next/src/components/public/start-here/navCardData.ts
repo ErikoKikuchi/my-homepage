@@ -28,7 +28,7 @@ export const navCardItems: NavCardItem[] = [
     id: "code",
     name: "Code",
     description: [
-      "コンピューターをどう捉え、どう使うかを考えるページ。学びながら考えたことと、子供に伝えたいことをまとめています。",
+      "考えるとは何か。プログラミングを通して感じたこと、子供に伝えたいことをアプリにしました。",
     ],
     href: "/code",
   },

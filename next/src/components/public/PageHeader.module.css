@@ -1,11 +1,11 @@
 /* ── ページヘッダー ── */
-.page-header {
+.pageHeader {
   padding: 8rem 2rem 4rem;
   max-width: 960px;
   margin: 0 auto;
 }
 
-.page-header .section-label {
+.pageHeader .sectionLabel {
   font-family: var(--font-gothic);
   font-size: 0.7rem;
   letter-spacing: 0.2em;
@@ -13,7 +13,7 @@
   color: var(--color-forest);
 }
 
-.page-header h1 {
+.pageHeader h1 {
   font-size: clamp(2rem, 5vw, 3.2rem);
   font-weight: 300;
   color: var(--color-forest-dark);
@@ -21,7 +21,7 @@
   letter-spacing: 0.04em;
 }
 
-.page-header .lead {
+.pageHeader .lead {
   margin-top: 1.5rem;
   font-size: 0.95rem;
   color: var(--color-forest);
