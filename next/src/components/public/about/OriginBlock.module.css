@@ -1,4 +1,36 @@
-.catchcopy,
-.bodyText {
+.originBlock {
+  margin-bottom: 3.5rem;
+}
+
+.originBlock:last-child {
+  margin-bottom: 0;
+}
+
+.originBlock .number {
+  font-family: var(--font-gothic);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.6rem;
+  /* 視認性のため調整 */
+  color: var(--color-forest);
+  opacity: 0.7;
+}
+
+.originBlock .catchcopy {
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--color-forest-dark);
+  line-height: 1.7;
+  margin-bottom: 1rem;
+  border-left: 2px solid var(--color-accent);
+  padding-left: 1rem;
+  white-space: pre-line;
+}
+
+.originBlock .bodyText {
+  font-size: 0.9rem;
+  color: var(--color-text);
+  line-height: 2;
+  margin-bottom: 1rem;
   white-space: pre-line;
 }

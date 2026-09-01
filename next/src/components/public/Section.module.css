@@ -14,13 +14,3 @@
   color: var(--color-forest);
   margin-bottom: 2.5rem;
 }
-.section p:not(.sectionTitle) {
-  font-family: var(--font-serif);
-  font-size: 0.95rem;
-  line-height: 2.1;
-  color: var(--color-text);
-}
-
-.section p:not(.sectionTitle) + p {
-  margin-top: 1.4em;
-}

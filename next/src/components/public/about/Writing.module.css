@@ -1,0 +1,42 @@
+.linkItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 1.5rem;
+  border: 1px solid rgba(47, 92, 63, 0.15);
+  border-radius: 4px;
+  text-decoration: none;
+  color: var(--color-text);
+  font-family: var(--font-gothic);
+  font-size: 0.85rem;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
+}
+
+.linkItem:hover {
+  border-color: var(--color-forest);
+  background: rgba(47, 92, 63, 0.03);
+}
+
+.linkItem .linkLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.linkItem .linkName {
+  font-weight: 500;
+  color: var(--color-forest-dark);
+}
+
+.linkItem .linkDesc {
+  font-size: 0.75rem;
+  color: var(--color-muted);
+}
+.writingBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
