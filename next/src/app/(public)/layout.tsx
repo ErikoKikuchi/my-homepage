@@ -1,6 +1,6 @@
 // next/src/app/(public)/layout.tsx
-import SiteNav from "@/components/public/SiteNav";
-import SiteFooter from "@/components/public/SiteFooter";
+import SiteNav from "@/components/public/common/SiteNav";
+import SiteFooter from "@/components/public/common/SiteFooter";
 
 export default function PublicLayout({
   children,

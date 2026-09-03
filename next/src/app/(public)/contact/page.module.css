@@ -1,0 +1,21 @@
+.contactMain {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 80px 40px 120px;
+}
+.pageTitle {
+  font-family: var(--font-serif);
+  font-size: clamp(1.4rem, 4vw, 1.9rem);
+  font-weight: 400;
+  color: var(--color-forest-dark);
+  letter-spacing: 0.15em;
+  line-height: 1.6;
+  margin-bottom: 64px;
+  text-align: center;
+  animation: fadeUp 1s ease forwards;
+}
+.inquiryGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}

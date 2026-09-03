@@ -1,5 +1,5 @@
-import PageHeader from "@/components/public/PageHeader";
-import Section from "@/components/public/Section";
+import PageHeader from "@/components/public/common/PageHeader";
+import Section from "@/components/public/common/Section";
 import OriginBlock from "@/components/public/about/OriginBlock";
 import styles from "./page.module.css";
 import ProfileImage from "@/components/public/about/ProfileImage";

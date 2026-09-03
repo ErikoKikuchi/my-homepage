@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import ConceptWords from "@/components/public/top/ConceptWords";
 import Leaves from "@/components/public/top/Leaves";
-import SiteFooter from "@/components/public/SiteFooter";
+import SiteFooter from "@/components/public/common/SiteFooter";
 import styles from "./page.module.css";
 
 export default function Page() {

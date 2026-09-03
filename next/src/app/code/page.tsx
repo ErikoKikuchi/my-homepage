@@ -1,5 +1,5 @@
 // app/(public)/code/page.tsx
-import ComingSoon from "@/components/public/ComingSoon";
+import ComingSoon from "@/components/public/common/ComingSoon";
 import styles from "./page.module.css";
 
 export default function CodePage() {

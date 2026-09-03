@@ -1,0 +1,41 @@
+/* next/src/components/ui/LinkButton/LinkButton.module.css */
+
+.linkButton {
+  display: inline-block;
+  align-self: flex-start;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-family: var(--font-gothic);
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.primary {
+  background-color: var(--color-forest);
+  color: var(--color-paper);
+}
+
+.primary:hover {
+  background-color: var(--color-forest-dark);
+}
+
+.outline {
+  background-color: transparent;
+  color: var(--color-forest);
+  border: 1px solid var(--color-forest);
+}
+
+.outline:hover {
+  background-color: var(--color-forest);
+  color: var(--color-paper);
+}
+
+.text {
+  background-color: transparent;
+  color: var(--color-forest-dark);
+  text-decoration: underline;
+  padding: 0;
+}

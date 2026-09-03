@@ -1,6 +1,6 @@
 // app/(public)/start-here/page.tsx
 
-import Section from "@/components/public/Section";
+import Section from "@/components/public/common/Section";
 import NavCardGrid from "@/components/public/start-here/NavCardGrid";
 import styles from "./page.module.css";
 
