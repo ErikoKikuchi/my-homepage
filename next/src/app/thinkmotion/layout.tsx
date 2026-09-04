@@ -1,5 +1,6 @@
 import SiteNav from "@/components/public/common/SiteNav";
 import SiteFooter from "@/components/public/common/SiteFooter";
+import { Metadata } from "next";
 
 export default function PublicLayout({
   children,
@@ -14,3 +15,8 @@ export default function PublicLayout({
     </>
   );
 }
+export const metadata: Metadata = {
+  openGraph: {
+    images: ["/images/ThinkMotionOGP.png"],
+  },
+};

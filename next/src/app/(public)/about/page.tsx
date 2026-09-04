@@ -5,7 +5,13 @@ import styles from "./page.module.css";
 import ProfileImage from "@/components/public/about/ProfileImage";
 import WritingBlock from "@/components/public/about/Writing";
 import PortfolioCardGrid from "@/components/public/about/PortfolioCardGrid";
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "About",
+  description:
+    "からだ散歩を運営する理学療法士・ピラティスインストラクター・エンジニアとしてのプロフィールと、これまでの活動記録を紹介しています。",
+};
 export default function AboutPage() {
   return (
     <main className={styles.main}>

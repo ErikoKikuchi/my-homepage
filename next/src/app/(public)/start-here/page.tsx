@@ -3,6 +3,13 @@
 import Section from "@/components/public/common/Section";
 import NavCardGrid from "@/components/public/start-here/NavCardGrid";
 import styles from "./page.module.css";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Start Here",
+  description:
+    "からだ散歩の入り口です。Pilates(予約・記録)、ThinkMotion(臨床思考の記録)、Code(プログラミングを通した学び)、About(プロフィール)への案内をまとめています。",
+};
 
 export default function StartHerePage() {
   return (
