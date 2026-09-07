@@ -44,3 +44,14 @@
   color: var(--color-accent);
   letter-spacing: 0.08em;
 }
+@media (max-width: 600px) {
+  .siteNav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .siteNav .navLinks {
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+}
