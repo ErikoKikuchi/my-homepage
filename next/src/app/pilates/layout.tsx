@@ -17,6 +17,6 @@ export default function PilatesLayout({
 }
 export const metadata: Metadata = {
   openGraph: {
-    images: ["/images/PilatesOGP.png"],
+    images: ["/site-images/PilatesOGP.png"],
   },
 };

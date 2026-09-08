@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     title: "からだ散歩",
     description:
       "からだ散歩は、ピラティスの予約や自主トレを記録できるサイトです。臨床家向けにブログ・症例検討・読書記録等の思考整理の場を提供するThinkMotionも運営しています。",
-    images: ["/images/MainOGP.png"], // 汎用画像
+    images: ["/site-images/MainOGP.png"], // 汎用画像
     locale: "ja_JP",
     type: "website",
   },
@@ -40,6 +40,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="ja"
+      data-scroll-behavior="smooth"
       className={`${notoSerifJP.variable} ${notoSansJP.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>

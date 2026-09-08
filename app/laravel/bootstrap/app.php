@@ -18,6 +18,9 @@ return Application::configure(basePath: dirname(__DIR__))
                     ->group(base_path('routes/code.php'));
                 Route::middleware('web')
                     ->group(base_path('routes/pilates.php'));
+                Route::middleware('api')
+                    ->prefix('api')
+                    ->group(base_path('routes/api.php'));
     },
     )
     ->withMiddleware(function (Middleware $middleware): void {
@@ -27,6 +30,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'inertia' => \App\Http\Middleware\HandleInertiaRequests::class,
             'section' => \App\Http\Middleware\UserSectionMiddleware::class,
         ]);
+        $middleware->api(prepend: [
+        \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+    ]);
         $middleware->redirectGuestsTo(function (Request $request) {
             if ($request->is('pilates/admin', 'pilates/admin/*')) {
                 return route('pilates.admin.login');

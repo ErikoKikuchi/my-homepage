@@ -12,7 +12,7 @@ export default function SiteFooter() {
         <Link href="/contact">お問い合わせ</Link>
       </nav>
       <Image
-        src="/images/footer-pic.png"
+        src="/site-images/footer-pic.png"
         alt="からだ散歩のイメージ"
         width={120}
         height={120}

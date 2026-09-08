@@ -86,7 +86,7 @@ export default async function AboutPage() {
         >
           <div className={styles.profileGrid}>
             <ProfileImage
-              src="/images/IMG_3281.jpeg"
+              src="/site-images/IMG_3281.jpeg"
               alt="プロフィール画像"
             ></ProfileImage>
             <div className={styles.profileText}>

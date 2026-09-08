@@ -18,8 +18,8 @@ services:
       - "80:80"
     depends_on:
       - php
+      - next
     volumes:
-      - ./static:/var/www/static # 静的サイト
       - ./app/laravel:/var/www/laravel # Laravel
       - ./docker/nginx/conf.d:/etc/nginx/conf.d # 複数conf対応に変更（default.confから変更）
 
@@ -55,6 +55,16 @@ services:
       - PMA_ARBITRARY=1
     depends_on:
       - mysql
+
+  next:
+    build:
+      context: ./next
+    volumes:
+      - ./next:/app
+      - /app/node_modules # ホスト側のnode_modulesで上書きされないようにする
+      - /app/.next
+    environment:
+      - NODE_ENV=development
 
 volumes:
   db-data:

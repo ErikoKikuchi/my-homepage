@@ -1,0 +1,61 @@
+.tokushohoMain {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 80px 40px 120px;
+}
+.pageTitle {
+  font-family: var(--font-serif);
+  font-size: clamp(1.4rem, 4vw, 1.9rem);
+  font-weight: 400;
+  color: var(--color-forest-dark);
+  letter-spacing: 0.15em;
+  line-height: 1.6;
+  margin-bottom: 64px;
+  opacity: 0;
+  animation: fadeUp 1s ease forwards;
+}
+.itemList {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: start;
+}
+
+.itemRow {
+  max-width: 100%;
+  margin: 0;
+}
+.itemLabel {
+  font-size: 0.72rem;
+  letter-spacing: 0.25em;
+  color: var(--color-forest);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.itemLabel ::after {
+  content: "";
+  display: block;
+  height: 1px;
+  width: 40px;
+  background-color: var(--color-accent);
+}
+.itemValue {
+  font-family: var(--font-gothic);
+  font-size: 0.75rem;
+  color: var(--color-text);
+  letter-spacing: 0.1em;
+  margin-bottom: 1.2rem;
+}
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

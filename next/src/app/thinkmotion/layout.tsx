@@ -17,6 +17,6 @@ export default function PublicLayout({
 }
 export const metadata: Metadata = {
   openGraph: {
-    images: ["/images/ThinkMotionOGP.png"],
+    images: ["/site-images/ThinkMotionOGP.png"],
   },
 };
