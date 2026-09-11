@@ -1,0 +1,10 @@
+.twoFactorBlock {
+  margin: 10px, auto;
+}
+.twoFactorInput {
+  height: 40px;
+  padding: 5px, 10px;
+}
+.errorText {
+  color: red;
+}
