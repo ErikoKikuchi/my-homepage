@@ -28,9 +28,9 @@ class UserLoginController extends Controller
             $isThinkmotion = $request->is('thinkmotion','thinkmotion/*');
 
             if (!Auth::guard('web')->attempt($credentials, $request->boolean('remember'))) {
-                return back()
-                    ->withErrors(['email' => 'ログイン情報が登録されていません'])
-                    ->onlyInput('email');
+                return response()->json([
+                    'message' => 'ログイン情報が登録されていません',
+                ], 422);
             }
 
             $from = $isThinkmotion
@@ -44,16 +44,18 @@ class UserLoginController extends Controller
 
             if($user->is_medical && !$user->profile_completed)
                 {
-                    return redirect()->route('profile.register');
+                    return response()->json([
+                        'redirectTo' => route('profile.register'),
+                    ]);
                 }
 
-            return redirect(
-                match ($from) {
+            return response()->json([
+                'redirectTo' => match ($from) {
                     'pilates-reservation' => route('pilates.guest.index'),
                     'thinkmotion' => '/thinkmotion/mypage',
                     default => '/pilates/mypage',
-                }
-            );
+                },
+            ]);
     }
 
     //ログアウト
