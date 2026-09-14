@@ -19,6 +19,7 @@
   color: var(--color-forest-dark);
   line-height: 1.4;
   letter-spacing: 0.04em;
+  white-space: pre-line;
 }
 
 .pageHeader .lead {

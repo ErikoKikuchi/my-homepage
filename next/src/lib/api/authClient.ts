@@ -17,11 +17,12 @@ function getCsrfTokenFromCookie(): string {
 }
 
 export async function login(
+  section: "pilates" | "thinkmotion",
   credentials: LoginCredentials,
 ): Promise<LoginSuccessResponse> {
   await ensureCsrfCookie();
 
-  const response = await fetch("/api/login", {
+  const response = await fetch(`/api/${section}/login`, {
     method: "POST",
     credentials: "include",
     headers: {
