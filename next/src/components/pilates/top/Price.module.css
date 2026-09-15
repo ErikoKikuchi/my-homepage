@@ -1,0 +1,41 @@
+.time {
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  color: var(--color-muted);
+  margin-bottom: calc(var(--spacing) * 7);
+  letter-spacing: 0.06em;
+}
+.priceList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  border: 1px solid rgba(47, 92, 63, 0.12);
+}
+.priceRow {
+  background-color: var(--color-paper);
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing) * 1.5);
+  padding-inline: calc(var(--spacing) * 6.5);
+  padding-block: calc(var(--spacing) * 5.5);
+}
+.priceItem {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: var(--color-muted);
+}
+.priceAmount {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  color: var(--color-forest-dark);
+  letter-spacing: -0.01em;
+}
+.commentList {
+}
+.checkPoint {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1.8;
+  color: var(--color-muted);
+  padding-left: calc(var(--spacing) * 4);
+}
