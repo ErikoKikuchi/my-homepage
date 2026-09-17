@@ -125,3 +125,8 @@
 .entranceButton:hover {
   opacity: 0.8;
 }
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}

@@ -40,6 +40,13 @@
   width: 40px;
   background-color: var(--color-accent);
 }
+.description {
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  color: var(--color-text);
+  margin-bottom: calc(var(--spacing) * 10);
+  line-height: 1.8;
+}
 
 @keyframes fadeUp {
   from {

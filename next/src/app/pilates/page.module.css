@@ -4,10 +4,11 @@
   padding: 80px 40px 120px;
 }
 .pilatesDescription {
-  font-family: var(--font-serif);
-  font-size: 0.95rem;
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
   color: var(--color-text);
   margin-bottom: calc(var(--spacing) * 10);
+  line-height: 1.8;
 }
 .recommend {
   font-family: var(--font-mono);
@@ -24,21 +25,17 @@
 .recommendList {
   font-family: var(--font-mono);
   line-height: 1.8;
-  font-size: 0.88rem;
+  font-size: 1.2rem;
   color: var(--color-text);
   position: relative;
   padding-left: calc(var(--spacing) * 5);
 }
-.time {
+.location {
   font-family: var(--font-mono);
-  font-size: 0.88rem;
-  color: var(--color-muted);
-  margin-bottom: calc(var(--spacing) * 7);
-  letter-spacing: 0.06em;
+  font-size: 1.2rem;
+  line-height: 1.8;
+  color: var(--color-text);
 }
-.priceList {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  background-color: rgba(47, 92, 63, 0.12);
-  border: 1px solid rgba(47, 92, 63, 0.12);
+.contactButton {
+  margin-top: 20px;
 }

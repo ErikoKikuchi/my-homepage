@@ -1,0 +1,43 @@
+.subtitle {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-forest);
+  margin-bottom: calc(var(--spacing) * 10);
+  text-align: center;
+}
+.border {
+  width: calc(var(--spacing) * 50);
+  height: 1px;
+  background-color: color-mix(
+    in oklab,
+    var(--color-forest) /* #8faf6a */ 40%,
+    transparent
+  );
+  margin-block: calc(var(--spacing) * 14);
+  margin-inline: auto;
+}
+.space {
+  margin-bottom: calc(var(--spacing) * 7);
+}
+.theme {
+  font-size: var(--text-xs);
+  letter-spacing: 0.15em;
+  color: var(--color-forest);
+  margin-bottom: calc(var(--spacing) * 1);
+}
+.concept {
+  font-size: var(--text-sm);
+  line-height: 1.8rem;
+  color: var(--color-text);
+}
+.conceptAfter {
+  margin-top: calc(var(--spacing) * 7);
+  padding-top: calc(var(--spacing) * 6);
+  border-top: 1px solid color-mix(in srgb, var(--color-muted) 10%, transparent);
+  font-style: italic;
+  font-size: var(--text-sm);
+  line-height: 1.8rem;
+  color: var(--color-text);
+}

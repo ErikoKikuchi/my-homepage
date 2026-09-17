@@ -110,6 +110,10 @@ export default async function AboutPage() {
                 <br />
                 自分にしかできない貢献の形を模索中。
               </p>
+              <br />
+              <p className={styles.profileBio}>
+                ＊理学療法士としての臨床経験を活かしながら、現在はピラティスインストラクターとして開業しています
+              </p>
             </div>
           </div>
         </Section>

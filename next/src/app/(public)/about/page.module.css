@@ -74,6 +74,7 @@
   font-size: 0.9rem;
   line-height: 2;
   white-space: pre-line;
+  color: var(--color-text);
 }
 @keyframes fadeUp {
   from {

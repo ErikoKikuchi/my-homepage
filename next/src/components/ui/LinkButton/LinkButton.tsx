@@ -8,6 +8,7 @@ interface LinkButtonProps {
   children: React.ReactNode;
   external?: boolean;
   variant?: LinkButtonVariant;
+  className?: string;
 }
 
 export default function LinkButton({
@@ -15,11 +16,12 @@ export default function LinkButton({
   children,
   external = false,
   variant = "primary",
+  className,
 }: LinkButtonProps) {
   return (
     <a
       href={href}
-      className={`${styles.linkButton} ${styles[variant]}`}
+      className={`${styles.linkButton} ${styles[variant]} ${className ?? ""}`}
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
     >
       {children}

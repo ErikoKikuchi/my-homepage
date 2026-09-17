@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import styles from "./PilatesReservation.module.css";
 import LinkButton from "@/components/ui/LinkButton/LinkButton";
 

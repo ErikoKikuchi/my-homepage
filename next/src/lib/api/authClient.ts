@@ -3,7 +3,7 @@ import {
   LoginSuccessResponse,
   ValidationErrorResponse,
   AuthErrorResponse,
-} from "@/types/auth";
+} from "@/types/auth/auth";
 
 async function ensureCsrfCookie(): Promise<void> {
   await fetch("/sanctum/csrf-cookie", {

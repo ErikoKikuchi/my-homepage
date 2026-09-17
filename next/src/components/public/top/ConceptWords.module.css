@@ -45,8 +45,3 @@
     transform: translateY(-6px);
   }
 }
-@keyframes fadeIn {
-  to {
-    opacity: 1;
-  }
-}
