@@ -1,0 +1,21 @@
+.publishedAt {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  padding-block: calc(var(--spacing) * 3.5);
+  vertical-align: baseline;
+  text-align: center;
+}
+.title,
+.roomName,
+.authorName {
+  font-size: 14px;
+  text-decoration-line: none;
+  &:hover {
+    @media (hover: hover) {
+      color: var(--color-forest-dark);
+    }
+  }
+  padding-block: calc(var(--spacing) * 3.5);
+  vertical-align: baseline;
+  text-align: center;
+}

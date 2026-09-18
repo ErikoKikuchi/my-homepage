@@ -28,7 +28,7 @@
   margin-bottom: calc(var(--spacing) * 1);
 }
 .concept {
-  font-size: var(--text-sm);
+  font-size: 1rem;
   line-height: 1.8rem;
   color: var(--color-text);
 }
@@ -37,7 +37,19 @@
   padding-top: calc(var(--spacing) * 6);
   border-top: 1px solid color-mix(in srgb, var(--color-muted) 10%, transparent);
   font-style: italic;
-  font-size: var(--text-sm);
+  font-size: 1rem;
+  line-height: 1.8rem;
+  color: var(--color-text);
+}
+.buttonGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin: 30px auto;
+}
+.linkDescription,
+.buttonDescription {
+  font-size: 1rem;
   line-height: 1.8rem;
   color: var(--color-text);
 }

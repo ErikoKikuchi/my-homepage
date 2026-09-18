@@ -1,3 +1,5 @@
+export type ArticleCategory = "myStudy" | "caseDiscussion" | "reading";
+
 export type ArticlePost = {
   id: string;
   title: string;
@@ -5,4 +7,5 @@ export type ArticlePost = {
   href: string; // 記事本体へのリンク
   room: { name: string; href: string }; //ルームへのリンク
   author: { name: string; href: string }; // 投稿者ページへのリンク
+  category: ArticleCategory;
 };

@@ -1,0 +1,33 @@
+.articleListSection {
+  margin: 50px auto;
+}
+.description {
+  font-size: 1rem;
+  color: var(--color-text);
+}
+.articleList {
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: calc(var(--spacing) * 6);
+}
+
+.articleList tr:hover {
+  background-color: var(--color-forest);
+}
+
+.articleList tr {
+  border: 1px solid color-mix(in oklab, var(--color-muted) 30%, transparent);
+}
+.articleList th,
+.articleList td {
+  padding-block: calc(var(--spacing) * 3.5);
+  padding-inline: 15px;
+  vertical-align: baseline;
+  text-align: left;
+  color: var(--color-forest-dark);
+}
+
+.articleList td :hover {
+  color: var(--color-paper);
+}

@@ -1,22 +1,34 @@
-import ArticleListCard from @/components/thinkmotion/article/ArticleListCard;
-import type{ArticlePost[]} from @/types/thinkmotion/ArticlePost;
-import Link from "next/link";
-import styles from "./ArticleListSection.module.css";
+import ArticleListCard from "@/components/thinkmotion/article/ArticleListCard";
+import type { ArticlePost } from "@/types/thinkmotion/article";
+import styles from "@/components/thinkmotion/article/ArticleListSection.module.css";
 
-
-interface NavCardProps {
-  item: NavCardItem;
+interface ArticleListSectionProps {
+  description: string;
+  posts: ArticlePost[];
 }
 
-export default function NavCard({ item }: NavCardProps) {
+export default function ArticleListSection({
+  description,
+  posts,
+}: ArticleListSectionProps) {
   return (
-    <Link href={item.href} className={styles.navCard}>
-      <p className={styles.navCardName}>{item.name}</p>
-      {item.description.map((line, i) => (
-        <p key={i} className={styles.navCardDesc}>
-          {line}
-        </p>
-      ))}
-    </Link>
+    <div className={styles.articleListSection}>
+      <div className={styles.description}>{description}</div>
+      <table className={styles.articleList}>
+        <thead>
+          <tr>
+            <th style={{ width: "15%" }}>日付</th>
+            <th style={{ width: "45%" }}>タイトル</th>
+            <th style={{ width: "20%" }}>投稿ルーム</th>
+            <th style={{ width: "20%" }}>投稿者</th>
+          </tr>
+        </thead>
+        <tbody>
+          {posts.map((post) => (
+            <ArticleListCard key={post.href} post={post} />
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }

@@ -3,6 +3,11 @@ import Section from "@/components/public/common/Section";
 import styles from "./page.module.css";
 import LinkButton from "@/components/ui/LinkButton/LinkButton";
 import ArticleListSection from "@/components/thinkmotion/article/ArticleListSection";
+import {
+  getMyStudies,
+  getCaseDiscussions,
+  getReadings,
+} from "@/components/thinkmotion/article/articles";
 
 export default function ThinkMotionTopPage() {
   return (
@@ -64,31 +69,30 @@ export default function ThinkMotionTopPage() {
         >
           <div>
             <div className={styles.border}></div>
-            <p className={styles.subtitle}>思考の記録を見る</p>
+            <p className={styles.subtitle}>My Studies</p>
             <div className={styles.border}></div>
           </div>
           <div className={styles.space}></div>
           <ArticleListSection
-            title="My Studies"
             description="思考がどのように磨かれていくか、その過程をたどります"
             posts={getMyStudies()}
           />
           <div className={styles.space}></div>
           <div className={styles.border}></div>
-          <p className={styles.subtitle}>思考を記録し、深める</p>
+          <p className={styles.subtitle}>Case Study</p>
           <div className={styles.border}></div>
           <ArticleListSection
-            title="症例検討"
-            description="判断の理由や優先順位を、症例を通して深める場です。専門家限定「テーマ別ルーム」は整形疾患・脳血管障害・神経内科疾患・内部障害などに分かれ各テーマの思考を深める場もあります。"
+            description="判断の理由や優先順位を、症例を通して深める場です。専門家限定「テーマ別ルーム」は整形疾患・脳血管障害・神経内科疾患・内部障害などに分かれ各テーマの思考を深める場です。"
             posts={getCaseDiscussions()}
           />
+          <div className={styles.space}></div>
+          <div className={styles.border}></div>
+          <p className={styles.subtitle}>Readings</p>
+          <div className={styles.border}></div>
           <ArticleListSection
-            title="Readings"
             description="様々な文献を通じて思考を高める場です。"
             posts={getReadings()}
           />
-
-          <p>-登録・ログイン後にアクセスできます。-</p>
         </Section>
         <Section
           label="Link"
@@ -96,30 +100,40 @@ export default function ThinkMotionTopPage() {
           labelClassName={styles.sectionLabelDecorated}
           animationDelay="0.2s"
         >
-          <LinkButton
-            href="/thinkmotion/index"
-            variant="outline"
-            className={styles.indexButton}
-          >
-            思考の記録を見る
-          </LinkButton>
+          <p className={styles.linkDescription}>
+            -コンテンツは登録・ログイン後にアクセスできます。-
+          </p>
+          <div className={styles.buttonGroup}>
+            <div>
+              <LinkButton href="/thinkmotion/index" variant="primary">
+                思考の過程を見る
+              </LinkButton>
+              <p className={styles.buttonDescription}>
+                公開されている思考の過程をたどります。
+              </p>
+            </div>
+            <div>
+              <LinkButton href="/thinkmotion/login" variant="outline">
+                思考を記録し、深める
+              </LinkButton>
+              <p className={styles.buttonDescription}>
+                ログインして、自分の思考を記録します。
+              </p>
+            </div>
+          </div>
         </Section>
         <Section
-          label="watchout"
+          label="guide"
           className={styles.fadeSection}
           labelClassName={styles.sectionLabelDecorated}
           animationDelay="0.2s"
         >
-          <LinkButton href="/thinkmotion/howToUse" className={styles.howToUse}>
-            使い方
-          </LinkButton>
-          <LinkButton
-            href="/thinkmotion/terms"
-            variant="outline"
-            className={styles.terms}
-          >
-            利用規約
-          </LinkButton>
+          <div className={styles.buttonGroup}>
+            <LinkButton href="/thinkmotion/howToUse">使い方</LinkButton>
+            <LinkButton href="/thinkmotion/terms" variant="outline">
+              利用規約
+            </LinkButton>
+          </div>
         </Section>
       </main>
     </>
