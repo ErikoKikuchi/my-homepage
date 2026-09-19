@@ -14,7 +14,7 @@ export function LoginForm() {
   const [generalError, setGeneralError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React) => {
     e.preventDefault();
     setFieldErrors({});
     setGeneralError(null);

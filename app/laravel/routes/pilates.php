@@ -1,6 +1,6 @@
 <?php
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Pilates\Guest\GuestController as PilatesGuestController;
+
 use App\Http\Controllers\Pilates\User\MyPageController as PilatesMyPageController;
 use App\Http\Controllers\Pilates\User\ViewerController as PilatesViewerController;
 use App\Http\Controllers\Pilates\User\ReservationController as PilatesReservationController;
@@ -28,8 +28,7 @@ use App\Http\Controllers\Pilates\Admin\ClientSearchController as PilatesAdminCli
 
 // ゲスト用
 Route::get('/pilates', [PilatesViewerController::class, 'index']);
-Route::get('/pilates/calendar', [PilatesGuestController::class, 'index'])->name('pilates.guest.index');
-Route::get('/pilates/slots',[PilatesGuestController::class,'show'])->name('pilates.guest.show');
+
 
 
 

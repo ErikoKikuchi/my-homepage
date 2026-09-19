@@ -1,0 +1,44 @@
+/* components/pilates/calendar/MonthGrid.module.css */
+.calendar {
+  display: flex;
+  flex-direction: column;
+}
+
+.controls {
+  display: flex;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.navButton {
+  border: 1px solid var(--color-forest-dark);
+  color: var(--color-forest-dark);
+  background: transparent;
+  padding: 0.5rem 1rem;
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  padding: 0.5rem;
+  text-align: center;
+  font-weight: bold;
+  border: 1px solid var(--color-forest-dark);
+  background: var(--color-forest-dark);
+  color: white;
+}
+
+.dates {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.25rem;
+}
+
+.date {
+  border: 1px solid var(--color-accent);
+}
+
+.emptyDate {
+  border: 1px solid var(--color-accent);
+}

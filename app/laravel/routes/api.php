@@ -3,8 +3,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Pilates\Guest\GuestController as PilatesGuestController;
 
-Route::post('/login', function (Request $request) {
+
+Route::post('/pilates/login', function (Request $request) {
     $request->validate([
         'email' => 'required|email',
         'password' => 'required',
@@ -22,3 +24,5 @@ Route::post('/login', function (Request $request) {
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+Route::get('/pilates/reservation/calendar', [PilatesGuestController::class, 'index'])->name('pilates.guest.index');
+Route::get('/pilates/reservation/slots',[PilatesGuestController::class,'show'])->name('pilates.guest.show');

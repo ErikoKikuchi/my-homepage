@@ -13,7 +13,7 @@ export default function PilatesReservation() {
       </p>
 
       <div>
-        <LinkButton href="/pilates/guest">空き確認・予約</LinkButton>
+        <LinkButton href="/pilates/reservation">空き確認・予約</LinkButton>
       </div>
     </>
   );

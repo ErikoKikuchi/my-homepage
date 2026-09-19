@@ -36,16 +36,12 @@ class GuestController extends Controller
                 ];
             }
 
-        if ($request->expectsJson()) {
             return response()->json([
                 'month' => $month,
                 'cells' => $cells,
                 'previous' => $previous,
                 'next' => $next,
             ]);
-        }
-
-        return view('pages.pilates.guest.reservation', compact('month', 'cells', 'previous', 'next'));
     }
     public function show(Request $request){
         $date = $request->query('date');
