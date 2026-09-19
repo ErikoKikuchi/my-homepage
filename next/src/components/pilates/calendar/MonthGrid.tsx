@@ -5,6 +5,7 @@ type MonthGridProps<T> = {
   renderCell: (cell: T) => React.ReactNode;
   onPrevMonth: () => void;
   onNextMonth: () => void;
+  title?: React.ReactNode;
 };
 
 const WEEKDAYS = ["日", "月", "火", "水", "木", "金", "土"];
@@ -14,6 +15,7 @@ export function MonthGrid<T>({
   renderCell,
   onPrevMonth,
   onNextMonth,
+  title,
 }: MonthGridProps<T>) {
   return (
     <div className={styles.calendar}>
@@ -25,6 +27,7 @@ export function MonthGrid<T>({
         >
           前月
         </button>
+        {title}
         <button
           type="button"
           className={styles.navButton}

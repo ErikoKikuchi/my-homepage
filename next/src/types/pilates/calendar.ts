@@ -8,7 +8,7 @@ export type TimeSlot = {
 // 月表示の1セル
 export type AvailabilityDateCell = {
   date: number;
-  status: "available" | "contact_only" | "full";
+  status: "available" | "contact_only" | "full" | null;
 };
 
 // 日付クリック後の1日分の詳細

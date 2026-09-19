@@ -24,5 +24,8 @@ Route::post('/pilates/login', function (Request $request) {
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
-Route::get('/pilates/reservation/calendar', [PilatesGuestController::class, 'index'])->name('pilates.guest.index');
-Route::get('/pilates/reservation/slots',[PilatesGuestController::class,'show'])->name('pilates.guest.show');
+
+Route::prefix('pilates/reservation')->group(function () {
+    Route::get('/calendar', [PilatesGuestController::class, 'index'])->name('pilates.guest.index');
+    Route::get('/slots', [PilatesGuestController::class, 'show'])->name('pilates.guest.show');
+});
