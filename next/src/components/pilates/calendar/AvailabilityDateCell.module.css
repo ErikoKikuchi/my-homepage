@@ -1,0 +1,18 @@
+.active {
+  background-color: var(--color-forested);
+}
+.normal {
+  background-color: var(--color-paper);
+  color: var(--color-text);
+}
+.box {
+  display: flex;
+  gap: 20px;
+}
+.date {
+  font-weight: bold;
+  padding-left: 10px;
+}
+.status {
+  font-weight: bold;
+}

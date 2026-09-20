@@ -5,11 +5,11 @@ import {
   AvailabilityDateCell,
   MonthlyData,
   DaySchedule,
-  TimeSlot,
 } from "@/types/pilates/calendar";
 import { MonthGrid } from "@/components/pilates/calendar/MonthGrid";
 import AvailabilityDateCellButton from "./AvailabilityDateCell";
 import styles from "./PilatesCalendar.module.css";
+import { TimeslotList } from "./TimeSlotList";
 
 type PilatesCalendarProps = {
   initialMonth: string;

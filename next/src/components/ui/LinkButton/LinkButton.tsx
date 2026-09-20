@@ -1,5 +1,5 @@
-// next/src/components/ui/LinkButton/LinkButton.tsx
 import styles from "./LinkButton.module.css";
+import Link from "next/link";
 
 type LinkButtonVariant = "primary" | "outline" | "text";
 
@@ -18,13 +18,19 @@ export default function LinkButton({
   variant = "primary",
   className,
 }: LinkButtonProps) {
-  return (
+  const classNames = `${styles.linkButton} ${styles[variant]} ${className ?? ""}`;
+  return external ? (
     <a
       href={href}
-      className={`${styles.linkButton} ${styles[variant]} ${className ?? ""}`}
-      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      className={classNames}
+      target="_blank"
+      rel="noopener noreferrer"
     >
       {children}
     </a>
+  ) : (
+    <Link href={href} className={classNames}>
+      {children}
+    </Link>
   );
 }

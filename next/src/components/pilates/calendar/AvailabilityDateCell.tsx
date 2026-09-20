@@ -27,8 +27,12 @@ export default function AvailabilityDateCellButton({
       disabled={!isClickable}
       className={isSelected ? styles.active : styles.normal}
     >
-      <span>{cell.date}</span>
-      <span>{cell.status === null ? "－" : statusIcons[cell.status]}</span>
+      <div className={styles.box}>
+        <span className={styles.date}>{cell.date}日</span>
+        <span className={styles.status}>
+          {cell.status === null ? "－" : statusIcons[cell.status]}
+        </span>
+      </div>
     </button>
   );
 }
