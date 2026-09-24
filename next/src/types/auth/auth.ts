@@ -20,3 +20,17 @@ export interface ValidationErrorResponse {
 export interface AuthErrorResponse {
   message: string;
 }
+
+//ログインしているピラティスユーザ－の型
+export type AuthPilatesUser = {
+  id: string;
+  name: string;
+  email: string | null;
+  is_pilates_user: boolean;
+};
+
+//認証状態
+type AuthPilatesState = {
+  user: AuthPilatesUser | null;
+  isLoading: boolean;
+};

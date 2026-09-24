@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { login, AuthApiError } from "@/lib/api/authClient";
+import { login, AuthApiError } from "@/lib/api/auth/authClient";
 import EmailInput from "@/components/auth/EmailInput";
 import PasswordInput from "@/components/auth/PasswordInput";
 
-export function LoginForm() {
+export function ThinkMotionLoginForm() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,14 +14,18 @@ export function LoginForm() {
   const [generalError, setGeneralError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async (e: React) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setFieldErrors({});
     setGeneralError(null);
     setIsSubmitting(true);
 
     try {
-      const result = await login({ email, password, remember: false });
+      const result = await login("thinkmotion", {
+        email,
+        password,
+        remember: false,
+      });
       router.push(result.redirectTo);
     } catch (error) {
       if (error instanceof AuthApiError) {

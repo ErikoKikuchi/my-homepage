@@ -9,7 +9,7 @@ import {
 import { MonthGrid } from "@/components/pilates/calendar/MonthGrid";
 import AvailabilityDateCellButton from "./AvailabilityDateCell";
 import styles from "./PilatesCalendar.module.css";
-import { TimeslotList } from "./TimeSlotList";
+import { TimeSlotList } from "./TimeSlotList";
 
 type PilatesCalendarProps = {
   initialMonth: string;
@@ -28,6 +28,10 @@ export default function PilatesCalendar({
     const response = await fetch(
       `/api/pilates/reservation/calendar?month=${month}`,
     );
+    if (!response.ok) {
+      console.error("calendar API error:", await response.text());
+      return;
+    }
 
     const data = await response.json();
     setMonthData(data);
@@ -50,31 +54,51 @@ export default function PilatesCalendar({
     const response = await fetch(
       `/api/pilates/reservation/slots?date=${dateString}`,
     );
+    if (!response.ok) {
+      console.error("calendar API error:", await response.text());
+      return;
+    }
+
     const data = await response.json();
+
     setDaySchedule(data);
   }
+  const selectedCell = monthData?.cells.find((cell) => {
+    if (cell === null) return false;
+    const dateString = `${monthData.month}-${String(cell.date).padStart(2, "0")}`;
+    return dateString === selectedDate;
+  });
 
   return (
-    <div className={styles.pilatesCalendar}>
-      <MonthGrid<AvailabilityDateCell>
-        cells={monthData?.cells ?? []}
-        renderCell={(cell) => {
-          const dateString = `${monthData?.month}-${String(cell.date).padStart(2, "0")}`;
-          console.log(daySchedule);
-          return (
-            <AvailabilityDateCellButton
-              cell={cell}
-              isSelected={dateString === selectedDate}
-              onSelect={() => {
-                loadDaySchedule(dateString);
-              }}
-            />
-          );
-        }}
-        onPrevMonth={handlePrevMonth}
-        onNextMonth={handleNextMonth}
-        title={monthData && <p>{monthData.month}月の空き状況</p>}
-      />
-    </div>
+    <>
+      <div className={styles.pilatesCalendar}>
+        <MonthGrid<AvailabilityDateCell>
+          cells={monthData?.cells ?? []}
+          renderCell={(cell) => {
+            const dateString = `${monthData?.month}-${String(cell.date).padStart(2, "0")}`;
+            return (
+              <AvailabilityDateCellButton
+                cell={cell}
+                isSelected={dateString === selectedDate}
+                onSelect={() => {
+                  loadDaySchedule(dateString);
+                }}
+              />
+            );
+          }}
+          onPrevMonth={handlePrevMonth}
+          onNextMonth={handleNextMonth}
+          title={monthData && <p>{monthData.month}月の空き状況</p>}
+        />
+      </div>
+      <div className={styles.pilatesDaySchedule}>
+        {daySchedule && (
+          <TimeSlotList
+            daySchedule={daySchedule}
+            status={selectedCell?.status ?? null}
+          />
+        )}
+      </div>
+    </>
   );
 }

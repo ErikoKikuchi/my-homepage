@@ -4,17 +4,8 @@ import {
   ValidationErrorResponse,
   AuthErrorResponse,
 } from "@/types/auth/auth";
-
-async function ensureCsrfCookie(): Promise<void> {
-  await fetch("/sanctum/csrf-cookie", {
-    credentials: "include",
-  });
-}
-
-function getCsrfTokenFromCookie(): string {
-  const match = document.cookie.match(/XSRF-TOKEN=([^;]+)/);
-  return match ? decodeURIComponent(match[1]) : "";
-}
+import type { AuthPilatesUser } from "@/types/auth/auth";
+import { ensureCsrfCookie, getCsrfTokenFromCookie } from "@/lib/api/csrf";
 
 export async function login(
   section: "pilates" | "thinkmotion",
@@ -48,4 +39,24 @@ export class AuthApiError extends Error {
   ) {
     super(body.message);
   }
+}
+export async function getCurrentPilatesUser(): Promise<AuthPilatesUser | null> {
+  const response = await fetch("/auth/user", {
+    credentials: "include",
+    headers: {
+      Accept: "application/json",
+    },
+  });
+
+  if (response.status === 401) {
+    return null;
+  }
+
+  if (!response.ok) {
+    throw new Error("認証状態の取得に失敗しました");
+  }
+
+  const data: { user: AuthPilatesUser } = await response.json();
+
+  return data.user;
 }

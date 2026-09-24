@@ -1,4 +1,4 @@
-import styles from "./LineQrCode.module.css";
+import styles from "./LineLink.module.css";
 import Image from "next/image";
 import LinkButton from "@/components/ui/LinkButton/LinkButton";
 

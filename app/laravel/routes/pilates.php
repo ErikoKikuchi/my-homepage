@@ -1,18 +1,10 @@
 <?php
 use Illuminate\Support\Facades\Route;
-
-use App\Http\Controllers\Pilates\User\MyPageController as PilatesMyPageController;
-use App\Http\Controllers\Pilates\User\ViewerController as PilatesViewerController;
-use App\Http\Controllers\Pilates\User\ReservationController as PilatesReservationController;
-use App\Http\Controllers\Pilates\User\CancellationController as PilatesCancellationController;
-use App\Http\Controllers\Pilates\User\TrainingLogController as PilatesTrainingLogController;
-use App\Http\Controllers\Pilates\User\TicketController as PilatesTicketsController;
 use App\Http\Controllers\Pilates\Admin\LessonSlotController as PilatesAdminLessonSlotController;
 use App\Http\Controllers\Pilates\Admin\LessonTemplateController as PilatesAdminLessonTemplateController;
 use App\Http\Controllers\Pilates\Admin\ReservationController as PilatesAdminReservationController;
 use App\Http\Controllers\Pilates\Admin\ClientController as PilatesAdminClientController;
 use App\Http\Controllers\Pilates\Admin\TrainingLogController as PilatesAdminTrainingLogController;
-use App\Http\Controllers\Auth\User\UserLoginController;
 use App\Http\Controllers\Pilates\Admin\AccountingController as PilatesAdminAccountingController;
 use App\Http\Controllers\Pilates\Admin\LocationController as PilatesAdminLocationController;
 use App\Http\Controllers\Pilates\Admin\SessionController as PilatesAdminSessionController;
@@ -24,25 +16,6 @@ use App\Http\Controllers\Pilates\Admin\CalendarController as PilatesAdminCalenda
 use App\Http\Controllers\Pilates\Admin\ReservationNoshowController as PilatesAdminReservationNoshowController;
 use App\Http\Controllers\Pilates\Admin\ClientSearchController as PilatesAdminClientSearchController;
 
-
-
-// ゲスト用
-Route::get('/pilates', [PilatesViewerController::class, 'index']);
-
-
-
-
-// ログイン後
-Route::prefix('pilates')->middleware(['auth:web', 'verified', 'section:pilates'])->group(function () {
-    Route::get('/mypage', [PilatesMyPageController::class, 'index'])->name('pilates.mypage');
-    Route::get('/archive',[PilatesReservationController::class,'archive'])->name('pilates.past.reservation');
-    Route::get('/tickets', [PilatesTicketsController::class, 'index'])->name('pilates.tickets');
-    Route::patch('/reservations/{reservation}/cancel', [PilatesCancellationController::class,'cancel'])->name('pilates.user.reservation.cancel');
-    Route::resource('/reservations', PilatesReservationController::class)->only(['index', 'show', 'create','store'])->names('pilates.user.reservation');
-    Route::resource('/training-logs', PilatesTrainingLogController::class)->only(['index', 'show', 'create', 'store', 'edit', 'update', 'destroy'])->names('pilates.user.training-logs');
-    Route::post('/logout', [UserLoginController::class, 'logout'])->name('pilates.logout');
-
-});
 
 //管理者
 Route::prefix('pilates/admin')->middleware(['auth:admin', 'admin.section:pilates', 'admin.2fa', 'inertia'])->group(function () {

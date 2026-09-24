@@ -1,33 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\Auth\Admin\AdminLoginController;
 use App\Http\Controllers\Auth\Admin\AdminTwoFactorController;
 use App\Http\Controllers\Auth\Admin\AdminTwoFactorSetupController;
 use App\Http\Controllers\Auth\Admin\AdminHomeController;
-use App\Http\Controllers\Auth\User\UserRegisterController;
-use App\Http\Controllers\Auth\User\UserLoginController;
-use Laravel\Fortify\Http\Controllers\RegisteredUserController;
-use Laravel\Fortify\Http\Controllers\PasswordResetLinkController;
-use Laravel\Fortify\Http\Controllers\NewPasswordController;
 
-
-
-Route::middleware('guest:web')->group(function(){
-    Route::get('/pilates/login', [UserLoginController::class, 'showPilatesForm'])->name('pilates.login');
-    Route::post('/pilates/login', [UserLoginController::class, 'login'])->name('pilates.login.attempt')->middleware('throttle:login');
-
-    Route::get('/thinkmotion/login', [UserLoginController::class, 'showThinkmotionForm'])->name('thinkmotion.login');
-    Route::post('/thinkmotion/login', [UserLoginController::class, 'login'])->name('thinkmotion.login.attempt')->middleware('throttle:login');
-    Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
-    Route::post('/register',[UserRegisterController::class,'register']);
-    Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
-    Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.email');
-    Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
-    Route::post('/reset-password', [NewPasswordController::class, 'store'])->name('password.update');
-});
 
 Route::middleware(['guest', 'inertia'])->group(function(){
     Route::get('/pilates/admin/login', [AdminLoginController::class,'showPilatesForm'])->name('pilates.admin.login');
@@ -61,22 +39,3 @@ Route::prefix('thinkmotion')->middleware(['auth:admin','admin.section:thinkmotio
     Route::get('/admin/home', [AdminHomeController::class,'index'])->name('thinkmotion.admin.home');
     Route::post('/admin/logout', [AdminLoginController::class, 'adminLogout'])->name('thinkmotion.admin.logout');;
 });
-
-Route::middleware('auth:web')->group(function () {
-    Route::get('/email/verify', function () {return view('auth.verify-email');
-    })->name('verification.notice');
-    Route::get('/redirect', function () {return redirect()->away(config('services.mailtrap.sandbox_url'));}) ->name('verification.open');
-    Route::post('/email/verification-notification', function (Request $request) {
-        $request->user()->sendEmailVerificationNotification();
-        return back();
-    })->middleware('throttle:6,1')->name('verification.send');
-    Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-        $request->fulfill();
-        $user = $request->user();
-        return $user->is_medical
-            ? redirect()->route('profile.register')
-            : redirect()->route('pilates.mypage');
-    })->middleware(['auth:web'])->name('verification.verify');
-});
-
-

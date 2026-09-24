@@ -18,10 +18,15 @@ return Application::configure(basePath: dirname(__DIR__))
                     ->group(base_path('routes/code.php'));
                 Route::middleware('web')
                     ->group(base_path('routes/pilates.php'));
+                Route::middleware('web')
+                    ->group(base_path('routes/auth-user.php'));
                 Route::middleware('api')
-                    ->prefix('api')
-                    ->group(base_path('routes/api.php'));
-    },
+                    ->prefix('api/pilates')
+                    ->group(base_path('routes/api-pilates.php'));
+                Route::middleware('api')
+                    ->prefix('api/thinkmotion')
+                    ->group(base_path('routes/api-thinkmotion.php'));
+                    },
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
@@ -41,18 +46,9 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($request->is('thinkmotion/admin', 'thinkmotion/admin/*')) {
                 return route('thinkmotion.admin.login');
             }
-
-            $from = match (true) {
-                $request->is('pilates/reservations/create') => 'pilates-reservation',
-                $request->is('thinkmotion/*') => 'thinkmotion',
-                default => null,
-            };
-
-            $query = $from ? '?from=' . $from : '';
-
-            return $request->is('thinkmotion', 'thinkmotion/*')
-                ? route('thinkmotion.login') . $query
-                : route('pilates.login') . $query;
+            if ($request->is('api/*')) {
+                abort(401, 'Unauthenticated.');
+            }
         });
     })
     ->withExceptions(function (Exceptions $exceptions): void {

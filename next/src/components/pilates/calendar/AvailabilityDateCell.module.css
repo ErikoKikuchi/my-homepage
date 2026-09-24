@@ -8,6 +8,14 @@
 .box {
   display: flex;
   gap: 20px;
+  min-height: 80px;
+  align-items: center;
+}
+@media (max-width: 768px) {
+  .box {
+    min-height: 56px;
+    gap: 8px;
+  }
 }
 .date {
   font-weight: bold;

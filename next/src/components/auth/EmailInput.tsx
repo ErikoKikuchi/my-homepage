@@ -15,13 +15,16 @@ export default function EmailInput({
 }: EmailProps) {
   return (
     <div className={`${styles.emailBlock} ${className ?? ""}`}>
-      <input
-        type="email"
-        name="email"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className={styles.emailInput}
-      />
+      <div className={styles.row}>
+        <label>メールアドレス</label>
+        <input
+          type="email"
+          name="email"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className={styles.emailInput}
+        />
+      </div>
       {error && (
         <p className={styles.errorText} role="alert">
           {error}

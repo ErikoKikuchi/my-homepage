@@ -1,0 +1,32 @@
+.title {
+  font-size: var(--text-xl);
+  color: var(--color-forest-dark);
+  padding: calc(var(--spacing) * 4);
+}
+.time {
+  font-size: var(--text-xl);
+  margin: calc(var(--spacing) * 2);
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing) * 5);
+}
+.timeGroup {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--spacing) * 2);
+}
+.timeButton {
+  font-size: var(--text-xl);
+}
+.location {
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+}
+.contactNotice {
+  text-align: center;
+  margin: calc(var(--spacing) * 4);
+}
+.message {
+  text-align: center;
+  font-size: var(--text-sm);
+}

@@ -1,6 +1,4 @@
-/* next/src/components/ui/LinkButton/LinkButton.module.css */
-
-.linkButton {
+.actionButton {
   display: inline-block;
   align-self: flex-start;
   padding: 12px 24px;
@@ -22,24 +20,9 @@
   background-color: var(--color-forest-dark);
 }
 
-.outline {
-  background-color: transparent;
-  color: var(--color-forest);
-  border: 1px solid var(--color-forest);
-}
-
-.outline:hover {
-  background-color: var(--color-forest);
-  color: var(--color-paper);
-}
-
 .text {
   background-color: transparent;
-  color: var(--color-forest);
+  color: var(--color-forest-dark);
   text-decoration: underline;
   padding: 0;
-  font-size: var(--text-sm);
-}
-.text:hover {
-  color: var(--color-forest-dark);
 }

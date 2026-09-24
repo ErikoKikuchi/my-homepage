@@ -23,12 +23,33 @@ class ReservationController extends Controller
     public function index(Request $request){
         return view('pilates.mypage');
     }
+    public function intent(Request $request)
+{
+    $validated = $request->validate([
+        'date' => ['required', 'date'],
+        'start' => ['required', 'date_format:H:i'],
+    ]);
+
+    $request->session()->put(
+        'reservation_date',
+        $validated['date']
+    );
+
+    $request->session()->put(
+        'reservation_start',
+        $validated['start']
+    );
+
+    return response()->json([
+        'message' => '予約情報を保存しました',
+    ]);
+}
 
     public function create(Request $request)
     {
         $user = auth('web')->user();
         $date = $request->query('date');
-        $time = $request->query('time');
+        $time = $request->query('start');
         $carbonDate = Carbon::parse($date);
         $carbonTime = Carbon::parse($time);
 
