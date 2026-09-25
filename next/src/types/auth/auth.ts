@@ -5,7 +5,7 @@ export interface LoginCredentials {
   remember: boolean;
 }
 
-// 成功時のレスポンス
+// ログイン成功時のレスポンス
 export interface LoginSuccessResponse {
   redirectTo: string;
 }
@@ -19,6 +19,18 @@ export interface ValidationErrorResponse {
 // 認証情報不一致(422 + errorsキーなし)
 export interface AuthErrorResponse {
   message: string;
+}
+//登録の形
+export interface RegisterCredentials {
+  name: string;
+  email: string;
+  password: string;
+  passwordConfirmation: string;
+  service: "pilates" | "thinkmotion" | null;
+}
+//登録成功時のレスポンス
+export interface RegisterSuccessResponse {
+  redirectTo: string;
 }
 
 //ログインしているピラティスユーザ－の型

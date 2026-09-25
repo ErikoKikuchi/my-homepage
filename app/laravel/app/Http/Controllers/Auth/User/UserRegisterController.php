@@ -21,16 +21,18 @@ class UserRegisterController extends Controller
             'email'=> $credentials['email'],
             'password'=> Hash::make($credentials['password']),
             'is_pilates_user'=> $credentials['service'] === 'pilates',
-            'is_medical'=>false,
+            'is_medical'=>$credentials['service'] === 'thinkmotion',
             'profile_completed' => false,
-            'bookshelf_public'  => false,
+            'bookshelf_public'  => true,
             'is_client'         => false,
             ]);
 
 
         //メール認証
         event(new Registered($user));
-        Auth::guard('web')->login($user);
-        return redirect()->route('verification.notice');
+
+        return response()->json([
+            'redirectTo' => $credentials['service'] === 'pilates' ? '/pilates/login' : 'thinkmotion/login',
+        ]);
     }
 }

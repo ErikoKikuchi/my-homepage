@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type SubmitEvent } from "react";
 import { useRouter } from "next/navigation";
 import { login, AuthApiError } from "@/lib/api/auth/authClient";
 import EmailInput from "@/components/auth/EmailInput";
@@ -16,7 +16,7 @@ export function PilatesLoginForm() {
   const [generalError, setGeneralError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: SubmitEvent) => {
     e.preventDefault();
     setFieldErrors({});
     setGeneralError(null);
@@ -79,7 +79,7 @@ export function PilatesLoginForm() {
             </p>
             <LinkButton
               className={styles.register}
-              href="/register"
+              href="/auth/register"
               variant="text"
             >
               新規登録
@@ -88,7 +88,7 @@ export function PilatesLoginForm() {
           <LinkButton
             external
             className={styles.resetPassword}
-            href={`${process.env.NEXT_PUBLIC_LARAVEL_URL}/forgot-password?from=pilates`}
+            href="/auth/forgot-password"
             variant="outline"
           >
             パスワードをお忘れの方はこちら

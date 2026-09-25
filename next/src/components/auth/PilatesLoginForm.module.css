@@ -66,6 +66,8 @@
 .linkDescription {
   margin: 0;
   font-size: var(--text-xs);
+  display: flex;
+  align-items: center;
 }
 .register,
 .resetPassword {

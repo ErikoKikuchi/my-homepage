@@ -1,34 +1,41 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { login, AuthApiError } from "@/lib/api/auth/authClient";
+import { useState, type SubmitEvent } from "react";
+import { resetPassword, AuthApiError } from "@/lib/api/auth/authClient";
 import EmailInput from "@/components/auth/EmailInput";
 import PasswordInput from "@/components/auth/PasswordInput";
+import PasswordConfirmationInput from "@/components/auth/PasswordConfirmationInput";
+import styles from "./ResetPasswordForm.module.css";
 import LinkButton from "../ui/LinkButton/LinkButton";
-import styles from "./ThinkMotionLoginForm.module.css";
 
-export function ThinkMotionLoginForm() {
-  const router = useRouter();
+interface ResetPasswordFormProps {
+  token: string;
+}
+
+export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
   const [generalError, setGeneralError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: SubmitEvent) => {
     e.preventDefault();
     setFieldErrors({});
     setGeneralError(null);
+    setSuccessMessage(null);
     setIsSubmitting(true);
 
     try {
-      const result = await login("thinkmotion", {
+      const result = await resetPassword({
+        token,
         email,
         password,
-        remember: false,
+        passwordConfirmation,
       });
-      router.push(result.redirectTo);
+      setSuccessMessage(result.message);
     } catch (error) {
       if (error instanceof AuthApiError) {
         if ("errors" in error.body) {
@@ -48,8 +55,9 @@ export function ThinkMotionLoginForm() {
 
   return (
     <div className={styles.main}>
-      <form onSubmit={handleSubmit} className={styles.thinkMotionLoginForm}>
+      <form onSubmit={handleSubmit} className={styles.resetPasswordForm}>
         {generalError && <p role="alert">{generalError}</p>}
+        {successMessage && <p role="status">{successMessage}</p>}
 
         <EmailInput
           value={email}
@@ -63,35 +71,38 @@ export function ThinkMotionLoginForm() {
           error={fieldErrors.password?.[0]}
         />
 
+        <PasswordConfirmationInput
+          value={passwordConfirmation}
+          onChange={setPasswordConfirmation}
+          error={fieldErrors.passwordConfirmation?.[0]}
+        />
+
         <button
           type="submit"
           disabled={isSubmitting}
-          className={styles.loginButton}
+          className={styles.submitButton}
         >
-          {isSubmitting ? "ログイン中..." : "ログイン"}
+          {isSubmitting ? "変更中..." : "パスワードを変更"}
         </button>
       </form>
       <div className={styles.buttonWrapper}>
         <div className={styles.buttonGroup}>
+          <p className={styles.linkDescription}>ログインの方はこちらへ</p>
           <div className={styles.registerGroup}>
-            <p className={styles.linkDescription}>
-              アカウントをお持ちでない方は
-            </p>
             <LinkButton
-              className={styles.register}
-              href="/auth/register"
-              variant="text"
+              className={styles.pilatesLogin}
+              href="/auth/pilates/login"
+              variant="primary"
             >
-              新規登録
+              ピラティスのログインはこちら
             </LinkButton>
           </div>
           <LinkButton
-            external
-            className={styles.resetPassword}
-            href={`${process.env.NEXT_PUBLIC_LARAVEL_URL}/forgot-password?from=pilates`}
+            className={styles.thinkMotionLogin}
+            href="/auth/thinkmotion/login"
             variant="outline"
           >
-            パスワードをお忘れの方はこちら
+            ThinkMotionのログインはこちら
           </LinkButton>
         </div>
       </div>

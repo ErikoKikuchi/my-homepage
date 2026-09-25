@@ -5,6 +5,17 @@ use App\Http\Controllers\Auth\Admin\AdminLoginController;
 use App\Http\Controllers\Auth\Admin\AdminTwoFactorController;
 use App\Http\Controllers\Auth\Admin\AdminTwoFactorSetupController;
 use App\Http\Controllers\Auth\Admin\AdminHomeController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+
+Route::middleware('auth:web')->group(function () {
+    Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+            $request->fulfill();
+            $user = $request->user();
+            return $user->is_medical
+                ? redirect()->route('profile.register')
+                : redirect()->route('pilates.mypage');
+        })->middleware(['auth:web'])->name('verification.verify');
+});
 
 
 Route::middleware(['guest', 'inertia'])->group(function(){

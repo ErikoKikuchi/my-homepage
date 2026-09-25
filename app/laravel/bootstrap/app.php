@@ -19,6 +19,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 Route::middleware('web')
                     ->group(base_path('routes/pilates.php'));
                 Route::middleware('web')
+                    ->prefix('api/auth')
                     ->group(base_path('routes/auth-user.php'));
                 Route::middleware('api')
                     ->prefix('api/pilates')
