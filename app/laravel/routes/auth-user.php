@@ -4,8 +4,6 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\Auth\User\UserRegisterController;
-use App\Http\Controllers\Auth\User\UserLoginController;
-use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 use Laravel\Fortify\Http\Controllers\PasswordResetLinkController;
 use Laravel\Fortify\Http\Controllers\NewPasswordController;
 
@@ -28,15 +26,21 @@ Route::middleware('auth:web')->group(function () {
             'name' => $user->name,
             'email' => $user->email,
             'is_pilates_user' => $user->is_pilates_user,
+            'email_verified' => $user->hasVerifiedEmail(),
         ],
     ]);
     });
-    Route::get('/email/verify', function () {return view('auth.verify-email');
-    })->name('verification.notice');
+    Route::get('/email/verify', function () {
+    return redirect()->away(config('app.frontend_url') . '/auth/email/verify');
+})->name('verification.notice');
     Route::get('/redirect', function () {return redirect()->away(config('services.mailtrap.sandbox_url'));}) ->name('verification.open');
     Route::post('/email/verification-notification', function (Request $request) {
-        $request->user()->sendEmailVerificationNotification();
-        return back();
+        $user = $request->user();
+        if ($user->hasVerifiedEmail()) {
+            return response()->json(['message' => 'すでに認証済みです。']);
+        }
+        $user->sendEmailVerificationNotification();
+        return response()->json(['message' => '認証メールを再送しました。']);
     })->middleware('throttle:6,1')->name('verification.send');
 });
 

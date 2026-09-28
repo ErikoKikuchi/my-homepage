@@ -14,6 +14,7 @@ import {
   ResetPasswordCredentials,
   ResetPasswordSuccessResponse,
 } from "@/types/auth/resetPassword";
+import { EmailVerifySuccessResponse } from "@/types/auth/emailVerify";
 import type { AuthPilatesUser } from "@/types/auth/auth";
 import { ensureCsrfCookie, getCsrfTokenFromCookie } from "@/lib/api/csrf";
 
@@ -51,7 +52,7 @@ export class AuthApiError extends Error {
   }
 }
 export async function getCurrentPilatesUser(): Promise<AuthPilatesUser | null> {
-  const response = await fetch("/auth/user", {
+  const response = await fetch("/api/auth/user", {
     credentials: "include",
     headers: {
       Accept: "application/json",
@@ -148,4 +149,24 @@ export async function resetPassword(
   }
 
   return response.json() as Promise<ResetPasswordSuccessResponse>;
+}
+
+export async function resendVerificationEmail() {
+  await ensureCsrfCookie();
+  const response = await fetch(`/api/auth/email/verification-notification`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      "X-XSRF-TOKEN": getCsrfTokenFromCookie(),
+    },
+    body: JSON.stringify({}),
+  });
+  if (!response.ok) {
+    const errorBody = await response.json();
+    throw new AuthApiError(response.status, errorBody);
+  }
+
+  return response.json() as Promise<EmailVerifySuccessResponse>;
 }

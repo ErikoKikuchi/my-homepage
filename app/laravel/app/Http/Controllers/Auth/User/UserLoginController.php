@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth\User;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\UserLoginRequest;
+use App\Http\Requests\Auth\UserLoginRequest; 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -19,13 +19,21 @@ class UserLoginController extends Controller
                     'message' => 'ログイン情報が登録されていません',
                 ], 422);
             }
-            $reservationDate  = $request->session()->pull('reservation_date');
-            $reservationStart = $request->session()->pull('reservation_start');
-
             $request->session()->regenerate();
             $request->session()->forget('url.intended');
 
+            /** @var \App\Models\Auth\User $user */
             $user = Auth::guard('web')->user();
+
+            // メール未認証は、認証待ち画面へ
+            if (!$user->hasVerifiedEmail()) {
+                return response()->json([
+                    'redirectTo' => '/auth/email/verify',
+                ]);
+            }
+
+            $reservationDate  = $request->session()->pull('reservation_date');
+            $reservationStart = $request->session()->pull('reservation_start');
 
             if($user->is_medical && !$user->profile_completed)
                 {

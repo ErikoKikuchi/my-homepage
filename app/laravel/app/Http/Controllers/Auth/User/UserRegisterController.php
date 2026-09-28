@@ -7,7 +7,7 @@ use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\Auth\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth;  
 
 
 
@@ -30,9 +30,11 @@ class UserRegisterController extends Controller
 
         //メール認証
         event(new Registered($user));
+        Auth::guard('web')->login($user);
+        $request->session()->regenerate();
 
         return response()->json([
-            'redirectTo' => $credentials['service'] === 'pilates' ? '/pilates/login' : 'thinkmotion/login',
+            'redirectTo' => '/auth/email/verify',
         ]);
     }
 }

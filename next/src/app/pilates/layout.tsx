@@ -11,6 +11,7 @@ export default function PilatesLayout({
   return (
     <PilatesAuthProvider>
       <SiteNav />
+      <PilatesSubNav />
       {children}
       <SiteFooter />
     </PilatesAuthProvider>

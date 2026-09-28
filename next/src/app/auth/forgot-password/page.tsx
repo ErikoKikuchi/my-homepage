@@ -1,21 +1,13 @@
-import { ResetPasswordForm } from "@/components/auth/ResetPasswordForm";
+import { ForgotPasswordForm } from "@/components/auth/ForgotPasswordForm";
 import PageHeader from "@/components/public/common/PageHeader";
 import styles from "./page.module.css";
 
-interface ResetPasswordPageProps {
-  params: Promise<{ token: string }>;
-}
-
-export default async function ResetPasswordPage({
-  params,
-}: ResetPasswordPageProps) {
-  const { token } = await params;
-
+export default async function ForgotPasswordPage() {
   return (
     <>
-      <PageHeader heading="パスワード再設定"></PageHeader>
-      <div className={styles.resetPasswordForm}>
-        <ResetPasswordForm token={token} />
+      <PageHeader heading="パスワードをお忘れの方はこちら"></PageHeader>
+      <div className={styles.forgotPasswordForm}>
+        <ForgotPasswordForm />
       </div>
     </>
   );

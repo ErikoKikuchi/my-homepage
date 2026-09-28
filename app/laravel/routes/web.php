@@ -7,14 +7,13 @@ use App\Http\Controllers\Auth\Admin\AdminTwoFactorSetupController;
 use App\Http\Controllers\Auth\Admin\AdminHomeController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
-Route::middleware('auth:web')->group(function () {
+Route::middleware('auth:web', 'signed')->group(function () {
     Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
             $request->fulfill();
-            $user = $request->user();
-            return $user->is_medical
-                ? redirect()->route('profile.register')
-                : redirect()->route('pilates.mypage');
-        })->middleware(['auth:web'])->name('verification.verify');
+            $path = $request->user()->is_medical ? '/thinkmotion/profile/register' : '/pilates/mypage'; 
+            
+            return redirect()->away(config('app.frontend_url') . $path);
+            })->middleware(['auth:web', 'signed', 'throttle:6,1'])->name('verification.verify');
 });
 
 

@@ -35,6 +35,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'is_client',
         'is_pilates_user',
         'phone',
+        'profile_completed',
+        'bookshelf_public',
     ];
 
     /**
@@ -56,7 +58,6 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
             'is_client'=>'boolean',
             'is_pilates_user'=>'boolean',
             'is_medical'=>'boolean',
@@ -103,4 +104,8 @@ class User extends Authenticatable implements MustVerifyEmail
                 : '--',
         );
     }
+    public function canUseTrainingLog(): bool
+{
+    return (bool) ($this->is_client && $this->client?->is_active);
+}
 }

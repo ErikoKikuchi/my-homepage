@@ -10,10 +10,14 @@ import LinkButton from "../ui/LinkButton/LinkButton";
 
 interface ResetPasswordFormProps {
   token: string;
+  initialEmail?: string;
 }
 
-export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
-  const [email, setEmail] = useState("");
+export function ResetPasswordForm({
+  token,
+  initialEmail = "",
+}: ResetPasswordFormProps) {
+  const [email, setEmail] = useState(initialEmail);
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
@@ -74,7 +78,6 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
         <PasswordConfirmationInput
           value={passwordConfirmation}
           onChange={setPasswordConfirmation}
-          error={fieldErrors.passwordConfirmation?.[0]}
         />
 
         <button

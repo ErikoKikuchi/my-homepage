@@ -101,7 +101,10 @@ export default function ThinkMotionTopPage() {
           animationDelay="0.2s"
         >
           <p className={styles.linkDescription}>
-            -コンテンツは登録・ログイン後にアクセスできます。-
+            -公開コンテンツはどなたでもアクセス可能です。
+          </p>
+          <p className={styles.linkDescription}>
+            -アプリケーションの利用は登録・ログイン後に可能になります。
           </p>
           <div className={styles.buttonGroup}>
             <div>

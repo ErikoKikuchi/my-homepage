@@ -3,9 +3,9 @@
 import { useState, type SubmitEvent } from "react";
 import { forgotPassword, AuthApiError } from "@/lib/api/auth/authClient";
 import EmailInput from "@/components/auth/EmailInput";
-import styles from "./forgotPassword.module.css";
+import styles from "./ForgotPasswordForm.module.css";
 
-export function ForgotPassWordForm() {
+export function ForgotPasswordForm() {
   const [email, setEmail] = useState("");
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
   const [generalError, setGeneralError] = useState<string | null>(null);

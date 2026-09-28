@@ -35,10 +35,8 @@ export interface RegisterSuccessResponse {
 
 //ログインしているピラティスユーザ－の型
 export type AuthPilatesUser = {
-  id: string;
   name: string;
-  email: string | null;
-  is_pilates_user: boolean;
+  canUseTrainingLog: boolean;
 };
 
 //認証状態
