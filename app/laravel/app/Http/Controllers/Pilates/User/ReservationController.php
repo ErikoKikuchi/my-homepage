@@ -2,48 +2,50 @@
 
 namespace App\Http\Controllers\Pilates\User;
 
+use App\Enums\Pilates\ReservationStatus;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Pilates\User\StoreReservationRequest;
+use App\Models\Auth\User;
 use App\Models\Pilates\LessonSlot;
 use App\Models\Pilates\Reservation;
-use Illuminate\Http\Request;
-use App\Http\Requests\Pilates\User\StoreReservationRequest;
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
-use App\Models\Auth\User;
-use Illuminate\Support\Facades\Gate;
-use App\Enums\Pilates\ReservationStatus;
 use App\Services\Pilates\ReservationService;
-
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 
 class ReservationController extends Controller
 {
     public function __construct(
         private ReservationService $reservationService
     ) {}
-    public function index(Request $request){
+
+    public function index(Request $request)
+    {
         return view('pilates.mypage');
     }
+
     public function intent(Request $request)
-{
-    $validated = $request->validate([
-        'date' => ['required', 'date'],
-        'start' => ['required', 'date_format:H:i'],
-    ]);
+    {
+        $validated = $request->validate([
+            'date' => ['required', 'date'],
+            'start' => ['required', 'date_format:H:i'],
+        ]);
 
-    $request->session()->put(
-        'reservation_date',
-        $validated['date']
-    );
+        $request->session()->put(
+            'reservation_date',
+            $validated['date']
+        );
 
-    $request->session()->put(
-        'reservation_start',
-        $validated['start']
-    );
+        $request->session()->put(
+            'reservation_start',
+            $validated['start']
+        );
 
-    return response()->json([
-        'message' => '予約情報を保存しました',
-    ]);
-}
+        return response()->json([
+            'message' => '予約情報を保存しました',
+        ]);
+    }
 
     public function create(Request $request)
     {
@@ -54,37 +56,38 @@ class ReservationController extends Controller
         $carbonTime = Carbon::parse($time);
 
         $slot = LessonSlot::where('date', $date)
-        ->whereHas('lessonTemplate', fn($q) => $q->whereTime('start_time', $time))
-        ->firstOrFail();
+            ->whereHas('lessonTemplate', fn ($q) => $q->whereTime('start_time', $time))
+            ->firstOrFail();
 
         return view('pages.pilates.guest.reservation-detail', [
             'date' => $date,
-            'time'=>$time,
+            'time' => $time,
             'dateFormatted' => $carbonDate->isoFormat('M月D日(ddd)'), // 表示用
-            'timeFormatted' => $carbonTime->format('H:i'),   
+            'timeFormatted' => $carbonTime->format('H:i'),
             'venueNote' => $slot->venueNote(),
-            'venueFixed' => (bool) $slot->location_id, 
-            'name'=>$user->name,
+            'venueFixed' => (bool) $slot->location_id,
+            'name' => $user->name,
         ]);
     }
+
     public function store(StoreReservationRequest $request)
     {
         $reservationData = $request->validated();
-        /** @var \App\Models\Auth\User $user */
+        /** @var User $user */
         $user = auth('web')->user();
 
-        DB::transaction(function() use ($reservationData, $user, $request) {
+        DB::transaction(function () use ($reservationData, $user) {
             $slot = LessonSlot::where('date', $reservationData['date'])
-            ->whereHas('lessonTemplate', function($q) use ($reservationData) {
-                $q->whereTime('start_time', $reservationData['time']);
-            })->lockForUpdate() ->firstOrFail();
+                ->whereHas('lessonTemplate', function ($q) use ($reservationData) {
+                    $q->whereTime('start_time', $reservationData['time']);
+                })->lockForUpdate()->firstOrFail();
 
             // そのスロットにすでに予約があるかチェック
             $alreadyReserved = $slot->reservations()
-                ->whereNotIn('reservations.status', [ReservationStatus::Canceled,ReservationStatus::Rescheduled,
+                ->whereNotIn('reservations.status', [ReservationStatus::Canceled, ReservationStatus::Rescheduled,
                 ])
                 ->exists();
-            
+
             if ($alreadyReserved) {
                 throw new \Exception('このスロットはすでに予約済みです');
             }
@@ -106,37 +109,38 @@ class ReservationController extends Controller
                 'message',
                 "予約申請を受け付けました。\n施設が未定の場合は確保後、LINEにて予約確定のご連絡をいたします。\n通常1〜2日以内にご連絡いたします。"
             );
-        
+
             return response()->json([
-                'success' => true
+                'success' => true,
             ]);
         }
 
         return redirect()->route('pilates.mypage');
     }
+
     public function show(Reservation $reservation)
     {
-        $user=auth('web')->user();
+        $user = auth('web')->user();
         Gate::authorize('reservation.view', $reservation);
 
         $cutoff = $reservation->lessonSlot->date->copy()->subDay()->setTime(12, 0);
         $isPastCutoff = now()->greaterThan($cutoff);
 
-        $booking=[
+        $booking = [
             'participants' => $reservation->participants,
             'date' => $reservation->lessonSlot->date->format('Y年m月d日'),
             'location' => $reservation->status === ReservationStatus::WaitingVenue
                 ? '施設調整中'
                 : $reservation->location->name,
-            'note'=>$reservation->note,
-            'start_time'=>$reservation->lessonSlot->lessonTemplate->start_time,
-            'end_time'=>$reservation->lessonSlot->lessonTemplate->end_time,
+            'note' => $reservation->note,
+            'start_time' => $reservation->lessonSlot->lessonTemplate->start_time,
+            'end_time' => $reservation->lessonSlot->lessonTemplate->end_time,
         ];
 
-        return view('pages.pilates.user.pilates-cancellation',[
-            'booking'=>$booking,
-            'user'=>$user,
-            'reservation'=>$reservation,
+        return view('pages.pilates.user.pilates-cancellation', [
+            'booking' => $booking,
+            'user' => $user,
+            'reservation' => $reservation,
             'isPastCutoff' => $isPastCutoff,
         ]);
     }
@@ -144,20 +148,20 @@ class ReservationController extends Controller
     public function archive(Request $request)
     {
         /** @var User $user */
-        $user=auth('web')->user();
+        $user = auth('web')->user();
 
         $query = $user->reservations()
             ->past()
             ->with(['lessonSlot', 'location'])
             ->paginate(10);
-        $pastReservations= $query->through(fn($reservation) => [
-                'uuid' => $reservation->uuid,
-                'date'=>$reservation->lessonSlot->date->format('Y年m月d日'),
-                'location'=>$reservation->location->name,
-                'participants' => $reservation->participants,
-            ]);
+        $pastReservations = $query->through(fn ($reservation) => [
+            'uuid' => $reservation->uuid,
+            'date' => $reservation->lessonSlot->date->format('Y年m月d日'),
+            'location' => $reservation->location->name,
+            'participants' => $reservation->participants,
+        ]);
 
-        return view('pages.pilates.user.past-reservation',[
+        return view('pages.pilates.user.past-reservation', [
             'pastReservations' => $pastReservations,
         ]);
     }

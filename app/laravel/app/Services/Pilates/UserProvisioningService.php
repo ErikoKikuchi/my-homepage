@@ -3,8 +3,8 @@
 namespace App\Services\Pilates;
 
 use App\Models\Auth\User;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class UserProvisioningService

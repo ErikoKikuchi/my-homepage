@@ -4,14 +4,15 @@ namespace App\Http\Controllers\Pilates\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Pilates\Admin\ReservationIndexRequest as AdminReservationIndexRequest;
-use Carbon\Carbon;
 use App\Services\Pilates\AdminReservationAvailabilityService;
+use Carbon\Carbon;
 
 class CalendarController extends Controller
 {
     public function __construct(
         private AdminReservationAvailabilityService $availabilityService
     ) {}
+
     public function index(AdminReservationIndexRequest $request)
     {
         $weekStart = $request->input('week_start', now()->startOfWeek(Carbon::SUNDAY)->format('Y-m-d'));
@@ -28,8 +29,8 @@ class CalendarController extends Controller
             ]);
         }
 
-            return view('pages.pilates.admin.reservations.calendar',  [
-                'weekStart' => $weekStart,
-            ]);
+        return view('pages.pilates.admin.reservations.calendar', [
+            'weekStart' => $weekStart,
+        ]);
     }
 }

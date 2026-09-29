@@ -2,7 +2,6 @@
 
 namespace Database\Seeders\ThinkMotion;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class ThinkMotionDatabaseSeeder extends Seeder

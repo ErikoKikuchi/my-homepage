@@ -2,14 +2,14 @@
 
 namespace App\Models\Auth;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class Admin extends Authenticatable
 {
     use HasUuids;
+
     protected $fillable = [
         'username',
         'email',
@@ -18,16 +18,19 @@ class Admin extends Authenticatable
 
     protected function casts(): array
     {
-        return [ 
-            'two_factor_secret'=>'encrypted',
-            'two_factor_recovery_codes'=>'encrypted',
-            'two_factor_confirmed_at'=>'datetime',
+        return [
+            'two_factor_secret' => 'encrypted',
+            'two_factor_recovery_codes' => 'encrypted',
+            'two_factor_confirmed_at' => 'datetime',
             'password' => 'hashed',
         ];
     }
-    //uuidの自動生成
+
+    // uuidの自動生成
     public $incrementing = false;
+
     protected $keyType = 'string';
+
     protected static function boot(): void
     {
         parent::boot();
@@ -38,6 +41,7 @@ class Admin extends Authenticatable
             }
         });
     }
+
     public function sections()
     {
         return $this->belongsToMany(Section::class, 'admin_section');

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type SubmitEvent } from "react";
-import { resetPassword, AuthApiError } from "@/lib/api/auth/authClient";
+import { resetPassword, AuthApiError } from "@/lib/api/auth/authApi";
 import EmailInput from "@/components/auth/EmailInput";
 import PasswordInput from "@/components/auth/PasswordInput";
 import PasswordConfirmationInput from "@/components/auth/PasswordConfirmationInput";

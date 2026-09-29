@@ -67,10 +67,12 @@ class LocationController extends Controller
     public function archive(Location $location)
     {
         $location->update(['is_active' => false]);
+
         return redirect()
             ->route('pilates.admin.location.index')
             ->with('message', '場所をアーカイブしました。');
     }
+
     public function restore(Location $location)
     {
         $location->update(['is_active' => true]);

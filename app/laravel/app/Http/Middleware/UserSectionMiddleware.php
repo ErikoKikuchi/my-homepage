@@ -4,8 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserSectionMiddleware
 {
@@ -19,9 +19,9 @@ class UserSectionMiddleware
         $user = Auth::guard('web')->user();
 
         $allowed = match ($section) {
-            'pilates'     => $user->is_pilates_user,
+            'pilates' => $user->is_pilates_user,
             'thinkmotion' => $user->is_medical,
-            default       => false,
+            default => false,
         };
 
         if (! $allowed) {

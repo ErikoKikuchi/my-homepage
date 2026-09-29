@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('created_by')->constrained('users')->cascadeOnDelete();
             $table->foreignUuid('room_id')->nullable()->constrained('rooms')->cascadeOnDelete();
-            $table->enum('visibility', ['public','members','room_only','private'])->default('public');
+            $table->enum('visibility', ['public', 'members', 'room_only', 'private'])->default('public');
             $table->dateTime('published_at')->nullable();
             $table->string('title');
             $table->boolean('show_one_sentence_insight')->default(false);
@@ -27,7 +27,7 @@ return new class extends Migration
             $table->text('content');
             $table->boolean('show_my_experience')->default(false);
             $table->text('my_experience')->nullable();
-            $table->enum('thinking_state', ['draft','in_progress','structured','provisional','completed'])->default('in_progress');
+            $table->enum('thinking_state', ['draft', 'in_progress', 'structured', 'provisional', 'completed'])->default('in_progress');
             $table->boolean('needs_revisit')->default(false);
             $table->boolean('is_practical')->default(false);
             $table->boolean('is_hot')->default(false);

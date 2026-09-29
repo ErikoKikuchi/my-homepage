@@ -2,10 +2,10 @@
 
 namespace App\Services\Pilates;
 
+use App\Enums\Pilates\ReservationStatus;
+use App\Models\Pilates\LessonSlot;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use App\Models\Pilates\LessonSlot;
-use App\Enums\Pilates\ReservationStatus;
 
 class ReservationAvailabilityService
 {
@@ -20,27 +20,27 @@ class ReservationAvailabilityService
     public function isSlotAvailable(LessonSlot $slot): bool
     {
         return $slot->reservations
-        ->whereNotIn('status', [
-            ReservationStatus::Canceled,
-            ReservationStatus::Rescheduled,
-        ])
-        ->count() === 0;
+            ->whereNotIn('status', [
+                ReservationStatus::Canceled,
+                ReservationStatus::Rescheduled,
+            ])
+            ->count() === 0;
     }
 
-    //月を受け取り、その月の日付ごとの空き状況を返す
+    // 月を受け取り、その月の日付ごとの空き状況を返す
     public function buildSlotMap(string $month): Collection
     {
         $startOfMonth = Carbon::parse($month)->startOfMonth();
         $minDate = $this->minBookableDate();
 
         $slots = LessonSlot::whereBetween('date', [
-                $startOfMonth->format('Y-m-d'),
-                $startOfMonth->copy()->endOfMonth()->format('Y-m-d'),
-            ])
+            $startOfMonth->format('Y-m-d'),
+            $startOfMonth->copy()->endOfMonth()->format('Y-m-d'),
+        ])
             ->with('reservations')
             ->get();
 
-        return $slots->groupBy(fn($slot) => $slot->date->format('Y-m-d'))
+        return $slots->groupBy(fn ($slot) => $slot->date->format('Y-m-d'))
             ->map(function ($daySlots, $dateString) use ($minDate) {
                 $date = Carbon::parse($dateString);
 
@@ -48,7 +48,7 @@ class ReservationAvailabilityService
                     return null; // 過去日は表示なし
                 }
 
-                $availableSlots = $daySlots->filter(fn($slot) => $this->isSlotAvailable($slot));
+                $availableSlots = $daySlots->filter(fn ($slot) => $this->isSlotAvailable($slot));
 
                 if ($availableSlots->isEmpty()) {
                     return 'full';
@@ -57,7 +57,7 @@ class ReservationAvailabilityService
                 return $date->greaterThanOrEqualTo($minDate)
                     ? 'available'
                     : 'contact_only';
-        });
+            });
     }
 
     public function getAvailableTimes(string $date): array
@@ -65,10 +65,10 @@ class ReservationAvailabilityService
         return LessonSlot::where('date', $date)
             ->with('lessonTemplate')
             ->get()
-            ->filter(fn($slot) => $this->isSlotAvailable($slot))
-            ->map(fn($slot) => [
+            ->filter(fn ($slot) => $this->isSlotAvailable($slot))
+            ->map(fn ($slot) => [
                 'start' => $slot->lessonTemplate->start_time,
-                'end'   => $slot->lessonTemplate->end_time,
+                'end' => $slot->lessonTemplate->end_time,
                 'locationName' => $slot->location?->name,
             ])
             ->values()

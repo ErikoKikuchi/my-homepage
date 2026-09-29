@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Pilates\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Auth\User;
 use App\Http\Requests\Pilates\Admin\StoreClientRequest;
 use App\Http\Requests\Pilates\Admin\UpdateClientRequest;
+use App\Models\Auth\User;
 use App\Models\Pilates\Client;
+use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
@@ -26,13 +26,15 @@ class ClientController extends Controller
 
         return view('pages.pilates.admin.clients.index', compact('users'));
     }
+
     public function show(Client $client)
     {
-    
+
         $client->load('user');
-    
+
         return view('pages.pilates.admin.clients.show', compact('client'));
     }
+
     public function store(StoreClientRequest $request)
     {
         $validated = $request->validated();
@@ -47,24 +49,26 @@ class ClientController extends Controller
         }
 
         try {
-        \DB::transaction(function () use ($user, $validated) {
-            $user->client()->create([
-                'name' => $user->name,
+            \DB::transaction(function () use ($user, $validated) {
+                $user->client()->create([
+                    'name' => $user->name,
+                    'gender' => $validated['gender'],
+                    'is_active' => true,
+                ]);
+
+                $user->update(['is_client' => true]);
+            });
+
+        } catch (\Throwable $e) {
+            \Log::error('クライアント登録処理に失敗しました', [
+                'user_id' => $user->id,
                 'gender' => $validated['gender'],
-                'is_active'=>true
+                'error' => $e->getMessage(),
             ]);
 
-            $user->update(['is_client' => true]);
-        });
+            return response()->json(['message' => '登録処理に失敗しました。'], 500);
+        }
 
-    } catch (\Throwable $e) {
-        \Log::error('クライアント登録処理に失敗しました', [
-            'user_id' => $user->id,
-            'gender' => $validated['gender'],
-            'error' => $e->getMessage(),
-        ]);
-        return response()->json(['message' => '登録処理に失敗しました。'], 500);
-    }
         return response()->json(['message' => 'クライアント登録が完了しました。'], 201);
     }
 
@@ -83,6 +87,7 @@ class ClientController extends Controller
             'client' => $client->fresh(),
         ]);
     }
+
     public function archive(Request $request)
     {
         $clients = User::query()

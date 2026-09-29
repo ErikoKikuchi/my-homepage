@@ -28,10 +28,11 @@ class UpdateClientRequest extends FormRequest
             'is_active' => ['sometimes', 'required', 'boolean'],
         ];
     }
+
     public function messages()
     {
         return [
-            'name.required'=>'氏名を入力してください'
+            'name.required' => '氏名を入力してください',
         ];
     }
 }

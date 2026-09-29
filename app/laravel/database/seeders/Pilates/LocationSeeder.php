@@ -2,9 +2,8 @@
 
 namespace Database\Seeders\Pilates;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Models\Pilates\Location;
+use Illuminate\Database\Seeder;
 
 class LocationSeeder extends Seeder
 {
@@ -14,40 +13,40 @@ class LocationSeeder extends Seeder
     public function run(): void
     {
         Location::create([
-            'name'=>'遠浅公民館',
-            'address'=>'〒059-1433 北海道勇払郡安平町遠浅１２５−１',
-            'base_fee'=>'200',
+            'name' => '遠浅公民館',
+            'address' => '〒059-1433 北海道勇払郡安平町遠浅１２５−１',
+            'base_fee' => '200',
             'price_addon_per_session' => '41',
-            'map_url'=>'https://maps.app.goo.gl/5xw6EvLVEbQXa1qF6',
-            'is_active'=>true,
-            'is_paid_venue'=>false,
+            'map_url' => 'https://maps.app.goo.gl/5xw6EvLVEbQXa1qF6',
+            'is_active' => true,
+            'is_paid_venue' => false,
         ]);
         Location::create([
-            'name'=>'町民会館',
-            'address'=>'〒059-1502 北海道勇払郡安平町早来北進１０２−４',
-            'base_fee'=>'300',
+            'name' => '町民会館',
+            'address' => '〒059-1502 北海道勇払郡安平町早来北進１０２−４',
+            'base_fee' => '300',
             'price_addon_per_session' => '474',
-            'map_url'=>'https://maps.app.goo.gl/tYqtUgUUpiK3MzKd7',
-            'is_active'=>true,
-            'is_paid_venue'=>false,
+            'map_url' => 'https://maps.app.goo.gl/tYqtUgUUpiK3MzKd7',
+            'is_active' => true,
+            'is_paid_venue' => false,
         ]);
         Location::create([
-            'name'=>'安平町スポーツセンター',
-            'address'=>'〒059-1502 北海道勇払郡安平町早来北進１０２−５',
-            'base_fee'=>'100',
+            'name' => '安平町スポーツセンター',
+            'address' => '〒059-1502 北海道勇払郡安平町早来北進１０２−５',
+            'base_fee' => '100',
             'price_addon_per_session' => '474',
-            'map_url'=>'https://maps.app.goo.gl/sV1VfRBifaF6FEUr6',
-            'is_active'=>true,
-            'is_paid_venue'=>false,
+            'map_url' => 'https://maps.app.goo.gl/sV1VfRBifaF6FEUr6',
+            'is_active' => true,
+            'is_paid_venue' => false,
         ]);
         Location::create([
-            'name'=>'beauty Ruby',
-            'address'=>'〒053-0015 北海道苫小牧市本幸町２丁目３−１７ グランドール本幸町',
-            'base_fee'=>'1000',
+            'name' => 'beauty Ruby',
+            'address' => '〒053-0015 北海道苫小牧市本幸町２丁目３−１７ グランドール本幸町',
+            'base_fee' => '1000',
             'price_addon_per_session' => '2000',
-            'map_url'=>'https://maps.app.goo.gl/hsSLRavaoggXrwGt6',
-            'is_active'=>true,
-            'is_paid_venue'=>true,
+            'map_url' => 'https://maps.app.goo.gl/hsSLRavaoggXrwGt6',
+            'is_active' => true,
+            'is_paid_venue' => true,
         ]);
     }
 }

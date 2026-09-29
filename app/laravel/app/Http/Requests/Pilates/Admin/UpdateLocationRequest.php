@@ -32,7 +32,7 @@ class UpdateLocationRequest extends FormRequest
             'is_active' => ['boolean'],
         ];
     }
- 
+
     public function attributes(): array
     {
         return [
@@ -45,9 +45,10 @@ class UpdateLocationRequest extends FormRequest
             'is_active' => '有効フラグ',
         ];
     }
+
     public function messages()
     {
-        return[
+        return [
             'name.required' => '名称を入力してください',
             'name.string' => '名称を正しく入力してください',
             'name.max' => '名称は２５５字以内で入力してください',
@@ -58,8 +59,8 @@ class UpdateLocationRequest extends FormRequest
             'price_addon_per_session.min' => '加算料金は０円以上で入力してください',
             'base_fee.integer' => '基本料金は整数で入力してください',
             'base_fee.min' => '基本料金は０円以上で入力してください',
-            'map_url.url' =>'地図URLはURL形式で入力してください',
-            'map_url.max' =>'地図URLは２５５字以内で入力してください',
+            'map_url.url' => '地図URLはURL形式で入力してください',
+            'map_url.max' => '地図URLは２５５字以内で入力してください',
 
         ];
     }

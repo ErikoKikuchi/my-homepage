@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Auth\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\AdminTwoFactorRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PragmaRX\Google2FALaravel\Support\Authenticator;
-use Illuminate\Http\Request;
 
 class AdminTwoFactorController extends Controller
 {
@@ -38,4 +38,3 @@ class AdminTwoFactorController extends Controller
         return redirect()->route("{$section}.admin.home");
     }
 }
-

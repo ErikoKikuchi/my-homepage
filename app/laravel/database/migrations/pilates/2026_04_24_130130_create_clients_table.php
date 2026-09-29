@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->uuid('user_id');
             $table->string('name');
-            $table->enum('gender', ['male','female','other']);
+            $table->enum('gender', ['male', 'female', 'other']);
             $table->string('occupation')->nullable();
             $table->text('body_notes')->nullable();
             $table->text('personality_notes')->nullable();

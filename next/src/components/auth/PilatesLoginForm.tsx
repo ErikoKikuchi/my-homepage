@@ -2,7 +2,7 @@
 
 import { useState, type SubmitEvent } from "react";
 import { useRouter } from "next/navigation";
-import { login, AuthApiError } from "@/lib/api/auth/authClient";
+import { login, AuthApiError } from "@/lib/api/auth/authApi";
 import EmailInput from "@/components/auth/EmailInput";
 import PasswordInput from "@/components/auth/PasswordInput";
 import styles from "./PilatesLoginForm.module.css";

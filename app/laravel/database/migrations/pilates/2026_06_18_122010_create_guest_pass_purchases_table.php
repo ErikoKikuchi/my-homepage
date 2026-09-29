@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date('purchased_at');
             $table->boolean('is_finished')->default(false);
             $table->timestamps();
-});
+        });
     }
 
     /**

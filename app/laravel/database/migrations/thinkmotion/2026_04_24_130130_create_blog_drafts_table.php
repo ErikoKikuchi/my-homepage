@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('title');
             $table->text('body');
-            $table->enum('status',['draft','published'])->default('draft');
+            $table->enum('status', ['draft', 'published'])->default('draft');
             $table->softDeletes();
             $table->timestamps();
         });

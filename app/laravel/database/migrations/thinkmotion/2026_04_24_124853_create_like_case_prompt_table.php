@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('like_case_prompt', function (Blueprint $table) {
-            $table->foreignUuid('user_id')->constrained()-> cascadeOnDelete();
+            $table->foreignUuid('user_id')->constrained()->cascadeOnDelete();
             $table->foreignUuid('case_prompt_id')->constrained()->cascadeOnDelete();
             $table->primary(['user_id', 'case_prompt_id']);
             $table->timestamps();

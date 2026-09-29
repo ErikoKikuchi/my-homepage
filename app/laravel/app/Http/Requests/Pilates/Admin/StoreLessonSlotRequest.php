@@ -23,16 +23,17 @@ class StoreLessonSlotRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'dates'=> ['required', 'array', 'min:1'],
+            'dates' => ['required', 'array', 'min:1'],
             'dates.*' => ['date', 'after_or_equal:today'],
             'lesson_template_id' => ['required', 'uuid', 'exists:client_db.lesson_templates,id'],
             'location_id' => ['nullable', 'uuid', 'exists:client_db.locations,id'],
         ];
     }
+
     public function messages(): array
     {
         return [
-            'dates.required'=>'日付を入力してください',
+            'dates.required' => '日付を入力してください',
             'dates.*.date' => '日付の形式が正しくありません',
         ];
     }

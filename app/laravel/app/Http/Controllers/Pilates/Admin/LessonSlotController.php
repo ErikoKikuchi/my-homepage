@@ -2,35 +2,37 @@
 
 namespace App\Http\Controllers\Pilates\Admin;
 
+use App\Enums\Pilates\ReservationStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Pilates\Admin\StoreLessonSlotRequest;
 use App\Http\Requests\Pilates\Admin\UpdateLessonSlotRequest;
 use App\Models\Pilates\LessonSlot;
 use App\Models\Pilates\LessonTemplate;
 use App\Models\Pilates\Location;
-use Illuminate\Support\Facades\DB;
 use App\Services\Pilates\AdminReservationAvailabilityService;
-use App\Enums\Pilates\ReservationStatus;
+use Illuminate\Support\Facades\DB;
 
 class LessonSlotController extends Controller
 {
     public function __construct(
         private AdminReservationAvailabilityService $availabilityService
-    ){}
+    ) {}
+
     public function index()
     {
         $lessonSlots = LessonSlot::with('lessonTemplate')
-        ->where('date', '>=', now()->startOfDay())
-        ->orderBy('date')->get();
-    
+            ->where('date', '>=', now()->startOfDay())
+            ->orderBy('date')->get();
+
         return view('pages.pilates.admin.lesson-slots.index', compact('lessonSlots'));
     }
+
     public function create()
     {
         $lessonTemplates = LessonTemplate::where('is_active', true)
             ->orderBy('start_time')
             ->get();
-        $locations = Location::where('is_active', true)->orderBy('name')->get(); 
+        $locations = Location::where('is_active', true)->orderBy('name')->get();
 
         return view('pages.pilates.admin.lesson-slots.create', compact('lessonTemplates', 'locations'));
     }
@@ -69,9 +71,9 @@ class LessonSlotController extends Controller
             }
         });
 
-    return redirect()
-        ->route('pilates.admin.lesson-slots.index')
-        ->with('message', count($dates).'件のレッスン枠を作成しました。');
+        return redirect()
+            ->route('pilates.admin.lesson-slots.index')
+            ->with('message', count($dates).'件のレッスン枠を作成しました。');
     }
 
     public function edit(LessonSlot $lessonSlot)
@@ -79,9 +81,9 @@ class LessonSlotController extends Controller
         $lessonTemplates = LessonTemplate::where('is_active', true)
             ->orderBy('start_time')
             ->get();
-            $locations = Location::where('is_active', true)->orderBy('name')->get(); 
-    
-        return view('pages.pilates.admin.lesson-slots.edit', compact('lessonSlot', 'lessonTemplates','locations'));
+        $locations = Location::where('is_active', true)->orderBy('name')->get();
+
+        return view('pages.pilates.admin.lesson-slots.edit', compact('lessonSlot', 'lessonTemplates', 'locations'));
     }
 
     public function update(UpdateLessonSlotRequest $request, LessonSlot $lessonSlot)
@@ -90,35 +92,35 @@ class LessonSlotController extends Controller
 
         $lessonTemplate = LessonTemplate::findOrFail($request->validated('lesson_template_id'));
         $lessonSlot->lessonTemplate()->associate($lessonTemplate);
-    
+
         if ($request->validated('location_id')) {
             $location = Location::findOrFail($request->validated('location_id'));
             $lessonSlot->location()->associate($location);
-        } 
+        }
         $lessonSlot->save();
-
 
         return redirect()
             ->route('pilates.admin.lesson-slots.index')
             ->with('message', 'レッスン枠を更新しました。');
     }
+
     public function destroy(LessonSlot $lessonSlot)
     {
         $hasActiveReservation = $lessonSlot->reservations()
-        ->whereNotIn('status', [
-            ReservationStatus::Canceled,
-            ReservationStatus::Rescheduled,
-        ])
-        ->exists();
+            ->whereNotIn('status', [
+                ReservationStatus::Canceled,
+                ReservationStatus::Rescheduled,
+            ])
+            ->exists();
 
-    if ($hasActiveReservation) {
-        return redirect()
-            ->route('pilates.admin.lesson-slots.index')
-            ->with('error', 'このレッスン枠は予約が入っているため削除できません。');
-    }
-    
+        if ($hasActiveReservation) {
+            return redirect()
+                ->route('pilates.admin.lesson-slots.index')
+                ->with('error', 'このレッスン枠は予約が入っているため削除できません。');
+        }
+
         $lessonSlot->delete();
-    
+
         return redirect()
             ->route('pilates.admin.lesson-slots.index')
             ->with('message', 'レッスン枠を削除しました。');

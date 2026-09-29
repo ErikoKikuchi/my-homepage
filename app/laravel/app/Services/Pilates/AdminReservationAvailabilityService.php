@@ -2,11 +2,11 @@
 
 namespace App\Services\Pilates;
 
-use Carbon\Carbon;
-use Illuminate\Support\Collection;
+use App\Enums\Pilates\ReservationStatus;
 use App\Models\Pilates\LessonSlot;
 use App\Models\Pilates\LessonTemplate;
-use App\Enums\Pilates\ReservationStatus;
+use Carbon\Carbon;
+use Illuminate\Support\Collection;
 
 class AdminReservationAvailabilityService
 {
@@ -21,20 +21,20 @@ class AdminReservationAvailabilityService
         $end = $start->copy()->addDays(6);
 
         $slots = LessonSlot::whereBetween('date', [
-                $start->format('Y-m-d'),
-                $end->format('Y-m-d'),
-            ])
+            $start->format('Y-m-d'),
+            $end->format('Y-m-d'),
+        ])
             ->with(['reservations.user', 'reservations.location', 'location', 'lessonTemplate'])
             ->get();
 
-        return $slots->groupBy(fn($slot) => $slot->date->format('Y-m-d'))
-            ->map(fn ($daySlots) => $daySlots->map(fn($slot) =>[
+        return $slots->groupBy(fn ($slot) => $slot->date->format('Y-m-d'))
+            ->map(fn ($daySlots) => $daySlots->map(fn ($slot) => [
                 'id' => $slot->id,
-                'time' => $slot->lessonTemplate->start_time . '-' . $slot->lessonTemplate->end_time,
+                'time' => $slot->lessonTemplate->start_time.'-'.$slot->lessonTemplate->end_time,
                 'location' => $this->resolveSlotLocation($slot),
                 'reservations' => $slot->reservations
-                ->whereNotIn('status', self::INACTIVE_STATUSES)
-                    ->map(fn($r) => [
+                    ->whereNotIn('status', self::INACTIVE_STATUSES)
+                    ->map(fn ($r) => [
                         'id' => $r->id,
                         'name' => $r->user->name,
                         'phone' => $r->user->phone,
@@ -42,6 +42,7 @@ class AdminReservationAvailabilityService
                     ])->values(),
             ])->values());
     }
+
     private function resolveSlotLocation(LessonSlot $slot): ?array
     {
         // スロット自体に場所が固定されている場合(例:水曜美容室)
@@ -51,7 +52,7 @@ class AdminReservationAvailabilityService
 
         // 場所未定で予約が入り、後から確定した場合
         $reservation = $slot->reservations
-        ->whereNotIn('status', self::INACTIVE_STATUSES)->first();
+            ->whereNotIn('status', self::INACTIVE_STATUSES)->first();
 
         if ($reservation?->location) {
             return ['id' => $reservation->location->id, 'name' => $reservation->location->name];
@@ -59,6 +60,7 @@ class AdminReservationAvailabilityService
 
         return null;
     }
+
     public function hasConflict(string $date, LessonTemplate $template): bool
     {
 
@@ -66,7 +68,7 @@ class AdminReservationAvailabilityService
             ->whereDate('date', $date)
             ->whereHas('lessonTemplate', function ($q) use ($template) {
                 $q->where('start_time', '<', $template->end_time)
-                  ->where('end_time', '>', $template->start_time);
+                    ->where('end_time', '>', $template->start_time);
             })
             ->exists();
     }

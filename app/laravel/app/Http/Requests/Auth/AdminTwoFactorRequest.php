@@ -23,14 +23,15 @@ class AdminTwoFactorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'two_factor_secret'=>['required','digits:6'],
+            'two_factor_secret' => ['required', 'digits:6'],
         ];
     }
+
     public function messages()
     {
         return [
-            'two_factor_secret.required'=> '6桁の数字を入力してください',
-            'two_factor_secret.digits'=>'6桁の数字を入力してください',
+            'two_factor_secret.required' => '6桁の数字を入力してください',
+            'two_factor_secret.digits' => '6桁の数字を入力してください',
         ];
     }
 }

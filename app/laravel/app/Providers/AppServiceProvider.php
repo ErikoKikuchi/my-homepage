@@ -2,12 +2,12 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Gate;
-use App\Policies\User\ReservationPolicy as UserReservationPolicy;
 use App\Policies\Admin\ReservationPolicy as AdminReservationPolicy;
+use App\Policies\User\ReservationPolicy as UserReservationPolicy;
 use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -40,9 +40,9 @@ class AppServiceProvider extends ServiceProvider
             $view->with('section', request()->is('thinkmotion', 'thinkmotion/*') ? 'thinkmotion' : 'pilates');
         });
         ResetPassword::createUrlUsing(function ($user, string $token) {
-        return config('app.frontend_url')
-        . '/auth/reset-password/' . $token
-        . '?email=' . urlencode($user->getEmailForPasswordReset());
-    });
+            return config('app.frontend_url')
+            .'/auth/reset-password/'.$token
+            .'?email='.urlencode($user->getEmailForPasswordReset());
+        });
     }
 }

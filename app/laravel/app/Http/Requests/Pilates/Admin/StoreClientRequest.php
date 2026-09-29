@@ -32,6 +32,7 @@ class StoreClientRequest extends FormRequest
             'gender' => ['required', Rule::in(['male', 'female', 'other'])],
         ];
     }
+
     public function messages(): array
     {
         return [

@@ -26,18 +26,19 @@ class UserLoginRequest extends FormRequest
             'email' => [
                 'required',
                 'email',
-                ],
-            'password'=>['required','min:12','string'],
+            ],
+            'password' => ['required', 'min:12', 'string'],
         ];
     }
+
     public function messages()
     {
         return [
-            'email.required'=>'メールアドレスを入力してください',
-            'email.email'=>'メールアドレスはメール形式で入力してください',
-            'password.required'=>'パスワードを入力してください',
-            'password.min'=>'パスワードは12文字以上で入力してください',
-            'password.string'=>'パスワードを正しく入力してください',
+            'email.required' => 'メールアドレスを入力してください',
+            'email.email' => 'メールアドレスはメール形式で入力してください',
+            'password.required' => 'パスワードを入力してください',
+            'password.min' => 'パスワードは12文字以上で入力してください',
+            'password.string' => 'パスワードを正しく入力してください',
         ];
     }
 }

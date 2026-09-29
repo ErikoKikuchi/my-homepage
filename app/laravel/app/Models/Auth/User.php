@@ -2,24 +2,30 @@
 
 namespace App\Models\Auth;
 
+use App\Enums\Pilates\ReservationStatus;
+use App\Models\Pilates\Client;
+use App\Models\Pilates\LessonSlot;
+use App\Models\Pilates\Reservation;
+use Carbon\Carbon;
+use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use App\Enums\Pilates\ReservationStatus;
-
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasUuids;
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+    /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
+
+    use HasUuids;
+
     protected $connection = 'mysql';
 
     /**
@@ -58,14 +64,17 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return [
             'email_verified_at' => 'datetime',
-            'is_client'=>'boolean',
-            'is_pilates_user'=>'boolean',
-            'is_medical'=>'boolean',
+            'is_client' => 'boolean',
+            'is_pilates_user' => 'boolean',
+            'is_medical' => 'boolean',
         ];
     }
-    //uuidの自動生成
+
+    // uuidの自動生成
     public $incrementing = false;
+
     protected $keyType = 'string';
+
     protected static function booting(): void
     {
         static::creating(function ($model) {
@@ -74,19 +83,22 @@ class User extends Authenticatable implements MustVerifyEmail
             }
         });
     }
-    public function client():HasOne
+
+    public function client(): HasOne
     {
-        return $this->hasOne(\App\Models\Pilates\Client::class);
+        return $this->hasOne(Client::class);
     }
-    public function reservations():HasMany
+
+    public function reservations(): HasMany
     {
-        return $this->hasMany(\App\Models\Pilates\Reservation::class);
+        return $this->hasMany(Reservation::class);
     }
+
     public function lessonSlotsViaReservations(): HasManyThrough
     {
         return $this->hasManyThrough(
-            \App\Models\Pilates\LessonSlot::class,
-            \App\Models\Pilates\Reservation::class,
+            LessonSlot::class,
+            Reservation::class,
             'user_id',        // reservations.user_id (Reservation側の外部キー)
             'id',              // lesson_slots.id (LessonSlot側の主キー)
             'id',              // users.id (User側のローカルキー)
@@ -96,16 +108,18 @@ class User extends Authenticatable implements MustVerifyEmail
             ReservationStatus::Confirmed,
         ]);
     }
+
     protected function latestReservationDate(): Attribute
     {
         return Attribute::make(
             get: fn () => $this->lesson_slots_via_reservations_max_date
-                ? \Carbon\Carbon::parse($this->lesson_slots_via_reservations_max_date)->format('Y-m-d')
+                ? Carbon::parse($this->lesson_slots_via_reservations_max_date)->format('Y-m-d')
                 : '--',
         );
     }
+
     public function canUseTrainingLog(): bool
-{
-    return (bool) ($this->is_client && $this->client?->is_active);
-}
+    {
+        return (bool) ($this->is_client && $this->client?->is_active);
+    }
 }

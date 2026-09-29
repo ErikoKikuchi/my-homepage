@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignUuid('room_id')->constrained()->cascadeOnDelete();
             $table->foreignUuid('user_id')->constrained()->cascadeOnDelete();
             $table->text('body');
-            $table->enum('status', ['idea','in_progress','done'])->default('idea');
+            $table->enum('status', ['idea', 'in_progress', 'done'])->default('idea');
             $table->timestamps();
         });
     }

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('created_by')->constrained('users')->cascadeOnDelete();
             $table->foreignUuid('room_id')->nullable()->constrained('rooms')->cascadeOnDelete();
-            $table->enum('visibility', ['public','members','room_only','private'])->default('public');
+            $table->enum('visibility', ['public', 'members', 'room_only', 'private'])->default('public');
             $table->dateTime('published_at')->nullable();
             $table->string('title');
             $table->text('body_phase1');

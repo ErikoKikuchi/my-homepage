@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('my_data', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('user_id')->constrained('users')->cascadeOnDelete();
-            $table->enum('file_type', ['pdf','image','other'])->default('image');
+            $table->enum('file_type', ['pdf', 'image', 'other'])->default('image');
             $table->string('file_name');
             $table->string('file_path');
             $table->unsignedBigInteger('file_size');

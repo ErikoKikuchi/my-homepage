@@ -1,33 +1,33 @@
 "use client";
 
 import { createContext, useCallback, useEffect, useState } from "react";
-import type { AuthPilatesUser } from "@/types/auth/auth";
-import { getCurrentPilatesUser } from "@/lib/api/auth/authApi";
+import type { AuthThinkMotionUser } from "@/types/auth/auth";
+import { getCurrentThinkMotionUser } from "@/lib/api/auth/authThinkMotion";
 
-type PilatesAuthContextValue = {
-  user: AuthPilatesUser | null;
+type ThinkMotionAuthContextValue = {
+  user: AuthThinkMotionUser | null;
   isLoading: boolean;
   error: Error | null;
   refresh: () => Promise<void>;
 };
 
-export const PilatesAuthContext = createContext<
-  PilatesAuthContextValue | undefined
+export const ThinkMotionAuthContext = createContext<
+  ThinkMotionAuthContextValue | undefined
 >(undefined);
 
-export function PilatesAuthProvider({
+export function ThinkMotionAuthProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [user, setUser] = useState<AuthPilatesUser | null>(null);
+  const [user, setUser] = useState<AuthThinkMotionUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
   const refresh = useCallback(async () => {
     try {
       setError(null);
-      setUser(await getCurrentPilatesUser());
+      setUser(await getCurrentThinkMotionUser());
     } catch (e) {
       setUser(null);
       setError(e instanceof Error ? e : new Error("unknown error"));
@@ -40,7 +40,7 @@ export function PilatesAuthProvider({
     let cancelled = false;
     (async () => {
       try {
-        const u = await getCurrentPilatesUser();
+        const u = await getCurrentThinkMotionUser();
         if (!cancelled) setUser(u);
       } catch (e) {
         if (!cancelled) {
@@ -58,8 +58,10 @@ export function PilatesAuthProvider({
   }, []);
 
   return (
-    <PilatesAuthContext.Provider value={{ user, isLoading, error, refresh }}>
+    <ThinkMotionAuthContext.Provider
+      value={{ user, isLoading, error, refresh }}
+    >
       {children}
-    </PilatesAuthContext.Provider>
+    </ThinkMotionAuthContext.Provider>
   );
 }

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Pilates\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Pilates\Hope;
 
 class HopeController extends Controller
 {

@@ -18,7 +18,7 @@ enum ReservationStatus: string
             self::Confirmed => '確定',
             self::Canceled => 'キャンセル',
             self::NoShow => '無断キャンセル',
-            self::Rescheduled=> '予約変更'
+            self::Rescheduled => '予約変更'
         };
     }
 }

@@ -15,7 +15,7 @@ import {
   ResetPasswordSuccessResponse,
 } from "@/types/auth/resetPassword";
 import { EmailVerifySuccessResponse } from "@/types/auth/emailVerify";
-import type { AuthPilatesUser } from "@/types/auth/auth";
+
 import { ensureCsrfCookie, getCsrfTokenFromCookie } from "@/lib/api/csrf";
 
 export async function login(
@@ -50,26 +50,6 @@ export class AuthApiError extends Error {
   ) {
     super(body.message);
   }
-}
-export async function getCurrentPilatesUser(): Promise<AuthPilatesUser | null> {
-  const response = await fetch("/api/auth/user", {
-    credentials: "include",
-    headers: {
-      Accept: "application/json",
-    },
-  });
-
-  if (response.status === 401) {
-    return null;
-  }
-
-  if (!response.ok) {
-    throw new Error("認証状態の取得に失敗しました");
-  }
-
-  const data: { user: AuthPilatesUser } = await response.json();
-
-  return data.user;
 }
 
 export async function register(

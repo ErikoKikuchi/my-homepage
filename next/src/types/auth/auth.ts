@@ -44,3 +44,10 @@ type AuthPilatesState = {
   user: AuthPilatesUser | null;
   isLoading: boolean;
 };
+export interface LogoutSuccessResponse {
+  redirectTo: string;
+}
+//ログインしているThinkMotionユーザ－の型
+export type AuthThinkMotionUser = {
+  name: string;
+};

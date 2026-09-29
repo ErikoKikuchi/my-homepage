@@ -3,7 +3,6 @@
 namespace App\Actions\Fortify;
 
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Laravel\Fortify\Contracts\PasswordResetResponse as PasswordResetResponseContract;
 
 class PasswordResetResponse implements PasswordResetResponseContract

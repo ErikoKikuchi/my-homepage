@@ -2,13 +2,13 @@
 
 namespace Database\Seeders\Pilates;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Models\Pilates\LessonTemplate;
+use Illuminate\Database\Seeder;
 
 class LessonTemplateSeeder extends Seeder
 {
     protected $connection = 'client_db';
+
     /**
      * Run the database seeds.
      */
@@ -16,18 +16,18 @@ class LessonTemplateSeeder extends Seeder
     {
         LessonTemplate::create([
             'start_time' => '09:00:00',
-            'end_time'   => '10:00:00',
-            'is_active'  => true,
+            'end_time' => '10:00:00',
+            'is_active' => true,
         ]);
         LessonTemplate::create([
             'start_time' => '13:00:00',
-            'end_time'   => '14:00:00',
-            'is_active'  => true,
+            'end_time' => '14:00:00',
+            'is_active' => true,
         ]);
         LessonTemplate::create([
             'start_time' => '14:00:00',
-            'end_time'   => '15:00:00',
-            'is_active'  => true,
+            'end_time' => '15:00:00',
+            'is_active' => true,
         ]);
     }
 }

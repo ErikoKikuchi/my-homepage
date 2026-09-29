@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type SubmitEvent } from "react";
-import { forgotPassword, AuthApiError } from "@/lib/api/auth/authClient";
+import { forgotPassword, AuthApiError } from "@/lib/api/auth/authApi";
 import EmailInput from "@/components/auth/EmailInput";
 import styles from "./ForgotPasswordForm.module.css";
 

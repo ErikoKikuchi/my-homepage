@@ -1,7 +1,11 @@
 <?php
 
+use App\Providers\AppServiceProvider;
+use App\Providers\FortifyServiceProvider;
+use PragmaRx\Google2FALaravel\ServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    App\Providers\FortifyServiceProvider::class,
-    \PragmaRx\Google2FALaravel\ServiceProvider::class,
+    AppServiceProvider::class,
+    FortifyServiceProvider::class,
+    ServiceProvider::class,
 ];

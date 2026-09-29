@@ -2,11 +2,11 @@
 
 namespace App\Services\Pilates;
 
+use App\Enums\Pilates\ReservationStatus;
 use App\Models\Pilates\LessonSlot;
 use App\Models\Pilates\LessonTemplate;
 use App\Models\Pilates\Location;
 use App\Models\Pilates\Reservation;
-use App\Enums\Pilates\ReservationStatus;
 use Illuminate\Support\Facades\DB;
 
 class ReservationService
@@ -48,16 +48,16 @@ class ReservationService
             $newSlot->save();
 
             $newReservation = $this->createReservation($newSlot, [
-                'user_id'             => $oldReservation->user_id,
-                'participants'        => $oldReservation->participants,
-                'participants_name'   => $oldReservation->participants_name,
-                'participants_phone'  => $oldReservation->participants_phone,
-                'note'                => $oldReservation->note,
+                'user_id' => $oldReservation->user_id,
+                'participants' => $oldReservation->participants,
+                'participants_name' => $oldReservation->participants_name,
+                'participants_phone' => $oldReservation->participants_phone,
+                'note' => $oldReservation->note,
                 'rescheduled_from_id' => $oldReservation->id,
             ]);
 
             $oldReservation->update([
-                'status'            => ReservationStatus::Rescheduled,
+                'status' => ReservationStatus::Rescheduled,
                 'rescheduled_to_id' => $newReservation->id,
             ]);
 

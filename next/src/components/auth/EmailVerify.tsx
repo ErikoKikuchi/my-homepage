@@ -1,10 +1,7 @@
 "use client";
 
 import { useState, type SubmitEvent } from "react";
-import {
-  resendVerificationEmail,
-  AuthApiError,
-} from "@/lib/api/auth/authClient";
+import { resendVerificationEmail, AuthApiError } from "@/lib/api/auth/authApi";
 import styles from "./ForgotPasswordForm.module.css";
 import LinkButton from "../ui/LinkButton/LinkButton";
 

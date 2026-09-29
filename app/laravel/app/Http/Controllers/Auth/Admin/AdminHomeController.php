@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Auth\Admin;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Pilates\Reservation;
 use App\Enums\Pilates\ReservationStatus;
+use App\Http\Controllers\Controller;
+use App\Models\Pilates\Reservation;
+use Illuminate\Http\Request;
 
 class AdminHomeController extends Controller
 {
@@ -13,6 +13,7 @@ class AdminHomeController extends Controller
     {
         $section = $request->attributes->get('section');
         $pendingReservationCount = Reservation::where('status', ReservationStatus::WaitingVenue)->count();
-        return view("pages.{$section}.admin.dashboard",compact('pendingReservationCount'));
+
+        return view("pages.{$section}.admin.dashboard", compact('pendingReservationCount'));
     }
 }

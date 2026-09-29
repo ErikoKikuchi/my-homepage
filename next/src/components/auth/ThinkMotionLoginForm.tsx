@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { login, AuthApiError } from "@/lib/api/auth/authClient";
+import { login, AuthApiError } from "@/lib/api/auth/authApi";
 import EmailInput from "@/components/auth/EmailInput";
 import PasswordInput from "@/components/auth/PasswordInput";
 import LinkButton from "../ui/LinkButton/LinkButton";

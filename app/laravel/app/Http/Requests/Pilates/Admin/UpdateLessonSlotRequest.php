@@ -23,15 +23,16 @@ class UpdateLessonSlotRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'date'=>['required','date_format:Y-m-d'],
+            'date' => ['required', 'date_format:Y-m-d'],
             'lesson_template_id' => ['required', 'uuid', 'exists:client_db.lesson_templates,id'],
             'location_id' => ['nullable', 'uuid', 'exists:client_db.locations,id'],
         ];
     }
+
     public function messages(): array
     {
         return [
-            'date.required'=>'日付を入力してください',
+            'date.required' => '日付を入力してください',
             'date.date_format' => '日付の形式が正しくありません（例: 2025-04-07）',
         ];
     }

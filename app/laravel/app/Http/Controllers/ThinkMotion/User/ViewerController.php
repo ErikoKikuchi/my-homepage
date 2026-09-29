@@ -7,8 +7,9 @@ use Illuminate\Http\Request;
 
 class ViewerController extends Controller
 {
-    public function index(Request $request){
-        //新規の記録5件をもって
+    public function index(Request $request)
+    {
+        // 新規の記録5件をもって
         return view('pages.thinkmotion.top');
     }
 }

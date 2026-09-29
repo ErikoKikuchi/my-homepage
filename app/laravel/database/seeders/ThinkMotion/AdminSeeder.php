@@ -2,9 +2,9 @@
 
 namespace Database\Seeders\ThinkMotion;
 
-use Illuminate\Database\Seeder;
 use App\Models\Auth\Admin;
 use App\Models\Auth\Section;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
 class AdminSeeder extends Seeder
@@ -15,12 +15,12 @@ class AdminSeeder extends Seeder
     public function run(): void
     {
         $pilatesSection = Section::on('mysql')->firstOrCreate(
-            ['key'=>'pilates'],
-            ['label'=>'ピラティス']
+            ['key' => 'pilates'],
+            ['label' => 'ピラティス']
         );
-        $thinkmotionSection= Section::on('mysql')->firstOrCreate(
-            ['key'=>'thinkmotion'],
-            ['label'=>'ThinkMotion']
+        $thinkmotionSection = Section::on('mysql')->firstOrCreate(
+            ['key' => 'thinkmotion'],
+            ['label' => 'ThinkMotion']
         );
 
         $thinkmotionAdmin = Admin::on('mysql')->create([

@@ -2,75 +2,78 @@
 
 namespace App\Models\Pilates;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\Auth\User;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class TrainingLog extends Model
 {
     use HasUuids;
+
     protected $connection = 'client_db';
-    
+
     protected $fillable = [
         'logged_date',
         'mood',
-        'free_text'
+        'free_text',
     ];
 
-    //キャスト
+    // キャスト
     protected $casts = [
         'logged_date' => 'date',
     ];
 
-    //リレーション
-    public function user():BelongsTo
+    // リレーション
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Auth\User::class);
+        return $this->belongsTo(User::class);
     }
-    public function trainingQuestion():HasMany
+
+    public function trainingQuestion(): HasMany
     {
         return $this->hasMany(TrainingQuestion::class);
     }
 
-    //ログインユーザーのログ
+    // ログインユーザーのログ
     #[Scope]
-    public function forUser(Builder $query):void
+    public function forUser(Builder $query): void
     {
-        /** @var \App\Models\Auth\User|null $user */
+        /** @var User|null $user */
         $user = auth('web')->user();
         $query->where('user_id', $user?->id);
     }
 
-    //urgency=trueのもの
+    // urgency=trueのもの
     #[Scope]
-    public function urgent(Builder $query):void
+    public function urgent(Builder $query): void
     {
-        $query->where('urgency',true);
+        $query->where('urgency', true);
     }
 
-    //メッセージ有のもの
+    // メッセージ有のもの
     #[Scope]
-    public function hasQuestion(Builder $query):void
+    public function hasQuestion(Builder $query): void
     {
         $query->whereHas('trainingQuestion');
     }
 
-    //logged_date降順
+    // logged_date降順
     #[Scope]
-    public function latest(Builder $query):void
+    public function latest(Builder $query): void
     {
-        $query->orderBy('logged_date','desc');
+        $query->orderBy('logged_date', 'desc');
     }
-    //logged_dateをフォーマットして返す
-    protected function loggedDate():Attribute
+
+    // logged_dateをフォーマットして返す
+    protected function loggedDate(): Attribute
     {
         return Attribute::make(
-            get:fn($value)=>$value->format('Y/m/d')
+            get: fn ($value) => $value->format('Y/m/d')
         );
     }
 }

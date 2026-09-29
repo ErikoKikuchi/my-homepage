@@ -23,9 +23,9 @@ class UpdateAdminReservationRequest extends FormRequest
     public function rules(): array
     {
         return [
-        'date'                => ['required', 'date', 'after_or_equal:today'],
-        'lesson_template_id'  => ['required', 'uuid', 'exists:client_db.lesson_templates,id'],
-        'location_id'         => ['nullable', 'uuid', 'exists:client_db.locations,id'],
-    ];
+            'date' => ['required', 'date', 'after_or_equal:today'],
+            'lesson_template_id' => ['required', 'uuid', 'exists:client_db.lesson_templates,id'],
+            'location_id' => ['nullable', 'uuid', 'exists:client_db.locations,id'],
+        ];
     }
 }

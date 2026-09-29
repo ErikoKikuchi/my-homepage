@@ -2,44 +2,48 @@
 
 namespace App\Models\Pilates;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class GuestPassUsage extends Model
 {
     use HasUuids;
+
     protected $connection = 'client_db';
-    
+
     protected $fillable = [
         'reason',
-        'used_at'
+        'used_at',
     ];
 
     protected $casts = [
-        'used_at'=>'datetime',
+        'used_at' => 'datetime',
     ];
 
-    public function client():BelongsTo
+    public function client(): BelongsTo
     {
         return $this->belongsTo(Client::class);
     }
 
-    public function guestPassPurchases():BelongsTo
+    public function guestPassPurchases(): BelongsTo
     {
         return $this->belongsTo(GuestPassPurchase::class);
     }
-    public function pilatesSessions():BelongsTo
+
+    public function pilatesSessions(): BelongsTo
     {
         return $this->belongsTo(PilatesSession::class);
     }
-    public function reservation():BelongsTo
+
+    public function reservation(): BelongsTo
     {
         return $this->belongsTo(Reservation::class);
     }
-    #[scope]
+
+    #[Scope]
     protected function noShow(Builder $query): void
     {
         $query->where('reason', 'no_show');

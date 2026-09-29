@@ -2,11 +2,10 @@
 
 namespace Database\Seeders;
 
+use Database\Seeders\Pilates\PilatesDatabaseSeeder;
+use Database\Seeders\ThinkMotion\ThinkMotionDatabaseSeeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Database\Seeders\ThinkMotion\ThinkMotionDatabaseSeeder;
-use Database\Seeders\Pilates\PilatesDatabaseSeeder;
-
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,5 +21,4 @@ class DatabaseSeeder extends Seeder
             PilatesDatabaseSeeder::class,
         ]);
     }
-    
 }

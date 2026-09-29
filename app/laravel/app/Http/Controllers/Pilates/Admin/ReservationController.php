@@ -2,25 +2,26 @@
 
 namespace App\Http\Controllers\Pilates\Admin;
 
+use App\Enums\Pilates\ReservationStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Pilates\Admin\StoreAdminReservationRequest;
+use App\Http\Requests\Pilates\Admin\UpdateAdminReservationRequest;
+use App\Models\Auth\User;
 use App\Models\Pilates\LessonSlot;
-use App\Models\Pilates\Reservation;
 use App\Models\Pilates\LessonTemplate;
 use App\Models\Pilates\Location;
-use App\Models\Auth\User;
+use App\Models\Pilates\Reservation;
 use App\Services\Pilates\ReservationService;
 use App\Services\Pilates\UserProvisioningService;
-use App\Enums\Pilates\ReservationStatus;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\Pilates\Admin\UpdateAdminReservationRequest;
 
 class ReservationController extends Controller
-{   
+{
     public function __construct(
-    private ReservationService $reservationService,
-    private UserProvisioningService $userProvisioningService,
-) {}
+        private ReservationService $reservationService,
+        private UserProvisioningService $userProvisioningService,
+    ) {}
+
     /**
      * Display a listing of the resource.
      */
@@ -32,7 +33,6 @@ class ReservationController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-
     public function create(LessonSlot $lessonSlot)
     {
         return view('pages.pilates.admin.reservations.create', [
@@ -46,26 +46,26 @@ class ReservationController extends Controller
 
         DB::transaction(function () use ($data, $lessonSlot) {
             $alreadyReserved = $lessonSlot->reservations()
-            ->whereNotIn('reservations.status', [
-                ReservationStatus::Canceled,
-                ReservationStatus::Rescheduled,
-            ])
+                ->whereNotIn('reservations.status', [
+                    ReservationStatus::Canceled,
+                    ReservationStatus::Rescheduled,
+                ])
                 ->exists();
 
             if ($alreadyReserved) {
                 throw new \Exception('このスロットはすでに予約済みです');
             }
 
-            $user = !empty($data['user_id'])
+            $user = ! empty($data['user_id'])
             ? User::findOrFail($data['user_id'])
             : $this->userProvisioningService->create(
                 $data['name'],
                 $data['phone'] ?? null,
             );
-            if (!empty($data['relationship_note'])) {
-                $prefix = $user->relationship_note ? $user->relationship_note . "\n" : '';
+            if (! empty($data['relationship_note'])) {
+                $prefix = $user->relationship_note ? $user->relationship_note."\n" : '';
                 $user->update([
-                    'relationship_note' => $prefix . $data['relationship_note'],
+                    'relationship_note' => $prefix.$data['relationship_note'],
                 ]);
             }
 
@@ -130,7 +130,7 @@ class ReservationController extends Controller
     public function destroy(Reservation $reservation)
     {
         $reservation->update([
-            'status'       => ReservationStatus::Canceled,
+            'status' => ReservationStatus::Canceled,
             'cancelled_at' => now(),
             'cancelled_by' => 'admin',
         ]);

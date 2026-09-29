@@ -2,10 +2,9 @@
 
 namespace Database\Seeders\Pilates;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Models\Pilates\LessonSlot;
 use App\Models\Pilates\LessonTemplate;
+use Illuminate\Database\Seeder;
 
 class LessonSlotSeeder extends Seeder
 {
@@ -19,28 +18,28 @@ class LessonSlotSeeder extends Seeder
 
         LessonSlot::create([
             'lesson_template_id' => $morning->id,
-            'date'               => '2026-010-10',
-            'location_id'        => null,
+            'date' => '2026-010-10',
+            'location_id' => null,
         ]);
         LessonSlot::create([
             'lesson_template_id' => $morning->id,
-            'date'               => '2026-010-14',
-            'location_id'        => null,
+            'date' => '2026-010-14',
+            'location_id' => null,
         ]);
         LessonSlot::create([
             'lesson_template_id' => $morning->id,
-            'date'               => '2026-09-30',
-            'location_id'        => null,
+            'date' => '2026-09-30',
+            'location_id' => null,
         ]);
         LessonSlot::create([
             'lesson_template_id' => $afternoon2->id,
-            'date'               => '2026-010-14',
-            'location_id'        => null,
+            'date' => '2026-010-14',
+            'location_id' => null,
         ]);
         LessonSlot::create([
             'lesson_template_id' => $afternoon2->id,
-            'date'               => '2026-09-30',
-            'location_id'        => null,
+            'date' => '2026-09-30',
+            'location_id' => null,
         ]);
     }
 }

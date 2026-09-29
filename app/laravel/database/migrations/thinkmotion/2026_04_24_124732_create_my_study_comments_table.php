@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('my_study_comments', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('user_id')->constrained()-> cascadeOnDelete();
+            $table->foreignUuid('user_id')->constrained()->cascadeOnDelete();
             $table->foreignUuid('my_study_id')->constrained()->cascadeOnDelete();
             $table->text('comment');
-            $table->enum('comment_type',['question', 'supplement', 'different_view', 'experience', 'answer']);
+            $table->enum('comment_type', ['question', 'supplement', 'different_view', 'experience', 'answer']);
             $table->boolean('is_private')->default(false);
             $table->boolean('accepted_by_author')->default(false);
             $table->softDeletes();

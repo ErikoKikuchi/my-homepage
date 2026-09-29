@@ -15,7 +15,7 @@ return new class extends Migration
             $table->foreignId('field_id')->constrained()->cascadeOnDelete();
             $table->foreignUuid('my_study_id')->constrained('my_studies')->cascadeOnDelete();
             $table->primary(['field_id', 'my_study_id']);
-            $table->enum('staging', ['acute','recovery', 'maintenance', 'outpatient','other'])->default('other');
+            $table->enum('staging', ['acute', 'recovery', 'maintenance', 'outpatient', 'other'])->default('other');
             $table->timestamps();
         });
     }
