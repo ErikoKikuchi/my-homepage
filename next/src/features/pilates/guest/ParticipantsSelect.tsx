@@ -1,0 +1,4 @@
+interface ParticipantsSelectProps {
+  value;
+  onChange;
+}

@@ -1,4 +1,4 @@
-import PilatesCalendar from "@/components/pilates/calendar/PilatesCalendar";
+import PilatesCalendar from "@/features/pilates/guest/PilatesCalendar";
 import styles from "./page.module.css";
 
 export default function ReservationPage() {

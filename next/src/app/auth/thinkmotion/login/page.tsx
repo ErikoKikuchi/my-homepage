@@ -1,6 +1,6 @@
 import styles from "./page.module.css";
 import PageHeader from "@/components/public/common/PageHeader";
-import { ThinkMotionLoginForm } from "@/components/auth/ThinkMotionLoginForm";
+import { ThinkMotionLoginForm } from "@/features/auth/ThinkMotionLoginForm";
 
 export default function ThinkMotionLogin() {
   return (

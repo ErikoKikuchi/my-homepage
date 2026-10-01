@@ -1,4 +1,4 @@
-import { EmailVerify } from "@/components/auth/EmailVerify";
+import { EmailVerify } from "@/features/auth/EmailVerify";
 import PageHeader from "@/components/public/common/PageHeader";
 import styles from "./page.module.css";
 

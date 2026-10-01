@@ -74,7 +74,12 @@
   - 3本柱構成（症例検討／Readings／My Studies）
   - Readings機能: 3層データモデル（`readings`→`reading_units`→`reading_extracts`）による抽出と解釈の分離
   - book-spineビジュアルモチーフ、forest greenパレット、スタンスベースの`purpose`タグ
-  - ポリモーフィックいいね機構、Readingsへのコメント機能なし
+  - Readingsへのコメント機能なし
   - 臨床ドメインを超えた抽象化はピラティスセクション完成後に先送り
 - フロントエンド方針の確定（案A）: 管理画面→React/Inertia.js（TypeScript）、静的サイト→Next.js（TypeScript）、両者間の型共有パッケージは不要と判断
 - 認証・認可の設計思想に関する技術ブログ記事を公開
+
+## v.0.9.0
+
+- staticのnext.jsへの移行完了
+- user側のnext.jsへの移行完了

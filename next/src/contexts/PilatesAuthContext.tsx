@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useEffect, useState } from "react";
 import type { AuthPilatesUser } from "@/types/auth/auth";
-import { getCurrentPilatesUser } from "@/lib/api/auth/authApi";
+import { getCurrentPilatesUser } from "@/lib/api/auth/authPilates";
 
 type PilatesAuthContextValue = {
   user: AuthPilatesUser | null;

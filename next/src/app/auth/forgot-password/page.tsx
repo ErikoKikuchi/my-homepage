@@ -1,4 +1,4 @@
-import { ForgotPasswordForm } from "@/components/auth/ForgotPasswordForm";
+import { ForgotPasswordForm } from "@/features/auth/ForgotPasswordForm";
 import PageHeader from "@/components/public/common/PageHeader";
 import styles from "./page.module.css";
 

@@ -14,5 +14,6 @@ class PilatesDatabaseSeeder extends Seeder
         $this->call(LocationSeeder::class);
         $this->call(LessonTemplateSeeder::class);
         $this->call(LessonSlotSeeder::class);
+        $this->call(ReservationSeeder::class);
     }
 }

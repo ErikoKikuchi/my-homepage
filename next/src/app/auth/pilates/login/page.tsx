@@ -1,6 +1,6 @@
 import styles from "./page.module.css";
 import PageHeader from "@/components/public/common/PageHeader";
-import { PilatesLoginForm } from "@/components/auth/PilatesLoginForm";
+import { PilatesLoginForm } from "@/features/auth/PilatesLoginForm";
 
 export default function PilatesLogin() {
   return (

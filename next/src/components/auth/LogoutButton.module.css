@@ -1,0 +1,5 @@
+.logoutButton {
+  font-size: 0.875rem;
+  color: var(--color-forest-dark);
+  text-decoration: none;
+}

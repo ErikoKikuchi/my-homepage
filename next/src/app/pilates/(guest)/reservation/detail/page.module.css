@@ -1,10 +1,7 @@
 .main {
   max-width: 960px;
-  width: 80%;
+  width: 100%;
   margin: 0 auto;
   padding: 80px auto 120px;
   text-align: center;
-}
-.pilatesCalendar {
-  margin-top: 100px;
 }

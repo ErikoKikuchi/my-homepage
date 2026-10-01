@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { LogoutButton } from "@/components/auth/LogoutButton";
+import { PilatesLogoutButton } from "@/components/auth/PilatesLogoutButton";
 import { usePilatesAuth } from "@/hooks/usePilatesAuth";
 import styles from "./PilatesSubNav.module.css";
 
@@ -33,7 +33,7 @@ export default function PilatesSubNav() {
               </li>
             )}
             <li>
-              <LogoutButton />
+              <PilatesLogoutButton />
             </li>
           </>
         ) : (
