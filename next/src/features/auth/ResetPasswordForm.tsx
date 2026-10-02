@@ -72,6 +72,7 @@ export function ResetPasswordForm({
         <PasswordInput
           value={password}
           onChange={setPassword}
+          autoComplete="new-password"
           error={fieldErrors.password?.[0]}
         />
 

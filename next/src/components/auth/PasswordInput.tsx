@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useId } from "react";
 import styles from "./PasswordInput.module.css";
 import { Eye, EyeOff } from "lucide-react";
 
@@ -7,25 +7,35 @@ interface PasswordProps {
   onChange: (value: string) => void;
   error?: string;
   className?: string;
+  label?: string;
+  autoComplete?: string;
 }
 
 export default function PasswordInput({
+  label = "パスワード",
   value,
   onChange,
   error,
   className,
+  autoComplete = "current-password",
 }: PasswordProps) {
   const [isVisible, setIsVisible] = useState(false);
+  const passwordId = useId();
+  const errorId = `${passwordId}-error`;
   return (
     <div className={`${styles.passwordBlock} ${className ?? ""}`}>
       <div className={styles.row}>
-        <label>パスワード</label>
+        <label htmlFor={passwordId}>{label}</label>
         <div className={styles.inputWrapper}>
           <input
+            id={passwordId}
             type={isVisible ? "text" : "password"}
             name="password"
             value={value}
+            autoComplete={autoComplete}
             onChange={(e) => onChange(e.target.value)}
+            aria-invalid={error ? true : undefined}
+            aria-describedby={error ? errorId : undefined}
             className={styles.passwordInput}
           />
           <button
@@ -45,7 +55,7 @@ export default function PasswordInput({
         </div>
       </div>
       {error && (
-        <p className={styles.errorText} role="alert">
+        <p id={errorId} className={styles.errorText} role="alert">
           {error}
         </p>
       )}

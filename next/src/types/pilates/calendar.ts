@@ -24,7 +24,3 @@ export type MonthlyData<T> = {
   previous: string;
   next: string;
 };
-
-export type TrainingLogCell = {};
-
-export type CalendarMonthResponse<T> = {};

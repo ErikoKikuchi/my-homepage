@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useId } from "react";
 import styles from "./PasswordConfirmationInput.module.css";
 import { Eye, EyeOff } from "lucide-react";
 
@@ -7,25 +7,36 @@ interface PasswordConfirmationProps {
   onChange: (value: string) => void;
   error?: string;
   className?: string;
+  label?: string;
+  autoComplete?: string;
 }
 
 export default function PasswordConfirmationInput({
+  label = "パスワード確認",
   value,
   onChange,
   error,
   className,
+  autoComplete = "new-password",
 }: PasswordConfirmationProps) {
   const [isVisible, setIsVisible] = useState(false);
+  const passwordConfirmationId = useId();
+  const errorId = `${passwordConfirmationId}-error`;
+
   return (
     <div className={`${styles.passwordBlock} ${className ?? ""}`}>
       <div className={styles.row}>
-        <label>パスワード確認</label>
+        <label htmlFor={passwordConfirmationId}>{label}</label>
         <div className={styles.inputWrapper}>
           <input
+            id={passwordConfirmationId}
             type={isVisible ? "text" : "password"}
             name="passwordConfirmation"
+            autoComplete={autoComplete}
             value={value}
             onChange={(e) => onChange(e.target.value)}
+            aria-invalid={error ? true : undefined}
+            aria-describedby={error ? errorId : undefined}
             className={styles.passwordConfirmationInput}
           />
           <button
@@ -45,7 +56,7 @@ export default function PasswordConfirmationInput({
         </div>
       </div>
       {error && (
-        <p className={styles.errorText} role="alert">
+        <p id={errorId} className={styles.errorText} role="alert">
           {error}
         </p>
       )}
