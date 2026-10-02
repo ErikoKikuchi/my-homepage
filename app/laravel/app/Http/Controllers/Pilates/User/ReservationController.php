@@ -22,7 +22,7 @@ class ReservationController extends Controller
 
     public function index(Request $request)
     {
-        return view('pilates.mypage');
+        return response()->json();
     }
 
     public function intent(Request $request)
@@ -59,7 +59,7 @@ class ReservationController extends Controller
             ->whereHas('lessonTemplate', fn ($q) => $q->whereTime('start_time', $time))
             ->firstOrFail();
 
-        return view('pages.pilates.guest.reservation-detail', [
+        return response()->json([
             'date' => $date,
             'time' => $time,
             'dateFormatted' => $carbonDate->isoFormat('M月D日(ddd)'), // 表示用
@@ -137,7 +137,7 @@ class ReservationController extends Controller
             'end_time' => $reservation->lessonSlot->lessonTemplate->end_time,
         ];
 
-        return view('pages.pilates.user.pilates-cancellation', [
+        return response()->json([
             'booking' => $booking,
             'user' => $user,
             'reservation' => $reservation,

@@ -1,0 +1,1 @@
+<ReservationForm detail={detail} />;

@@ -1,4 +1,4 @@
-import { Notice, Agreements, NoticeId } from "./reservationNotices";
+import { Notice, Agreements, NoticeId } from "./ReservationNotices";
 import { useId } from "react";
 
 type NoticeCheckListProps = {

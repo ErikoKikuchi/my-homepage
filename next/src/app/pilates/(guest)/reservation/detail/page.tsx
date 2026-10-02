@@ -1,6 +1,6 @@
 import styles from "./page.module.css";
 import PageHeader from "@/components/public/common/PageHeader";
-import ReservationForm from "@/features/pilates/guest/ReservationForm";
+import ReservationForm from "@/features/pilates/user/reservation/ReservationForm";
 
 export default function ReservationDetailPage() {
   return (
