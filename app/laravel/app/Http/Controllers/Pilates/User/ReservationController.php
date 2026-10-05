@@ -99,7 +99,6 @@ class ReservationController extends Controller
                 'user_id' => $user->id,
                 'participants' => $reservationData['participants'],
                 'participants_name' => $reservationData['participants_name'],
-                'participants_phone' => $reservationData['participants_phone'],
                 'note' => $reservationData['note'],
             ]);
         });

@@ -1,27 +1,19 @@
 "use client";
 
-import { useId, useState, type SubmitEvent } from "react";
+import { useId, useState, useRef, type SubmitEvent } from "react";
 import { useRouter } from "next/navigation";
 import { reservationNotices, Agreements, NoticeId } from "./ReservationNotices";
 import { NoticeCheckList } from "./NoticeCheckList";
 import ParticipantsField from "./ParticipantsField";
 import PhoneInput from "@/components/pilates/form/PhoneInput";
 import styles from "./ReservationForm.module.css";
-import { createReservation } from "@/lib/api/auth/authPilates";
+import { createReservation } from "@/lib/api/pilates/reservationClient";
 import { AuthApiError } from "@/lib/api/auth/authApi";
-
-export type ReservationDetail = {
-  date: string;
-  time: string;
-  dateFormatted: string;
-  timeFormatted: string;
-  venueNote: string;
-  venueFixed: boolean;
-  name: string;
-};
+import { ReservationDetail } from "@/types/pilates/reservation";
+import { getCurrentPilatesUser } from "@/lib/api/auth/authPilates";
 
 type ReservationFormProps = {
-  initialPhone: string;
+  initialPhone?: string;
   detail: ReservationDetail;
 };
 
@@ -35,10 +27,11 @@ type ReservationFormValues = {
 type FormErrors = Partial<Record<keyof ReservationFormValues, string>>;
 
 export default function ReservationForm({
-  initialPhone,
+  initialPhone = "",
   detail,
 }: ReservationFormProps) {
   const router = useRouter();
+  const dialogRef = useRef<HTMLDialogElement>(null);
   const noteId = useId();
   const noteHintId = `${noteId}-hint`;
   const noteErrorId = `${noteId}-error`;
@@ -56,11 +49,30 @@ export default function ReservationForm({
     },
   });
   const [errors, setErrors] = useState<FormErrors>({});
-  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [confirmName, setConfirmName] = useState("");
+  const [openError, setOpenError] = useState<string | null>(null);
 
   const allAgreed = reservationNotices.every((n) => values.agreements[n.id]);
+
+  async function handleOpenConfirm() {
+    setOpenError(null);
+    setSubmitError(null);
+    try {
+      const user = await getCurrentPilatesUser();
+      if (!user) {
+        router.push("/auth/pilates/login");
+        return;
+      }
+      setConfirmName(user.name);
+      dialogRef.current?.showModal();
+    } catch {
+      setOpenError(
+        "確認画面を開けませんでした。通信状況を確認して、もう一度お試しください。",
+      );
+    }
+  }
 
   const setField = <K extends keyof ReservationFormValues>(
     key: K,
@@ -96,10 +108,11 @@ export default function ReservationForm({
       return;
     }
     setErrors({});
-    setIsConfirmOpen(true);
+    handleOpenConfirm();
   };
 
   const handleSubmit = async () => {
+    if (isSubmitting) return;
     setIsSubmitting(true);
     setSubmitError(null);
 
@@ -118,9 +131,14 @@ export default function ReservationForm({
         participantNames,
         note: values.note,
       });
-      router.push("/pilates/mypage"); // 完了画面のパスに合わせる
+      dialogRef.current?.close();
+      router.push("/pilates/mypage");
     } catch (error) {
-      if (error instanceof AuthApiError && "errors" in error.body) {
+      if (
+        error instanceof AuthApiError &&
+        "errors" in error.body &&
+        error.status === 401
+      ) {
         const e = error.body.errors;
         const mapped: FormErrors = {
           phone: e.phone?.[0],
@@ -129,7 +147,9 @@ export default function ReservationForm({
         };
         if (Object.values(mapped).some(Boolean)) {
           setErrors(mapped);
-          setIsConfirmOpen(false);
+          dialogRef.current?.close();
+          router.push("/auth/pilates/login");
+          return;
         } else {
           setSubmitError("入力内容をご確認ください。");
         }
@@ -140,7 +160,6 @@ export default function ReservationForm({
           "予約の申請に失敗しました。時間をおいて再度お試しください。",
         );
       }
-    } finally {
       setIsSubmitting(false);
     }
   };
@@ -196,29 +215,43 @@ export default function ReservationForm({
         error={errors.agreements}
       />
 
-      <button type="submit">予約申請 確認画面へ</button>
+      <button type="submit" id="openModal">
+        予約申請 確認画面へ
+      </button>
 
-      {isConfirmOpen && (
-        <div role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
-          <h2 id="confirmTitle">ご予約内容の確認</h2>
-          {/* TODO: 表示直前に /api/user を再問い合わせして名前を表示 */}
-          <p>
-            {detail.dateFormatted} {detail.timeFormatted}
-          </p>
-          {/* TODO: 参加人数・参加者名・連絡先・備考の表示 */}
-          {submitError && <p role="alert">{submitError}</p>}
-          <button
-            type="button"
-            onClick={() => setIsConfirmOpen(false)}
-            disabled={isSubmitting}
-          >
-            戻る
-          </button>
-          <button type="button" onClick={handleSubmit} disabled={isSubmitting}>
-            予約を申請する
-          </button>
-        </div>
-      )}
+      <dialog
+        ref={dialogRef}
+        className={styles.confirmDialog}
+        aria-labelledby="confirmTitle"
+        onCancel={(e) => {
+          if (isSubmitting) e.preventDefault(); // 送信中はEscで閉じない
+        }}
+        id="reservationModal"
+      >
+        <h2 id="confirmTitle">ご予約内容の確認</h2>
+        <p>{confirmName}さんのご予約</p>
+        <p>
+          {detail.dateFormatted} {detail.timeFormatted}
+        </p>
+        <p>連絡先：{values.phone || "なし"}</p>
+        <p>
+          参加者人数・参加者名：{values.participants}名（
+          {[confirmName, ...values.participantNames].join("、")}）
+        </p>
+        <p>備考：{values.note}</p>
+        {submitError && <p role="alert">{submitError}</p>}
+        <button
+          type="button"
+          onClick={() => dialogRef.current?.close()}
+          disabled={isSubmitting}
+        >
+          戻る
+        </button>
+        <button type="button" onClick={handleSubmit} disabled={isSubmitting}>
+          予約を申請する
+        </button>
+        {openError && <p role="alert">{openError}</p>}
+      </dialog>
     </form>
   );
 }

@@ -65,6 +65,8 @@ services:
       - /app/.next
     environment:
       - NODE_ENV=development
+      - BACKEND_URL=http://nginx
+      - APP_ORIGIN=http://localhost
 
 volumes:
   db-data:

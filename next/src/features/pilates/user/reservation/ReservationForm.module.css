@@ -1,0 +1,10 @@
+.confirmDialog {
+  width: min(90vw, 480px);
+  padding: 1.5rem;
+  border: none;
+  border-radius: 8px;
+}
+
+.confirmDialog::backdrop {
+  background: rgb(0 0 0 / 0.5);
+}

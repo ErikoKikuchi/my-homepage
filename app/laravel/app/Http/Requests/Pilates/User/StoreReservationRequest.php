@@ -3,7 +3,7 @@
 namespace App\Http\Requests\Pilates\User;
 
 use App\Models\Auth\User;
-use App\Services\PhoneNumberNormalizerService;
+use App\Services\Pilates\PhoneNumberNormalizerService;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -63,10 +63,9 @@ class StoreReservationRequest extends FormRequest
             'date' => ['required', 'date_format:Y-m-d'],
             'time' => ['required', 'date_format:H:i'],
             'phone' => [
-                Rule::requiredIf(fn () => empty($user?->phone)),
                 'nullable',
                 'string',
-                'regex:/^0\d{9,10}$/', // 例: 日本の電話番号形式
+                'regex:/[\x{2010}-\x{2015}\x{2212}\x{FF0D}\x{30FC}\s-]/u', // 例: 日本の電話番号形式
             ],
         ];
     }
