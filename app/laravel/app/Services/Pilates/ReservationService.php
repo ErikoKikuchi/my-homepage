@@ -50,8 +50,7 @@ class ReservationService
             $newReservation = $this->createReservation($newSlot, [
                 'user_id' => $oldReservation->user_id,
                 'participants' => $oldReservation->participants,
-                'participants_name' => $oldReservation->participants_name,
-                'participants_phone' => $oldReservation->participants_phone,
+                'participants_names' => $oldReservation->participants_names,
                 'note' => $oldReservation->note,
                 'rescheduled_from_id' => $oldReservation->id,
             ]);

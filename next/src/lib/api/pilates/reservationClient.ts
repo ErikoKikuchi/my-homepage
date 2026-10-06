@@ -38,6 +38,7 @@ export async function saveReservationIntent(
 
 export async function createReservation(data: Reservation): Promise<void> {
   await ensureCsrfCookie();
+  const { participantNames, ...rest } = data;
 
   const response = await fetch("/api/pilates/reservations", {
     method: "POST",
@@ -47,7 +48,10 @@ export async function createReservation(data: Reservation): Promise<void> {
       Accept: "application/json",
       "X-XSRF-TOKEN": getCsrfTokenFromCookie(),
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...rest,
+      participants_names: participantNames,
+    }),
   });
 
   if (!response.ok) {

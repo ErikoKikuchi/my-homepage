@@ -1,5 +1,6 @@
 import { Notice, Agreements, NoticeId } from "./ReservationNotices";
 import { useId } from "react";
+import styles from "./NoticeCheckList.module.css";
 
 type NoticeCheckListProps = {
   notices: readonly Notice[];
@@ -17,8 +18,13 @@ export function NoticeCheckList({
   const errorId = useId();
 
   return (
-    <fieldset aria-describedby={error ? errorId : undefined}>
-      <legend>ご確認事項/キャンセルポリシー</legend>
+    <fieldset
+      aria-describedby={error ? errorId : undefined}
+      className={styles.noticeCheckList}
+    >
+      <legend className={styles.noticeLegend}>
+        5、ご確認事項/キャンセルポリシー
+      </legend>
       {notices.map((notice) => (
         <label key={notice.id}>
           <input
@@ -31,7 +37,7 @@ export function NoticeCheckList({
         </label>
       ))}
       {error && (
-        <p id={errorId} role="alert">
+        <p id={errorId} role="alert" className={styles.errorText}>
           {error}
         </p>
       )}

@@ -56,8 +56,8 @@ class StoreReservationRequest extends FormRequest
 
         return [
             'participants' => ['required', 'in:1,2,3,4'],
-            'participants_name' => ['nullable', 'string', 'max:100'],
-            'participants_phone' => ['nullable', 'string', 'max:255'],
+            'participants_name' => ['nullable', 'array', 'max:3'],
+            'participants_names.*' => ['nullable', 'string', 'max:20'],
             'note' => ['nullable', 'string', 'max:255'],
             'cancelled_reason' => ['nullable', 'string', 'max:255'],
             'date' => ['required', 'date_format:Y-m-d'],
@@ -65,7 +65,7 @@ class StoreReservationRequest extends FormRequest
             'phone' => [
                 'nullable',
                 'string',
-                'regex:/[\x{2010}-\x{2015}\x{2212}\x{FF0D}\x{30FC}\s-]/u', // 例: 日本の電話番号形式
+                'regex:/^0[\d\s\-ー－−]+$/u',
             ],
         ];
     }
@@ -75,8 +75,8 @@ class StoreReservationRequest extends FormRequest
         return [
             'participants.required' => '参加人数を入力してください',
             'participants.in' => '参加人数を入力してください',
-            'participants_name.string' => '参加者名を入力してください',
-            'participants_name.max' => '参加者名は100文字以内で入力してください',
+            'participants_name.*.string' => '参加者名を入力してください',
+            'participants_name.*.max' => '参加者名は20文字以内で入力してください',
             'note.string' => '備考を正しく入力してください',
             'note.max' => '備考は２５５文字以内で入力してください',
             'cancelled_reason' => 'キャンセル理由は文字列で入力してください',
@@ -84,7 +84,7 @@ class StoreReservationRequest extends FormRequest
             'time.required' => '時間を選択してください',
             'time.date_format' => '時間を正しく選択してください',
             'phone.string' => '電話番号を正しく入力してください',
-            'phone.regex' => '電話番号は９桁か１０桁で入力してください',
+            'phone.regex' => '電話番号を正しく入力してください',
         ];
     }
 }

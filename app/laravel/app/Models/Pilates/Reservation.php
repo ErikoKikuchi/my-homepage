@@ -22,7 +22,7 @@ class Reservation extends Model
     protected $fillable = [
         'user_id',
         'participants',
-        'participants_name',
+        'participants_names',
         'note',
         'status',
         'cancelled_at',
@@ -34,6 +34,7 @@ class Reservation extends Model
         return [
             'cancelled_at' => 'datetime',
             'status' => ReservationStatus::class,
+            'participants_names' => 'array',
         ];
     }
 

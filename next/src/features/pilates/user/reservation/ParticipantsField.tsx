@@ -13,7 +13,7 @@ interface ParticipantsFieldProps {
 const PARTICIPANTS = ["1", "2", "3", "4"] as const;
 
 export default function ParticipantsField({
-  label = "参加人数",
+  label = "3、参加人数",
   value,
   onChange,
   onNameChange,
@@ -28,7 +28,9 @@ export default function ParticipantsField({
   return (
     <div className={`${styles.participantsFieldBlock} ${className ?? ""}`}>
       <div className={styles.row}>
-        <label htmlFor={participantsId}>{label}</label>
+        <label htmlFor={participantsId} className={styles.label}>
+          {label}
+        </label>
         <select
           id={participantsId}
           value={value}
@@ -59,6 +61,7 @@ export default function ParticipantsField({
               type="text"
               value={participantNames[i] ?? ""}
               onChange={(e) => onNameChange(i, e.target.value)}
+              className={styles.participantsFieldInput}
             />
           </div>
         );

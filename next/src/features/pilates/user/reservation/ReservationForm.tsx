@@ -11,6 +11,7 @@ import { createReservation } from "@/lib/api/pilates/reservationClient";
 import { AuthApiError } from "@/lib/api/auth/authApi";
 import { ReservationDetail } from "@/types/pilates/reservation";
 import { getCurrentPilatesUser } from "@/lib/api/auth/authPilates";
+import ActionButton from "@/components/ui/ActionButton/ActionButton";
 
 type ReservationFormProps = {
   initialPhone?: string;
@@ -165,14 +166,14 @@ export default function ReservationForm({
   };
 
   return (
-    <form onSubmit={handleConfirm} noValidate>
+    <form onSubmit={handleConfirm} noValidate className={styles.main}>
       <section>
-        <h2>1、開催場所のご案内</h2>
-        <p>{detail.venueNote}</p>
+        <h2 className={styles.title}>1、開催場所のご案内</h2>
+        <p className={styles.venueNote}>{detail.venueNote}</p>
       </section>
 
       <PhoneInput
-        label="当日の連絡先(電話番号・任意)"
+        label="2、当日の連絡先(電話番号・任意)"
         hint="LINEで連絡が取れる場合は、空欄でも構いません。"
         value={values.phone}
         onChange={(v) => setField("phone", v)}
@@ -187,10 +188,12 @@ export default function ReservationForm({
         error={errors.participants}
       />
 
-      <div>
-        <label htmlFor={noteId}>備考(任意)</label>
-        <p id={noteHintId}>
-          場所のご希望など、事前にお伝えしたいことがあればご記入ください。
+      <div className={styles.row}>
+        <label htmlFor={noteId} className={styles.label}>
+          4、備考(任意)
+        </label>
+        <p id={noteHintId} className={styles.hintText}>
+          場所のご希望やお身体の状態など、事前にお伝えしたいことがあればご記入ください。
         </p>
         <textarea
           id={noteId}
@@ -200,6 +203,7 @@ export default function ReservationForm({
           aria-describedby={
             errors.note ? `${noteHintId} ${noteErrorId}` : noteHintId
           }
+          className={styles.textarea}
         />
         {errors.note && (
           <p id={noteErrorId} role="alert">
@@ -215,7 +219,7 @@ export default function ReservationForm({
         error={errors.agreements}
       />
 
-      <button type="submit" id="openModal">
+      <button type="submit" id="openModal" className={styles.submitButton}>
         予約申請 確認画面へ
       </button>
 
@@ -240,16 +244,16 @@ export default function ReservationForm({
         </p>
         <p>備考：{values.note}</p>
         {submitError && <p role="alert">{submitError}</p>}
-        <button
-          type="button"
+        <ActionButton
+          variant="outline"
           onClick={() => dialogRef.current?.close()}
           disabled={isSubmitting}
         >
           戻る
-        </button>
-        <button type="button" onClick={handleSubmit} disabled={isSubmitting}>
+        </ActionButton>
+        <ActionButton onClick={handleSubmit} disabled={isSubmitting}>
           予約を申請する
-        </button>
+        </ActionButton>
         {openError && <p role="alert">{openError}</p>}
       </dialog>
     </form>

@@ -17,8 +17,7 @@ return new class extends Migration
             $table->foreignUuid('location_id')->nullable()->constrained()->cascadeOnDelete();
             $table->uuid('user_id');
             $table->unsignedTinyInteger('participants')->default(1);
-            $table->text('participants_name')->nullable();
-            $table->text('participants_phone')->nullable();
+            $table->text('participants_names')->nullable();
             $table->text('note')->nullable();
             $table->enum('status', ['waiting_venue', 'confirmed', 'canceled', 'no_show', 'rescheduled'])->default('waiting_venue');
             $table->timestamp('cancelled_at')->nullable();

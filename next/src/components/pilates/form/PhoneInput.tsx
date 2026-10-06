@@ -33,7 +33,9 @@ export default function PhoneInput({
   return (
     <div className={`${styles.phoneBlock} ${className ?? ""}`}>
       <div className={styles.row}>
-        <label htmlFor={id}>{label}</label>
+        <label htmlFor={id} className={styles.label}>
+          {label}
+        </label>
         <input
           id={id}
           type="tel"

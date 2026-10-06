@@ -98,7 +98,7 @@ class ReservationController extends Controller
             $this->reservationService->createReservation($slot, [
                 'user_id' => $user->id,
                 'participants' => $reservationData['participants'],
-                'participants_name' => $reservationData['participants_name'],
+                'participants_names' => $reservationData['participants_names'] ?? [],
                 'note' => $reservationData['note'],
             ]);
         });

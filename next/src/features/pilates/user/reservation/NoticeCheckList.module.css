@@ -1,0 +1,11 @@
+.noticeCheckList {
+  display: flex;
+  flex-direction: column;
+}
+.noticeLegend {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.errorText {
+  color: red;
+}
