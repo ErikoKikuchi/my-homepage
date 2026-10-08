@@ -12,6 +12,7 @@ import { AuthApiError } from "@/lib/api/auth/authApi";
 import { ReservationDetail } from "@/types/pilates/reservation";
 import { getCurrentPilatesUser } from "@/lib/api/auth/authPilates";
 import ActionButton from "@/components/ui/ActionButton/ActionButton";
+import type { NoticeKey } from "@/features/pilates/user/mypage/notices";
 
 type ReservationFormProps = {
   initialPhone?: string;
@@ -122,6 +123,7 @@ export default function ReservationForm({
       { length: extraCount },
       (_, i) => values.participantNames[i] ?? "",
     );
+    const key: NoticeKey = "reserved";
 
     try {
       await createReservation({
@@ -133,7 +135,7 @@ export default function ReservationForm({
         note: values.note,
       });
       dialogRef.current?.close();
-      router.push("/pilates/mypage");
+      router.push(`/pilates/mypage?notice=${key}`);
     } catch (error) {
       if (
         error instanceof AuthApiError &&
@@ -232,29 +234,33 @@ export default function ReservationForm({
         }}
         id="reservationModal"
       >
-        <h2 id="confirmTitle">ご予約内容の確認</h2>
+        <h2 id="confirmTitle" className={styles.modalTitle}>
+          ご予約内容の確認
+        </h2>
         <p>{confirmName}さんのご予約</p>
         <p>
-          {detail.dateFormatted} {detail.timeFormatted}
+          日程：{detail.dateFormatted} {detail.timeFormatted}
         </p>
-        <p>連絡先：{values.phone || "なし"}</p>
+        <p>連絡先：{values.phone || "LINE"}</p>
         <p>
           参加者人数・参加者名：{values.participants}名（
           {[confirmName, ...values.participantNames].join("、")}）
         </p>
         <p>備考：{values.note}</p>
         {submitError && <p role="alert">{submitError}</p>}
-        <ActionButton
-          variant="outline"
-          onClick={() => dialogRef.current?.close()}
-          disabled={isSubmitting}
-        >
-          戻る
-        </ActionButton>
-        <ActionButton onClick={handleSubmit} disabled={isSubmitting}>
-          予約を申請する
-        </ActionButton>
-        {openError && <p role="alert">{openError}</p>}
+        <div className={styles.buttonGroup}>
+          <ActionButton
+            variant="outline"
+            onClick={() => dialogRef.current?.close()}
+            disabled={isSubmitting}
+          >
+            戻る
+          </ActionButton>
+          <ActionButton onClick={handleSubmit} disabled={isSubmitting}>
+            予約を申請する
+          </ActionButton>
+          {openError && <p role="alert">{openError}</p>}
+        </div>
       </dialog>
     </form>
   );

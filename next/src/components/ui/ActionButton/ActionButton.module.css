@@ -19,6 +19,9 @@
 .primary:hover {
   background-color: var(--color-forest-dark);
 }
+.outline {
+  background-color: var(--color-paper);
+}
 
 .text {
   background-color: transparent;

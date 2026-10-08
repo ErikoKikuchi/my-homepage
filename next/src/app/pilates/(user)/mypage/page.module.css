@@ -1,0 +1,20 @@
+.main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 80px 40px 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.quickMenu {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.message {
+  font-size: x-small;
+}
+.anotherLinkButton {
+  display: flex;
+  gap: 20px;
+}

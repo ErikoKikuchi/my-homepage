@@ -20,14 +20,14 @@ class MyPageController extends Controller
                 'date' => $nextReservation->lessonSlot->date->format('Y年m月d日'),
                 'location' => $nextReservation->status === ReservationStatus::WaitingVenue
                 ? '施設調整中'
-                : $nextReservation->location->name,
+                : $nextReservation->lessonSlot->location?->name,
             ];
         }
         // 回数券残数
         $remainingTicketCounts = $client?->remainingGuestPassCount() ?? 0;
 
         // LINE登録
-        $notLineLinkedClient = $user->client()->notLineLinked()->get();
+        $notLineLinkedClient = $client === null ||  ! $client->isLineLinked();
         // 予約履歴
         $upcomingReservations = $user->reservations()->upComing()->get()->sortBy(fn ($reservation) => $reservation->lessonSlot->date)->values()->map(fn ($reservation) => [
             'uuid' => $reservation->id,
@@ -38,7 +38,7 @@ class MyPageController extends Controller
         ])
             ->toArray();
 
-        return view('pages.pilates.user.mypage', [
+        return response()->json([
             'notLineLinkedClient' => $notLineLinkedClient,
             'nextReservationInfo' => $nextReservationInfo,
             'remainingTicketCounts' => $remainingTicketCounts,

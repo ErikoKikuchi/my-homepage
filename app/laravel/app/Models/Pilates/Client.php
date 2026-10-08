@@ -100,6 +100,11 @@ class Client extends Model
     {
         $query->where('line_linked', false);
     }
+    //boolean判定
+    public function isLineLinked(): bool
+    {
+        return (bool) $this->line_linked;
+    }
 
     // 未払金あり
     #[Scope]
