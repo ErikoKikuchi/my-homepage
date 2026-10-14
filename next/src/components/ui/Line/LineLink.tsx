@@ -4,7 +4,7 @@ import LinkButton from "@/components/ui/LinkButton/LinkButton";
 
 export default function LineLink() {
   return (
-    <div>
+    <div className={styles.lineGroup}>
       <Image
         src="/site-images/line-qr.png"
         alt="LINE QRコード"
@@ -12,7 +12,11 @@ export default function LineLink() {
         width={128}
         height={128}
       />
-      <LinkButton href="https://lin.ee/9E3PPH9" external>
+      <LinkButton
+        href="https://lin.ee/9E3PPH9"
+        external
+        className={styles.linkButton}
+      >
         LINEに移動する
       </LinkButton>
     </div>
