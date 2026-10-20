@@ -27,9 +27,11 @@ export async function getMypageData(): Promise<MypageData> {
   });
 
   if (!response.ok) {
-    const body = await response.text();
+    console.error("マイページ取得エラー", {
+      status: response.status,
+      body: await response.text(),
+    });
 
-    console.log("mypage API error body:", body);
     throw new Error("マイページの取得に失敗しました");
   }
 

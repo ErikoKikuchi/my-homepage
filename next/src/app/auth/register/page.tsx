@@ -2,7 +2,7 @@ import styles from "./page.module.css";
 import PageHeader from "@/components/public/common/PageHeader";
 import { RegisterForm } from "@/features/auth/RegisterForm";
 
-export default function PilatesLogin() {
+export default function Register() {
   return (
     <>
       <PageHeader heading="新規登録"></PageHeader>

@@ -138,8 +138,6 @@ class ReservationController extends Controller
 
         return response()->json([
             'booking' => $booking,
-            'user' => $user,
-            'reservation' => $reservation,
             'isPastCutoff' => $isPastCutoff,
         ]);
     }

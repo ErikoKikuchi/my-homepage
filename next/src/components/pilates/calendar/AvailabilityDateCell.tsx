@@ -15,10 +15,13 @@ export default function AvailabilityDateCellButton({
   const statusIcons = {
     available: "〇",
     contact_only: "△",
-    full: "☓",
+    full: "満",
+    unavailable: "受付不可",
   };
   const isClickable =
-    cell.status === "available" || cell.status === "contact_only";
+    cell.status === "available" ||
+    cell.status === "contact_only" ||
+    cell.status === "full";
 
   return (
     <button

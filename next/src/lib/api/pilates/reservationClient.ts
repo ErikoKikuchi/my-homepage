@@ -62,3 +62,27 @@ export async function createReservation(data: Reservation): Promise<void> {
     throw new AuthApiError(response.status, body);
   }
 }
+export async function cancelReservation(uuid: string): Promise<void> {
+  await ensureCsrfCookie();
+
+  const response = await fetch(
+    `/api/pilates/reservations/${encodeURIComponent(uuid)}/cancel`,
+    {
+      method: "PATCH",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "X-XSRF-TOKEN": getCsrfTokenFromCookie(),
+      },
+    },
+  );
+
+  if (!response.ok) {
+    // 500のHTMLなど、JSONでない応答でも落ちないようにする
+    const body = await response
+      .json()
+      .catch(() => ({ message: "予約情報のキャンセルに失敗しました" }));
+    throw new AuthApiError(response.status, body);
+  }
+}

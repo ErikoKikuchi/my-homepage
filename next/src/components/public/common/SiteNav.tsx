@@ -1,4 +1,3 @@
-// next/src/components/public/SiteNav.tsx
 "use client";
 
 import { useEffect, useRef } from "react";

@@ -25,7 +25,7 @@ export default function PilatesSubNav() {
             {user.canUseTrainingLog && (
               <li>
                 <Link
-                  href="/pilates/mypage/training-log"
+                  href="/pilates/mypage/training-logs"
                   className={styles.link}
                 >
                   自主トレログ

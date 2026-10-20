@@ -8,7 +8,7 @@ export default function SiteFooter() {
     <footer className={styles.siteFooter}>
       <nav className={styles.footerLinks}>
         <Link href="/privacy">個人情報保護方針</Link>
-        <Link href="/tokusho">特定商取引法に基づく表記</Link>
+        <Link href="/tokushoho">特定商取引法に基づく表記</Link>
         <Link href="/contact">お問い合わせ</Link>
       </nav>
       <Image

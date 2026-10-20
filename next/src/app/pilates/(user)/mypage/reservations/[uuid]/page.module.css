@@ -1,0 +1,35 @@
+.main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 80px 40px 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.table {
+  table-layout: fixed;
+  width: 100%;
+}
+.row {
+  border: 1px solid var(--color-forest-dark);
+  height: 40px;
+}
+.submitButton {
+  display: inline-block;
+  align-self: center;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-family: var(--font-gothic);
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+  background-color: var(--color-forest);
+  color: var(--color-paper);
+  margin: 30px 0;
+}
+.submitButton:hover {
+  background-color: var(--color-forest-dark);
+}

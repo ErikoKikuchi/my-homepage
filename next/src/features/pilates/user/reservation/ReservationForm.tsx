@@ -11,8 +11,8 @@ import { createReservation } from "@/lib/api/pilates/reservationClient";
 import { AuthApiError } from "@/lib/api/auth/authApi";
 import { ReservationDetail } from "@/types/pilates/reservation";
 import { getCurrentPilatesUser } from "@/lib/api/auth/authPilates";
-import ActionButton from "@/components/ui/ActionButton/ActionButton";
 import type { NoticeKey } from "@/features/pilates/user/mypage/notices";
+import ConfirmDialog from "@/components/ui/ConfirmDialog/ConfirmDialog";
 
 type ReservationFormProps = {
   initialPhone?: string;
@@ -224,44 +224,28 @@ export default function ReservationForm({
       <button type="submit" id="openModal" className={styles.submitButton}>
         予約申請 確認画面へ
       </button>
-
-      <dialog
-        ref={dialogRef}
-        className={styles.confirmDialog}
-        aria-labelledby="confirmTitle"
-        onCancel={(e) => {
-          if (isSubmitting) e.preventDefault(); // 送信中はEscで閉じない
-        }}
-        id="reservationModal"
+      <ConfirmDialog
+        dialogRef={dialogRef}
+        title="ご予約内容の確認"
+        confirmLabel="予約を申請する"
+        onConfirm={handleSubmit}
+        onClose={() => dialogRef.current?.close()}
+        isSubmitting={isSubmitting}
       >
-        <h2 id="confirmTitle" className={styles.modalTitle}>
-          ご予約内容の確認
-        </h2>
-        <p>{confirmName}さんのご予約</p>
-        <p>
-          日程：{detail.dateFormatted} {detail.timeFormatted}
-        </p>
-        <p>連絡先：{values.phone || "LINE"}</p>
-        <p>
-          参加者人数・参加者名：{values.participants}名（
-          {[confirmName, ...values.participantNames].join("、")}）
-        </p>
-        <p>備考：{values.note}</p>
-        {submitError && <p role="alert">{submitError}</p>}
-        <div className={styles.buttonGroup}>
-          <ActionButton
-            variant="outline"
-            onClick={() => dialogRef.current?.close()}
-            disabled={isSubmitting}
-          >
-            戻る
-          </ActionButton>
-          <ActionButton onClick={handleSubmit} disabled={isSubmitting}>
-            予約を申請する
-          </ActionButton>
-          {openError && <p role="alert">{openError}</p>}
+        <div className={styles.confirmContents}>
+          <p>{confirmName}さんのご予約</p>
+          <p>
+            日程：{detail.dateFormatted} {detail.timeFormatted}
+          </p>
+          <p>連絡先：{values.phone || "LINE"}</p>
+          <p>
+            参加者人数・参加者名：{values.participants}名（
+            {[confirmName, ...values.participantNames].join("、")}）
+          </p>
+          <p>備考：{values.note}</p>
+          {submitError && <p role="alert">{submitError}</p>}
         </div>
-      </dialog>
+      </ConfirmDialog>
     </form>
   );
 }

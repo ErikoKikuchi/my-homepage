@@ -22,8 +22,9 @@ class CancellationController extends Controller
 
         if (now()->greaterThan($cutoff)) {
             // システムでは完結させず、LINE誘導のみ
-            return redirect()->route('pilates.mypage')
-                ->with('message', "前日正午以降のキャンセルはLINEにて承っております。\nキャンセル料¥500が発生いたします。");
+            return response()->json([
+                'message' => '前日正午以降のキャンセルはLINEにて承っております。',
+            ], 409);
         }
         $reservation->update([
             'status' => ReservationStatus::Canceled,
@@ -32,6 +33,8 @@ class CancellationController extends Controller
 
         ]);
 
-        return redirect()->route('pilates.mypage');
+        return response()->json([
+            'message' => '予約をキャンセルしました',
+        ], 200);
     }
 }

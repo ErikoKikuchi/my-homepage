@@ -8,3 +8,14 @@ export type MypageData = {
     location: string | null;
   }[];
 };
+export type BookingDetailResponse = {
+  booking: {
+    participants: number;
+    date: string;
+    location: string;
+    note: string | null;
+    start_time: string;
+    end_time: string;
+  };
+  isPastCutoff: boolean;
+};

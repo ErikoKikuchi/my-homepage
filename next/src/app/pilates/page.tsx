@@ -88,6 +88,11 @@ export default function PilatesTopPage() {
           labelClassName={styles.sectionLabelDecorated}
           animationDelay="0.2s"
         >
+          <p className={styles.label}>
+            身体を知るところから、始めてみませんか。
+            <br />
+            こちらからご予約いただけます。
+          </p>
           <PilatesReservation></PilatesReservation>
           <LinkButton
             href="/contact"

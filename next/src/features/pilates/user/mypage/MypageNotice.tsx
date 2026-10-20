@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { NOTICES, isNoticeKey } from "./notices";
+import styles from "@/features/pilates/user/mypage/MypageNotice.module.css";
 
 export default function MypageNotice() {
   const searchParams = useSearchParams();
@@ -19,11 +20,8 @@ export default function MypageNotice() {
   if (!message) return null;
 
   return (
-    <div
-      role="status"
-      className="message bg-forest/30 border border-accent rounded-2xl"
-    >
-      <p className="pl-3 text-forest-dark whitespace-pre-line">{message}</p>
+    <div role="status" className={styles.message}>
+      <p className={styles.messageText}>{message}</p>
     </div>
   );
 }

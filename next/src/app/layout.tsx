@@ -24,9 +24,7 @@ export const metadata: Metadata = {
   },
   description:
     "からだ散歩は、ピラティスの予約や自主トレを記録できるサイトです。臨床家向けにブログ・症例検討・読書記録等の思考整理の場を提供するThinkMotionも運営しています。",
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
-  ),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost"),
   openGraph: {
     title: "からだ散歩",
     description:

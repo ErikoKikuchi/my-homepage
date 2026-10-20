@@ -28,9 +28,12 @@ export function LogoutButton({ logoutRequest, refresh, loginPath }: Props) {
     } catch (error) {
       if (error instanceof AuthApiError) {
         if (error.status === 401) {
-          // すでにログアウト済み
-          await refresh();
-          router.push(loginPath); // 実際のログインページのパスに合わせる
+          try {
+            await refresh();
+          } catch {
+            // 認証状態の再取得に失敗しても、ログイン画面へ進む
+          }
+          router.replace(loginPath);
           return;
         }
         setGeneralError(error.body.message);

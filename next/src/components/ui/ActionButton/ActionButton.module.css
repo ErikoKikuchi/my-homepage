@@ -1,6 +1,5 @@
 .actionButton {
   display: inline-block;
-  align-self: flex-start;
   padding: 12px 24px;
   border-radius: 8px;
   font-family: var(--font-gothic);

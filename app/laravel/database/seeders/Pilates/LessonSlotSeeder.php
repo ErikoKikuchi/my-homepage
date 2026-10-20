@@ -18,27 +18,27 @@ class LessonSlotSeeder extends Seeder
 
         LessonSlot::create([
             'lesson_template_id' => $morning->id,
-            'date' => '2026-10-10',
+            'date' => '2026-10-20',
             'location_id' => null,
         ]);
         LessonSlot::create([
             'lesson_template_id' => $morning->id,
-            'date' => '2026-10-14',
+            'date' => '2026-10-28',
             'location_id' => null,
         ]);
         LessonSlot::create([
             'lesson_template_id' => $morning->id,
-            'date' => '2026-09-30',
+            'date' => '2026-10-30',
             'location_id' => null,
         ]);
         LessonSlot::create([
             'lesson_template_id' => $afternoon2->id,
-            'date' => '2026-10-14',
+            'date' => '2026-10-20',
             'location_id' => null,
         ]);
         LessonSlot::create([
             'lesson_template_id' => $afternoon2->id,
-            'date' => '2026-09-30',
+            'date' => '2026-10-30',
             'location_id' => null,
         ]);
     }

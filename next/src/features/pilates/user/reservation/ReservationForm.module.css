@@ -56,26 +56,8 @@
 .modalTitle {
   font-weight: bold;
 }
-.confirmDialog {
-  width: min(90vw, 480px);
-  padding: 1.5rem;
-  border: none;
-  border-radius: 8px;
-  position: fixed;
-  inset: 0;
-  margin: auto;
-}
-.confirmDialog[open] {
+.confirmContents {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-}
-
-.confirmDialog::backdrop {
-  background: rgb(0 0 0 / 0.5);
-}
-.buttonGroup {
-  display: flex;
-  gap: 20px;
-  margin: 0px auto;
+  gap: 10px;
 }

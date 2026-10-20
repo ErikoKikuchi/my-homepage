@@ -39,3 +39,10 @@
 .contactButton {
   margin-top: 20px;
 }
+.label {
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  color: var(--color-muted);
+  margin-bottom: calc(var(--spacing) * 7);
+  letter-spacing: 0.06em;
+}
