@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::connection('client_db')->create('payment_items', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('payment_id')->constrained()->cascadeOnDelete();
-            $table->foreignUuid('guest_pass_purchase_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignUuid('payment_id')->constrained()->restrictOnDelete();
+            $table->foreignUuid('guest_pass_purchase_id')->nullable()->constrained()->restrictOnDelete();
+            $table->foreignUuid('reservation_id')->nullable()->constrained()->restrictOnDelete();
             $table->string('item_name'); // 「3回券」等の表示名
             $table->unsignedInteger('unit_price');
             $table->unsignedTinyInteger('quantity')->default(1);

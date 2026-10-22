@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::connection('client_db')->create('lesson_slots', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('lesson_template_id')->constrained();
+            $table->foreignUuid('lesson_template_id')->constrained()->restrictOnDelete();
             $table->date('date');
             $table->foreignUuid('location_id')->nullable()->constrained();
+            $table->unique(['date', 'lesson_template_id']);
+            $table->boolean('is_bookable')->default(true);
             $table->timestamps();
         });
     }

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::connection('client_db')->create('stripe_customers', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('client_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('client_id')->constrained()->restrictOnDelete();
             $table->string('stripe_customer_id')->unique(); // cus_xxxx
             $table->text('memo')->nullable();
             $table->timestamps();

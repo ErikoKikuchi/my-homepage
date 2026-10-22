@@ -2,10 +2,9 @@
 
 namespace App\Models\Pilates;
 
-use App\Models\Auth\User;
+use App\Models\Pilates\Client;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -26,34 +25,47 @@ class TrainingLog extends Model
     // キャスト
     protected $casts = [
         'logged_date' => 'date',
+        'mood' => 'integer',
     ];
 
     // リレーション
-    public function user(): BelongsTo
+    public function client(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Client::class);
     }
 
     public function trainingQuestion(): HasMany
     {
         return $this->hasMany(TrainingQuestion::class);
     }
+    public function categories(): HasMany
+    {
+        return $this->hasMany(TrainingLogCategory::class);
+    }
 
     // ログインユーザーのログ
     #[Scope]
     public function forUser(Builder $query): void
     {
-        /** @var User|null $user */
-        $user = auth('web')->user();
-        $query->where('user_id', $user?->id);
+        $clientId = auth('web')->user()?->client?->id;
+
+        if ($clientId === null) {
+            $query->whereRaw('1 = 0');
+
+            return;
+        }
+
+        $query->where('client_id', $clientId);
     }
 
     // urgency=trueのもの
     #[Scope]
     public function urgent(Builder $query): void
-    {
-        $query->where('urgency', true);
-    }
+{
+    $query->whereHas('trainingQuestion', fn (Builder $q) =>
+        $q->where('urgency', 'urgent')
+    );
+}
 
     // メッセージ有のもの
     #[Scope]
@@ -64,16 +76,10 @@ class TrainingLog extends Model
 
     // logged_date降順
     #[Scope]
-    public function latest(Builder $query): void
+    public function latestLogged(Builder $query): void
     {
-        $query->orderBy('logged_date', 'desc');
+        $query->orderByDesc('logged_date')
+        ->orderByDesc('created_at');
     }
 
-    // logged_dateをフォーマットして返す
-    protected function loggedDate(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value) => $value->format('Y/m/d')
-        );
-    }
 }

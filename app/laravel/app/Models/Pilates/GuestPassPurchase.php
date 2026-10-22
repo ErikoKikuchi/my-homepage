@@ -13,19 +13,27 @@ class GuestPassPurchase extends Model
     protected $connection = 'client_db';
 
     protected $fillable = [
-        'passes_purchased',
-        'amount_paid',
-        'payment_method',
-        'purchased_at',
-        'is_finished',
-    ];
+    'passes_purchased',
+    'purchased_at',
+    'is_finished',
+    'pass_type',
+    'imported_at',
+    'note',
+];
 
     protected $casts = [
-        'purchased_at' => 'datetime',
+        'passes_purchased' => 'integer',
+        'purchased_at' => 'date',
+        'is_finished' => 'boolean',
+        'imported_at' => 'datetime',
     ];
 
-    public function clients(): BelongsTo
+    public function client(): BelongsTo
     {
         return $this->belongsTo(Client::class);
+    }
+    public function location(): BelongsTo
+    {
+        return $this->belongsTo(Location::class);
     }
 }

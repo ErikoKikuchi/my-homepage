@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::connection('client_db')->create('pilates_sessions', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('client_id')->constrained()->restrictOnDelete();
-            $table->foreignUuid('reservation_id')->constrained()->restrictOnDelete();
+            $table->foreignUuid('reservation_id')->unique()->constrained()->restrictOnDelete();
             $table->dateTime('session_date');
             $table->text('notes')->nullable();
             $table->timestamps();

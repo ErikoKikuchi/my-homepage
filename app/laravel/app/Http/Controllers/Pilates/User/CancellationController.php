@@ -11,25 +11,24 @@ class CancellationController extends Controller
 {
     public function cancel(Reservation $reservation)
     {
-        $user = auth('web')->user();
-        Gate::authorize('reservation.cancel', $reservation);
+        Gate::authorize('cancel', $reservation);
 
-        if ($reservation->status === ReservationStatus::Canceled) {
-            abort(400, 'すでにキャンセル済みです');
+        if (! in_array($reservation->status, [
+            ReservationStatus::WaitingVenue,
+            ReservationStatus::Confirmed,
+        ], true)) {
+            abort(409, 'この予約はキャンセルできません');
         }
 
-        $cutoff = $reservation->lessonSlot->date->copy()->subDay()->setTime(12, 0);
-
-        if (now()->greaterThan($cutoff)) {
-            // システムでは完結させず、LINE誘導のみ
+        if ($reservation->is_past_cutoff) {
             return response()->json([
-                'message' => '前日正午以降のキャンセルはLINEにて承っております。',
+                'message' => '前日正午を過ぎたキャンセルはLINEにて承っております。',
             ], 409);
         }
         $reservation->update([
             'status' => ReservationStatus::Canceled,
             'cancelled_at' => now(),
-            'cancelled_by' => 'user',
+            'cancelled_by' => 'client',
 
         ]);
 

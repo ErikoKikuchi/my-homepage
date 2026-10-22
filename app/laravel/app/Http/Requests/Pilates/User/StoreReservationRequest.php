@@ -2,88 +2,63 @@
 
 namespace App\Http\Requests\Pilates\User;
 
-use App\Models\Auth\User;
 use App\Services\Pilates\PhoneNumberNormalizerService;
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 class StoreReservationRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
-        return true;
+        $user = $this->user('web');
+
+        return $user !== null
+            && $user->hasVerifiedEmail()
+            && $user->client !== null;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array<mixed>|string>
-     */
     protected function prepareForValidation(): void
     {
-        if ($this->filled('phone')) {
+        $phone = $this->input('phone');
+
+        if (is_string($phone) && trim($phone) !== '') {
             $this->merge([
-                'phone' => app(PhoneNumberNormalizerService::class)->normalize($this->input('phone')),
+                'phone' => app(PhoneNumberNormalizerService::class)
+                    ->normalize($phone),
             ]);
         }
-
-        // participants_phoneは複数人分が混在しうる自由記述のため、正規化のみ行い、
-        // 形式(regex)チェックは行わない
-        if ($this->filled('participants_phone')) {
-            $this->merge([
-                'participants_phone' => $this->normalizeParticipantsPhone($this->input('participants_phone')),
-            ]);
-        }
-    }
-
-    private function normalizeParticipantsPhone(string $value): string
-    {
-        // 全角数字→半角、全角/半角ハイフンを半角ハイフンへ統一(区切りとして温存する必要があるため完全除去はしない)
-        $value = mb_convert_kana($value, 'n');
-        $value = preg_replace('/[\x{2010}-\x{2015}\x{2212}\x{FF0D}\x{30FC}]/u', '-', $value);
-
-        return trim($value);
     }
 
     public function rules(): array
     {
-        /** @var User|null $user */
-        $user = $this->user();
-
         return [
-            'participants' => ['required', 'in:1,2,3,4'],
-            'participants_name' => ['nullable', 'array', 'max:3'],
-            'participants_names.*' => ['nullable', 'string', 'max:20'],
-            'note' => ['nullable', 'string', 'max:255'],
-            'cancelled_reason' => ['nullable', 'string', 'max:255'],
             'date' => ['required', 'date_format:Y-m-d'],
             'time' => ['required', 'date_format:H:i'],
+            'note' => ['nullable', 'string', 'max:255'],
             'phone' => [
+                Rule::requiredIf(
+                    fn () => blank($this->user('web')?->client?->phone)
+                ),
                 'nullable',
                 'string',
-                'regex:/^0[\d\s\-ー－−]+$/u',
+                'max:255',
+                'regex:/\A0[0-9]+\z/',
             ],
         ];
     }
 
-    public function messages()
+    public function messages(): array
     {
         return [
-            'participants.required' => '参加人数を入力してください',
-            'participants.in' => '参加人数を入力してください',
-            'participants_name.*.string' => '参加者名を入力してください',
-            'participants_name.*.max' => '参加者名は20文字以内で入力してください',
-            'note.string' => '備考を正しく入力してください',
-            'note.max' => '備考は２５５文字以内で入力してください',
-            'cancelled_reason' => 'キャンセル理由は文字列で入力してください',
-            'cancelled_reason.max' => 'キャンセル理由は２５５文字以内で入力してください',
+            'date.required' => '日付を選択してください',
+            'date.date_format' => '日付を正しく選択してください',
             'time.required' => '時間を選択してください',
             'time.date_format' => '時間を正しく選択してください',
+            'note.string' => '備考を正しく入力してください',
+            'note.max' => '備考は255文字以内で入力してください',
+            'phone.required' => '電話番号を入力してください',
             'phone.string' => '電話番号を正しく入力してください',
+            'phone.max' => '電話番号を正しく入力してください',
             'phone.regex' => '電話番号を正しく入力してください',
         ];
     }

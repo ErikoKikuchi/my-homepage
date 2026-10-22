@@ -20,7 +20,9 @@ class LessonTemplate extends Model
         'is_active',
     ];
 
-    // LessonTemplate.php
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
     public function lessonSlots(): HasMany
     {
         return $this->hasMany(LessonSlot::class);

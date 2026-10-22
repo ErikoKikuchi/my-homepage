@@ -17,11 +17,13 @@ class ReservationPolicy
 
     public function view(User $user, Reservation $reservation): bool
     {
-        return $user->id === $reservation->user_id;
+        return $reservation->client()
+            ->where('user_id', $user->id)
+            ->exists();
     }
 
     public function cancel(User $user, Reservation $reservation): bool
     {
-        return $user->id === $reservation->user_id;
+        return $this->view($user, $reservation);
     }
 }

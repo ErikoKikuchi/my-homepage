@@ -13,15 +13,13 @@ return new class extends Migration
     {
         Schema::connection('client_db')->create('reservations', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('lesson_slot_id')->constrained()->cascadeOnDelete();
-            $table->foreignUuid('location_id')->nullable()->constrained()->cascadeOnDelete();
-            $table->uuid('user_id');
-            $table->unsignedTinyInteger('participants')->default(1);
-            $table->text('participants_names')->nullable();
+            $table->foreignUuid('lesson_slot_id')->constrained()->restrictOnDelete();
+            $table->foreignUuid('location_id')->nullable()->constrained()->restrictOnDelete();
+            $table->foreignUuid('client_id')->constrained('clients')->restrictOnDelete();
             $table->text('note')->nullable();
             $table->enum('status', ['waiting_venue', 'confirmed', 'canceled', 'no_show', 'rescheduled'])->default('waiting_venue');
             $table->timestamp('cancelled_at')->nullable();
-            $table->enum('cancelled_by', ['user', 'admin'])->nullable();
+            $table->enum('cancelled_by', ['client', 'admin'])->nullable();
             $table->foreignUuid('rescheduled_from_id')->nullable()->constrained('reservations');
             $table->foreignUuid('rescheduled_to_id')->nullable()->constrained('reservations');
             $table->timestamps();

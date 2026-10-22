@@ -3,7 +3,7 @@
 namespace App\Models\Pilates;
 
 use App\Enums\Pilates\ReservationStatus;
-use App\Models\Auth\User;
+use App\Models\Pilates\Client;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -20,9 +20,6 @@ class Reservation extends Model
     protected $table = 'client_db.reservations';
 
     protected $fillable = [
-        'user_id',
-        'participants',
-        'participants_names',
         'note',
         'status',
         'cancelled_at',
@@ -34,7 +31,6 @@ class Reservation extends Model
         return [
             'cancelled_at' => 'datetime',
             'status' => ReservationStatus::class,
-            'participants_names' => 'array',
         ];
     }
 
@@ -44,9 +40,9 @@ class Reservation extends Model
         return $this->belongsTo(LessonSlot::class);
     }
 
-    public function user(): BelongsTo
+    public function client(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Client::class);
     }
 
     public function location(): BelongsTo
@@ -64,13 +60,6 @@ class Reservation extends Model
         ]);
     }
 
-    // ユーザーがこれからの予約を確認用
-    #[Scope]
-    protected function upComing(Builder $query): void
-    {
-        $query->whereHas('lessonSlot', fn ($q) => $q->where('date', '>=', today()))->where('status', '!=', ReservationStatus::Canceled);
-    }
-
     // 過去の予約を確認用
     #[Scope]
     protected function past(Builder $query): void
@@ -82,9 +71,15 @@ class Reservation extends Model
     #[Scope]
     protected function forUser(Builder $query): void
     {
-        /** @var User|null $user */
-        $user = auth('web')->user();
-        $query->where('user_id', $user?->id);
+        $clientId = auth('web')->user()?->client?->id;
+
+        if ($clientId === null) {
+            $query->whereRaw('1 = 0');
+
+            return;
+        }
+
+        $query->where('client_id', $clientId);
     }
 
     protected function cancellationCutoff(): Attribute
@@ -98,5 +93,22 @@ class Reservation extends Model
         return Attribute::make(
             get: fn () => now()->greaterThan($this->cancellation_cutoff),
         );
+    }
+    public function rescheduledFrom(): BelongsTo
+    {
+        return $this->belongsTo(self::class, 'rescheduled_from_id');
+    }
+    
+    public function rescheduledTo(): BelongsTo
+    {
+        return $this->belongsTo(self::class, 'rescheduled_to_id');
+    }
+    #[Scope]
+    protected function upComing(Builder $query): void
+    {
+        $query->active()
+            ->whereHas('lessonSlot', fn (Builder $q) =>
+                $q->where('date', '>=', today())
+            );
     }
 }

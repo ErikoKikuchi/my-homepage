@@ -17,14 +17,22 @@ class PaymentItem extends Model
         'unit_price',
         'quantity',
     ];
+    protected $casts = [
+    'unit_price' => 'integer',
+    'quantity' => 'integer',
+];
 
-    public function payments(): BelongsTo
+    public function payment(): BelongsTo
     {
         return $this->belongsTo(Payment::class);
     }
 
-    public function guestPassPurchases(): BelongsTo
+    public function guestPassPurchase(): BelongsTo
     {
         return $this->belongsTo(GuestPassPurchase::class);
+    }
+    public function reservation(): BelongsTo
+    {
+        return $this->belongsTo(Reservation::class);
     }
 }

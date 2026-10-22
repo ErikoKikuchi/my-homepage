@@ -15,7 +15,6 @@ class UserRegisterController extends Controller
     {
         $credentials = $request->validated();
         $user = User::create([
-            'name' => $credentials['name'],
             'email' => $credentials['email'],
             'password' => Hash::make($credentials['password']),
             'is_pilates_user' => $credentials['service'] === 'pilates',

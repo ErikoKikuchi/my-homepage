@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('client_id')->constrained()->cascadeOnDelete();
             $table->date('logged_date');
-            $table->unsignedTinyInteger('mood')->default(3);
+            $table->unsignedTinyInteger('mood')->nullable();
             $table->text('free_text')->nullable();
             $table->timestamps();
         });

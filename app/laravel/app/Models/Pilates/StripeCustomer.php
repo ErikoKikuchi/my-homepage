@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class StripeCustomers extends Model
+class StripeCustomer extends Model
 {
     use HasUuids;
 
@@ -14,16 +14,12 @@ class StripeCustomers extends Model
 
     protected $fillable = [
         'memo',
-        'used_at',
+        'stripe_customer_id',
     ];
 
-    public function clients(): BelongsTo
+    public function client(): BelongsTo
     {
         return $this->belongsTo(Client::class);
     }
 
-    public function stripeCustomers(): BelongsTo
-    {
-        return $this->belongsTo(StripeCustomers::class);
-    }
 }

@@ -13,12 +13,16 @@ return new class extends Migration
     {
         Schema::connection('client_db')->create('clients', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('user_id');
+            $table->uuid('user_id')->nullable()->unique();
+            $table->foreign('user_id')->references('id')->on('thinkmotion_db.users')->nullOnDelete();
             $table->string('name');
-            $table->enum('gender', ['male', 'female', 'other']);
+            $table->string('name_kana')->nullable();
+            $table->enum('gender', ['male', 'female', 'other'])->nullable();
+            $table->string('phone')->nullable();
             $table->string('occupation')->nullable();
             $table->text('body_notes')->nullable();
             $table->text('personality_notes')->nullable();
+            $table->text('relationship_note')->nullable();
             $table->boolean('is_active')->default(false);
             $table->boolean('has_unpaid_fee')->default(false);
             $table->boolean('line_linked')->default(false);

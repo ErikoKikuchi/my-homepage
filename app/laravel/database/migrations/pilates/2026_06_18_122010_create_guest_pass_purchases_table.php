@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::connection('client_db')->create('guest_pass_purchases', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('client_id')->constrained()->cascadeOnDelete();
-            $table->unsignedTinyInteger('passes_purchased'); // 3 or 10
-            $table->unsignedInteger('amount_paid')->nullable();
-            $table->string('payment_method')->nullable(); // cash, stripe等
-            $table->date('purchased_at');
+            $table->foreignUuid('client_id')->constrained()->restrictOnDelete();
+            $table->unsignedTinyInteger('passes_purchased'); // 購入回数または移行残回数
+            $table->date('purchased_at')->nullable();
             $table->boolean('is_finished')->default(false);
+            $table->enum('pass_type', ['session', 'venue_addon']);
+            $table->foreignUuid('location_id')->nullable()->constrained()->restrictOnDelete();
+            $table->timestamp('imported_at')->nullable();
+            $table->text('note')->nullable();
             $table->timestamps();
         });
     }

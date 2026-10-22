@@ -5,6 +5,7 @@ namespace App\Models\Pilates;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Payment extends Model
 {
@@ -13,6 +14,7 @@ class Payment extends Model
     protected $connection = 'client_db';
 
     protected $fillable = [
+        'stripe_payment_intent_id',
         'amount',
         'currency',
         'status',
@@ -21,11 +23,16 @@ class Payment extends Model
     ];
 
     protected $casts = [
+        'amount' => 'integer',
         'paid_at' => 'datetime',
     ];
 
-    public function clients(): BelongsTo
+    public function client(): BelongsTo
     {
         return $this->belongsTo(Client::class);
+    }
+    public function paymentItems(): HasMany
+    {
+        return $this->hasMany(PaymentItem::class);
     }
 }

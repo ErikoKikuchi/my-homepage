@@ -13,9 +13,7 @@ return new class extends Migration
     {
         Schema::connection('client_db')->create('initial_consultations', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('client_id')->nullable()->references('id')->on('clients');
-            $table->foreignUuid('user_id');
-            $table->foreignUuid('intake_form_id')->references('id')->on('intake_forms');
+            $table->foreignUuid('intake_form_id')->unique()->constrained('intake_forms');
 
             // セクション1：基本情報
             $table->string('full_name');
@@ -39,7 +37,6 @@ return new class extends Migration
             $table->boolean('consent_report_discomfort')->default(false);
             $table->timestamp('consented_at')->nullable();
 
-            $table->timestamp('submitted_at')->nullable();
             $table->timestamps();
         });
     }

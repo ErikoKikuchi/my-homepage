@@ -9,6 +9,10 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use App\Enums\Pilates\ReservationStatus;
+use Carbon\Carbon;
 
 class Client extends Model
 {
@@ -20,10 +24,13 @@ class Client extends Model
 
     protected $fillable = [
         'name',
+        'name_kana',
         'gender',
+        'phone',
         'occupation',
         'body_notes',
         'personality_notes',
+        'relationship_note',
         'is_active',
         'has_unpaid_fee',
         'line_linked',
@@ -31,6 +38,8 @@ class Client extends Model
 
     protected $casts = [
         'is_active' => 'boolean',
+        'has_unpaid_fee' => 'boolean',
+        'line_linked' => 'boolean',
     ];
 
     public function user(): BelongsTo
@@ -80,9 +89,9 @@ class Client extends Model
         $query->where('is_active', true);
     }
 
-    // 利用者一覧（利用終了もしくは中止中：）
+    // 「初回来店前を含む未有効」
     #[Scope]
-    protected function archived(Builder $query): void
+    protected function inactive(Builder $query): void
     {
         $query->where('is_active', false);
     }
@@ -121,11 +130,33 @@ class Client extends Model
     }
 
     // 回数券残数
-    public function remainingGuestPassCount(): int
-    {
-        $purchasedCount = $this->guestPassPurchases()->sum('passes_purchased');
-        $usedCount = $this->guestPassUsages()->count();
+    //ublic function remainingGuestPassCount(): int
+    //{
+    //    $purchasedCount = $this->guestPassPurchases()->sum('passes_purchased');
+    //    $usedCount = $this->guestPassUsages()->count();
 
-        return $purchasedCount - $usedCount;
+    //    return $purchasedCount - $usedCount;
+    //}
+    public function lessonSlotsViaReservations(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            LessonSlot::class,
+            Reservation::class,
+            'client_id',
+            'id',
+            'id',
+            'lesson_slot_id'
+        )->whereIn('reservations.status', [
+            ReservationStatus::WaitingVenue,
+            ReservationStatus::Confirmed,
+        ]);
+    }
+    protected function latestReservationDate(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->lesson_slots_via_reservations_max_date
+                ? Carbon::parse($this->lesson_slots_via_reservations_max_date)->format('Y-m-d')
+                : '--',
+        );
     }
 }

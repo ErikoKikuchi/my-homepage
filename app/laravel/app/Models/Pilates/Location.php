@@ -4,6 +4,7 @@ namespace App\Models\Pilates;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Location extends Model
 {
@@ -30,8 +31,12 @@ class Location extends Model
         'price_addon_per_session' => 'integer',
     ];
 
-    public function reservations()
+    public function reservations(): HasMany
     {
-        return $this->belongsToMany('reservation_location', 'location_id', 'reservation_id');
+        return $this->hasMany(Reservation::class);
+    }
+    public function lessonSlots(): HasMany
+    {
+        return $this->hasMany(LessonSlot::class);
     }
 }

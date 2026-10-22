@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::connection('client_db')->create('training_log_categories', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('training_log_id')->constrained()->cascadeOnDelete();
-            $table->enum('category', ['care', 'stretch', 'strength', 'endurance', 'balance'])->default('stretch');
+            $table->enum('category', ['care', 'stretch', 'strength', 'endurance', 'balance']);
+            $table->unique(['training_log_id', 'category']);
             $table->timestamps();
         });
     }

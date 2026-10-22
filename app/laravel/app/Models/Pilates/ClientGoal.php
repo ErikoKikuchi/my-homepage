@@ -18,11 +18,11 @@ class ClientGoal extends Model
         'goal',
         'outlook',
         'hope',
-        'achieved_at',
+        'is_active'
     ];
 
     protected $casts = [
-        'achieved_at' => 'datetime',
+        'is_active' => 'boolean',
     ];
 
     // リレーション
@@ -38,10 +38,4 @@ class ClientGoal extends Model
         $query->where('client_id', $clientId);
     }
 
-    // 作成日降順
-    #[Scope]
-    public function latest(Builder $query): void
-    {
-        $query->orderBy('created_at', 'desc');
-    }
 }

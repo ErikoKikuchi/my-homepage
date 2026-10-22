@@ -4,16 +4,23 @@ namespace App\Models\Auth;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Support\Str;
 
 class Admin extends Authenticatable
 {
     use HasUuids;
+    protected $connection = 'mysql';
 
     protected $fillable = [
         'username',
         'email',
         'password',
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+        'two_factor_secret',
+        'two_factor_recovery_codes',
     ];
 
     protected function casts(): array
@@ -30,17 +37,6 @@ class Admin extends Authenticatable
     public $incrementing = false;
 
     protected $keyType = 'string';
-
-    protected static function boot(): void
-    {
-        parent::boot();
-
-        static::creating(function ($model) {
-            if (empty($model->id)) {
-                $model->id = (string) Str::uuid();
-            }
-        });
-    }
 
     public function sections()
     {

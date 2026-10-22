@@ -27,7 +27,6 @@ class InitialConsultation extends Model
         'consent_health_condition',
         'consent_report_discomfort',
         'consented_at',
-        'submitted_at',
     ];
 
     protected $casts = [
@@ -37,13 +36,9 @@ class InitialConsultation extends Model
         'consent_report_discomfort' => 'boolean',
         'symptoms' => 'array',
         'consented_at' => 'datetime',
-        'submitted_at' => 'datetime',
+        'session_goal' => 'integer',
     ];
 
-    public function client(): BelongsTo
-    {
-        return $this->belongsTo(Client::class);
-    }
 
     public function intakeForm(): BelongsTo
     {

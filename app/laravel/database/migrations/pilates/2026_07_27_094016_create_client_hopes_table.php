@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::connection('client_db')->create('client_hopes', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('client_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('client_id')->constrained()->restrictOnDelete();
             $table->text('hope')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('client_hopes');
+        Schema::connection('client_db')->dropIfExists('client_hopes');
     }
 };

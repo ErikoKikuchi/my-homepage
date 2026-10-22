@@ -16,6 +16,7 @@ class TrainingQuestion extends Model
         'question',
         'urgency',
         'answered_at',
+        'answer',
     ];
 
     protected $casts = [

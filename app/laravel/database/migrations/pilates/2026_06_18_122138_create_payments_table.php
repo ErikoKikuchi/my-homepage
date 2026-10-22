@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::connection('client_db')->create('payments', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('client_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('client_id')->constrained()->restrictOnDelete();
             $table->string('stripe_payment_intent_id')->unique()->nullable(); // pi_xxxx
             $table->unsignedInteger('amount');
             $table->string('currency')->default('jpy');

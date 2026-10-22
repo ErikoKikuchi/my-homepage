@@ -2,22 +2,14 @@
 
 namespace App\Models\Auth;
 
-use App\Enums\Pilates\ReservationStatus;
 use App\Models\Pilates\Client;
-use App\Models\Pilates\LessonSlot;
-use App\Models\Pilates\Reservation;
-use Carbon\Carbon;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Str;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -34,13 +26,11 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var list<string>
      */
     protected $fillable = [
-        'name',
         'email',
         'password',
         'is_medical',
         'is_client',
         'is_pilates_user',
-        'phone',
         'profile_completed',
         'bookshelf_public',
     ];
@@ -67,6 +57,8 @@ class User extends Authenticatable implements MustVerifyEmail
             'is_client' => 'boolean',
             'is_pilates_user' => 'boolean',
             'is_medical' => 'boolean',
+            'profile_completed' => 'boolean',
+            'bookshelf_public' => 'boolean',
         ];
     }
 
@@ -75,51 +67,15 @@ class User extends Authenticatable implements MustVerifyEmail
 
     protected $keyType = 'string';
 
-    protected static function booting(): void
-    {
-        static::creating(function ($model) {
-            if (empty($model->id)) {
-                $model->id = (string) Str::uuid();
-            }
-        });
-    }
 
     public function client(): HasOne
     {
         return $this->hasOne(Client::class);
     }
 
-    public function reservations(): HasMany
-    {
-        return $this->hasMany(Reservation::class);
-    }
-
-    public function lessonSlotsViaReservations(): HasManyThrough
-    {
-        return $this->hasManyThrough(
-            LessonSlot::class,
-            Reservation::class,
-            'user_id',        // reservations.user_id (Reservation側の外部キー)
-            'id',              // lesson_slots.id (LessonSlot側の主キー)
-            'id',              // users.id (User側のローカルキー)
-            'lesson_slot_id'   // reservations.lesson_slot_id (Reservation側のローカルキー)
-        )->whereIn('reservations.status', [
-            ReservationStatus::WaitingVenue,
-            ReservationStatus::Confirmed,
-        ]);
-    }
-
-    protected function latestReservationDate(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => $this->lesson_slots_via_reservations_max_date
-                ? Carbon::parse($this->lesson_slots_via_reservations_max_date)->format('Y-m-d')
-                : '--',
-        );
-    }
-
     public function canUseTrainingLog(): bool
     {
-        return (bool) ($this->is_client && $this->client?->is_active);
+        return $this->hasVerifiedEmail()
+        && $this->client?->is_active === true;
     }
 }

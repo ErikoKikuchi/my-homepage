@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Section extends Model
 {
     use HasUuids;
+    protected $connection = 'mysql';
 
     protected $fillable = [
         'key',
@@ -17,6 +18,6 @@ class Section extends Model
 
     public function admins(): BelongsToMany
     {
-        return $this->belongsToMany(Admin::class);
+        return $this->belongsToMany(Admin::class, 'admin_section');
     }
 }

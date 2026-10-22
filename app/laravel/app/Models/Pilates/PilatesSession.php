@@ -2,8 +2,6 @@
 
 namespace App\Models\Pilates;
 
-use Illuminate\Database\Eloquent\Attributes\Scope;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -23,23 +21,14 @@ class PilatesSession extends Model
         'session_date' => 'datetime',
     ];
 
-    #[Scope]
     public function client(): BelongsTo
     {
         return $this->belongsTo(Client::class);
     }
 
-    #[Scope]
     public function reservation(): BelongsTo
     {
         return $this->belongsTo(Reservation::class);
     }
 
-    #[Scope]
-    public function sessionDate(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value) => $value->format('Y/m/d')
-        );
-    }
 }
