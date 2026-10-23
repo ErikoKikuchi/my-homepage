@@ -18,6 +18,11 @@ class UserSectionMiddleware
     {
         $user = Auth::guard('web')->user();
 
+        if (! $user) {
+        abort(401, 'Unauthenticated.');
+    }
+
+
         $allowed = match ($section) {
             'pilates' => $user->is_pilates_user,
             'thinkmotion' => $user->is_medical,

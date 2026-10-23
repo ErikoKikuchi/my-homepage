@@ -5,7 +5,7 @@ export function usePilatesAuth() {
   const context = useContext(PilatesAuthContext);
 
   if (context === undefined) {
-    throw new Error("useAuth must be used within AuthProvider");
+    throw new Error("usePilatesAuth must be used within PilatesAuthProvider");
   }
 
   return context;

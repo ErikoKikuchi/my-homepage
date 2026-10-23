@@ -19,9 +19,12 @@ Route::middleware('auth:web')->group(function () {
         return response()->json([
             'user' => [
                 'id' => $user->id,
-                'name' => $user->name,
+                'name' => $user->is_pilates_user
+                        ? $user->client?->name
+                        : $user->profile?->display_name,
                 'email' => $user->email,
                 'is_pilates_user' => $user->is_pilates_user,
+                'is_medical' => $user->is_medical, 
                 'email_verified' => $user->hasVerifiedEmail(),
             ],
         ]);

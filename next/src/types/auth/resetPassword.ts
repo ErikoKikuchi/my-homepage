@@ -6,5 +6,5 @@ export interface ResetPasswordCredentials {
 }
 
 export interface ResetPasswordSuccessResponse {
-  message: string;
+  redirectTo: string;
 }

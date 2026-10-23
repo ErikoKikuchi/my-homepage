@@ -63,13 +63,13 @@ class ReservationAvailabilityService
     public function getAvailableTimes(string $date): array
     {
         return LessonSlot::where('date', $date)
-            ->with('lessonTemplate')
+            ->with(['lessonTemplate', 'reservations', 'location'])
             ->get()
-            ->filter(fn ($slot) => $this->isSlotAvailable($slot))
             ->map(fn ($slot) => [
                 'start' => $slot->lessonTemplate->start_time,
                 'end' => $slot->lessonTemplate->end_time,
                 'locationName' => $slot->location?->name,
+                'isAvailable' => $this->isSlotAvailable($slot),
             ])
             ->values()
             ->toArray();

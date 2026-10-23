@@ -4,9 +4,7 @@ import styles from "./ParticipantsField.module.css";
 interface ParticipantsFieldProps {
   label?: string;
   value: string;
-  participantNames: string[];
   onChange: (value: string) => void;
-  onNameChange: (index: number, value: string) => void;
   error?: string;
   className?: string;
 }
@@ -16,14 +14,11 @@ export default function ParticipantsField({
   label = "3、参加人数",
   value,
   onChange,
-  onNameChange,
   error,
   className,
-  participantNames,
 }: ParticipantsFieldProps) {
   const participantsId = useId();
   const errorId = `${participantsId}-error`;
-  const extraCount = Number(value) - 1;
 
   return (
     <div className={`${styles.participantsFieldBlock} ${className ?? ""}`}>
@@ -51,21 +46,6 @@ export default function ParticipantsField({
           {error}
         </p>
       )}
-      {Array.from({ length: extraCount }, (_, i) => {
-        const nameId = `${participantsId}-name-${i}`;
-        return (
-          <div key={i}>
-            <label htmlFor={nameId}>参加者{i + 2}人目のお名前</label>
-            <input
-              id={nameId}
-              type="text"
-              value={participantNames[i] ?? ""}
-              onChange={(e) => onNameChange(i, e.target.value)}
-              className={styles.participantsFieldInput}
-            />
-          </div>
-        );
-      })}
     </div>
   );
 }

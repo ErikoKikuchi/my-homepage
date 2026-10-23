@@ -12,8 +12,12 @@ class UserLoginController extends Controller
 {
     public function login(UserLoginRequest $request)
     {
-        $credentials = $request->only(['email', 'password']);
         $isThinkmotion = $request->is('api/thinkmotion', 'api/thinkmotion/*');
+
+        $credentials = $request->only(['email', 'password']);
+        $credentials[
+            $isThinkmotion ? 'is_medical' : 'is_pilates_user'
+        ] = true;
 
         if (! Auth::guard('web')->attempt($credentials, $request->boolean('remember'))) {
             return response()->json([
@@ -36,7 +40,7 @@ class UserLoginController extends Controller
         $reservationDate = $request->session()->pull('reservation_date');
         $reservationStart = $request->session()->pull('reservation_start');
 
-        if ($user->is_medical && ! $user->profile_completed) {
+        if ($isThinkmotion && ! $user->profile_completed) {
             return response()->json([
                 'redirectTo' => route('profile.register'),
             ]);

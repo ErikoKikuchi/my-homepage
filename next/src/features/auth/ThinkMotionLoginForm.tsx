@@ -86,9 +86,8 @@ export function ThinkMotionLoginForm() {
             </LinkButton>
           </div>
           <LinkButton
-            external
             className={styles.resetPassword}
-            href={`${process.env.NEXT_PUBLIC_LARAVEL_URL}/forgot-password?from=pilates`}
+            href="/auth/forgot-password"
             variant="outline"
           >
             パスワードをお忘れの方はこちら

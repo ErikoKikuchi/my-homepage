@@ -40,6 +40,12 @@ export async function getReservationDetail(
     redirect("/auth/pilates/login");
   }
   if (!response.ok) {
+    const body = await response.text();
+
+    console.error("予約詳細APIエラー", {
+      status: response.status,
+      body,
+    });
     throw new Error("予約詳細の取得に失敗しました");
   }
 
@@ -70,6 +76,13 @@ export async function getBookingDetail(
     redirect("/auth/pilates/login");
   }
   if (!response.ok) {
+    const body = await response.text();
+
+    console.error("予約確認APIエラー", {
+      status: response.status,
+      body,
+    });
+
     throw new Error("予約詳細の取得に失敗しました");
   }
 

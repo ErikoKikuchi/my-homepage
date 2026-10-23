@@ -14,7 +14,6 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'name' => 'ピラティス花子',
             'email' => 'pilates@example.com',
             'password' => Hash::make('password123456'),
             'profile_completed' => false,
@@ -24,7 +23,6 @@ class UserSeeder extends Seeder
             'is_medical' => false,
         ]);
         User::create([
-            'name' => 'ピラティス太郎',
             'email' => 'pilates-mania@example.com',
             'password' => Hash::make('password123456'),
             'profile_completed' => false,
@@ -34,7 +32,6 @@ class UserSeeder extends Seeder
             'is_medical' => false,
         ]);
         User::create([
-            'name' => 'ピラティス療法士',
             'email' => 'pilatespt@example.com',
             'password' => Hash::make('password123456'),
             'profile_completed' => false,
@@ -44,7 +41,6 @@ class UserSeeder extends Seeder
             'is_medical' => true,
         ]);
         User::create([
-            'name' => 'テスト療法士',
             'email' => 'testpt@example.com',
             'password' => Hash::make('password123456'),
             'profile_completed' => false,

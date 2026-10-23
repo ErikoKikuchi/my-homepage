@@ -22,10 +22,9 @@ Route::prefix('/reservation')->group(function () {
 
 // ログイン/ログアウト用
 Route::post('/login', [UserLoginController::class, 'login'])->name('pilates.login.attempt')->middleware('throttle:login');
-Route::post('/logout', [UserLoginController::class, 'logout'])
-    ->name('pilates.logout');
+Route::post('/logout', [UserLoginController::class, 'logout'])->middleware('auth:web')->name('pilates.logout');
 Route::get('/user', CurrentPilatesUserController::class)
-    ->middleware('auth:web');
+    ->middleware(['auth:web', 'section:pilates']);
 
 // ログイン後
 Route::middleware(['auth:web', 'verified', 'section:pilates','auth:sanctum'])->group(function () {

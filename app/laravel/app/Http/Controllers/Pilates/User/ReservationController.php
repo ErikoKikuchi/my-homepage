@@ -130,10 +130,6 @@ class ReservationController extends Controller
 
                 $phone = $data['phone'] ?? null;
 
-                if (blank($client->phone) && blank($phone)) {
-                    abort(422, '電話番号を入力してください');
-                }
-
                 if (filled($phone) && $client->phone !== $phone) {
                     $client->update(['phone' => $phone]);
                 }
@@ -169,7 +165,7 @@ class ReservationController extends Controller
 
     public function show(Reservation $reservation)
     {
-        Gate::authorize('view', $reservation);
+        Gate::authorize('reservation.view', $reservation);
 
         $reservation->load([
             'lessonSlot.lessonTemplate',

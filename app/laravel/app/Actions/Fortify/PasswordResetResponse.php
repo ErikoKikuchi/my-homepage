@@ -2,19 +2,19 @@
 
 namespace App\Actions\Fortify;
 
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use Laravel\Fortify\Contracts\PasswordResetResponse as PasswordResetResponseContract;
 
 class PasswordResetResponse implements PasswordResetResponseContract
 {
-    public function toResponse($request): RedirectResponse
+    public function toResponse($request): JsonResponse
     {
         $from = $request->session()->pull('login_from');
 
-        $route = $from === 'thinkmotion'
-            ? route('thinkmotion.login')
-            : route('pilates.login');
-
-        return redirect($route)->with('status', __('パスワードを変更しました。ログインしてください。'));
+        return response()->json([
+            'redirectTo' => $from === 'thinkmotion'
+                ? '/auth/thinkmotion/login'
+                : '/auth/pilates/login',
+        ]);
     }
 }

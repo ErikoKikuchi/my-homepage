@@ -11,7 +11,7 @@ class CancellationController extends Controller
 {
     public function cancel(Reservation $reservation)
     {
-        Gate::authorize('cancel', $reservation);
+        Gate::authorize('reservation.cancel', $reservation);
 
         if (! in_array($reservation->status, [
             ReservationStatus::WaitingVenue,

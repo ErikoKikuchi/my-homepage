@@ -7,6 +7,7 @@ import PasswordInput from "@/components/auth/PasswordInput";
 import PasswordConfirmationInput from "@/components/auth/PasswordConfirmationInput";
 import styles from "./ResetPasswordForm.module.css";
 import LinkButton from "@/components/ui/LinkButton/LinkButton";
+import { useRouter } from "next/navigation";
 
 interface ResetPasswordFormProps {
   token: string;
@@ -17,19 +18,18 @@ export function ResetPasswordForm({
   token,
   initialEmail = "",
 }: ResetPasswordFormProps) {
+  const router = useRouter();
   const [email, setEmail] = useState(initialEmail);
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
   const [generalError, setGeneralError] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: SubmitEvent) => {
     e.preventDefault();
     setFieldErrors({});
     setGeneralError(null);
-    setSuccessMessage(null);
     setIsSubmitting(true);
 
     try {
@@ -39,7 +39,7 @@ export function ResetPasswordForm({
         password,
         passwordConfirmation,
       });
-      setSuccessMessage(result.message);
+      router.push(result.redirectTo);
     } catch (error) {
       if (error instanceof AuthApiError) {
         if ("errors" in error.body) {
@@ -61,7 +61,6 @@ export function ResetPasswordForm({
     <div className={styles.main}>
       <form onSubmit={handleSubmit} className={styles.resetPasswordForm}>
         {generalError && <p role="alert">{generalError}</p>}
-        {successMessage && <p role="status">{successMessage}</p>}
 
         <EmailInput
           value={email}
@@ -79,6 +78,7 @@ export function ResetPasswordForm({
         <PasswordConfirmationInput
           value={passwordConfirmation}
           onChange={setPasswordConfirmation}
+          error={fieldErrors.passwordConfirmation?.[0]}
         />
 
         <button

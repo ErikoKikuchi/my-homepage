@@ -1,0 +1,17 @@
+.main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 80px 40px 120px;
+}
+.emailVerifyForm {
+  color: var(--color-forest-dark);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.alert {
+  color: red;
+}
+.status {
+  color: blue;
+}

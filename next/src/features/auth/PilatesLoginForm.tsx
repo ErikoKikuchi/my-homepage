@@ -86,7 +86,6 @@ export function PilatesLoginForm() {
             </LinkButton>
           </div>
           <LinkButton
-            external
             className={styles.resetPassword}
             href="/auth/forgot-password"
             variant="outline"

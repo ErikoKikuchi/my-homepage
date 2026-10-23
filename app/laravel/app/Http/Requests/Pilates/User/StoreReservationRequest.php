@@ -4,8 +4,6 @@ namespace App\Http\Requests\Pilates\User;
 
 use App\Services\Pilates\PhoneNumberNormalizerService;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
-
 class StoreReservationRequest extends FormRequest
 {
     public function authorize(): bool
@@ -35,15 +33,7 @@ class StoreReservationRequest extends FormRequest
             'date' => ['required', 'date_format:Y-m-d'],
             'time' => ['required', 'date_format:H:i'],
             'note' => ['nullable', 'string', 'max:255'],
-            'phone' => [
-                Rule::requiredIf(
-                    fn () => blank($this->user('web')?->client?->phone)
-                ),
-                'nullable',
-                'string',
-                'max:255',
-                'regex:/\A0[0-9]+\z/',
-            ],
+            'phone' => ['nullable','string','max:255','regex:/\A0[0-9]+\z/',],
         ];
     }
 

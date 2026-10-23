@@ -1,0 +1,17 @@
+.emailVerify {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.emailVerifyDescription {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+.descriptionText {
+  padding: 10px;
+}
+.descriptionText {
+  padding: 10px;
+}

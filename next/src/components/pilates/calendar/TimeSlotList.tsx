@@ -22,7 +22,7 @@ export function TimeSlotList({ daySchedule, status }: TimeSlotListProps) {
   const router = useRouter();
 
   async function handleReservationApply(time: TimeSlot) {
-    if (isLoading) {
+    if (isLoading || !time.isAvailable || status !== "available") {
       return;
     }
 
@@ -41,7 +41,7 @@ export function TimeSlotList({ daySchedule, status }: TimeSlotListProps) {
   }
 
   return (
-    <div>
+    <div className={styles.announce}>
       <h2 className={styles.title}>
         {daySchedule.date}({daySchedule.dayOfWeek})の空き状況
       </h2>
@@ -52,17 +52,20 @@ export function TimeSlotList({ daySchedule, status }: TimeSlotListProps) {
               {time.start}〜{time.end}
             </div>
 
-            {status === "available" && (
+            {!time.isAvailable ? (
+              <span className={styles.fullLabel}>満席</span>
+            ) : status === "available" ? (
               <ActionButton
                 variant="primary"
                 className={styles.timeButton}
+                disabled={isLoading}
                 onClick={() => {
                   handleReservationApply(time);
                 }}
               >
                 予約申請
               </ActionButton>
-            )}
+            ) : null}
 
             {time.locationName && (
               <div className={styles.location}>{time.locationName}開催</div>

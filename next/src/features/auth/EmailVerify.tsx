@@ -2,7 +2,7 @@
 
 import { useState, type SubmitEvent } from "react";
 import { resendVerificationEmail, AuthApiError } from "@/lib/api/auth/authApi";
-import styles from "./ForgotPasswordForm.module.css";
+import styles from "./EmailVerify.module.css";
 import LinkButton from "../../components/ui/LinkButton/LinkButton";
 
 export function EmailVerify() {
@@ -47,8 +47,16 @@ export function EmailVerify() {
   return (
     <div className={styles.main}>
       <form onSubmit={handleSubmit} className={styles.emailVerifyForm}>
-        {generalError && <p role="alert">{generalError}</p>}
-        {successMessage && <p role="status">{successMessage}</p>}
+        {generalError && (
+          <p role="alert" className={styles.alert}>
+            {generalError}
+          </p>
+        )}
+        {successMessage && (
+          <p role="status" className={styles.status}>
+            {successMessage}
+          </p>
+        )}
 
         {mailInboxUrl && (
           <LinkButton

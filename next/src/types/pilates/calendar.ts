@@ -3,6 +3,7 @@ export type TimeSlot = {
   start: string;
   end: string;
   locationName?: string;
+  isAvailable: boolean;
 };
 
 // 月表示の1セル

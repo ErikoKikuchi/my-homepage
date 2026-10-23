@@ -3,7 +3,7 @@
 import { useState, type SubmitEvent } from "react";
 import { useRouter } from "next/navigation";
 import { register, AuthApiError } from "@/lib/api/auth/authApi";
-import NameInput from "@/components/auth//NameInput";
+import NameInput from "@/components/auth/NameInput";
 import EmailInput from "@/components/auth/EmailInput";
 import PasswordInput from "@/components/auth/PasswordInput";
 import PasswordConfirmationInput from "@/components/auth/PasswordConfirmationInput";

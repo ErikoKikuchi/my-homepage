@@ -30,3 +30,8 @@
   text-align: center;
   font-size: var(--text-sm);
 }
+.announce {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}

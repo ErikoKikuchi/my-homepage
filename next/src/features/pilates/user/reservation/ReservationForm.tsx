@@ -22,7 +22,6 @@ type ReservationFormProps = {
 type ReservationFormValues = {
   phone: string;
   participants: string;
-  participantNames: string[];
   note: string;
   agreements: Agreements;
 };
@@ -41,7 +40,6 @@ export default function ReservationForm({
   const [values, setValues] = useState<ReservationFormValues>({
     phone: initialPhone,
     participants: "1",
-    participantNames: [],
     note: "",
     agreements: {
       place: false,
@@ -82,18 +80,7 @@ export default function ReservationForm({
   ) => setValues((prev) => ({ ...prev, [key]: value }));
 
   const handleParticipantsChange = (value: string) =>
-    setValues((prev) => ({
-      ...prev,
-      participants: value,
-      participantNames: prev.participantNames.slice(0, Number(value) - 1),
-    }));
-
-  const handleNameChange = (index: number, value: string) =>
-    setValues((prev) => {
-      const next = [...prev.participantNames];
-      next[index] = value;
-      return { ...prev, participantNames: next };
-    });
+    setField("participants", value);
 
   const handleAgreementChange = (id: NoticeId, checked: boolean) => {
     setValues((prev) => ({
@@ -118,11 +105,6 @@ export default function ReservationForm({
     setIsSubmitting(true);
     setSubmitError(null);
 
-    const extraCount = Number(values.participants) - 1;
-    const participantNames = Array.from(
-      { length: extraCount },
-      (_, i) => values.participantNames[i] ?? "",
-    );
     const key: NoticeKey = "reserved";
 
     try {
@@ -131,38 +113,41 @@ export default function ReservationForm({
         time: detail.time,
         phone: values.phone,
         participants: Number(values.participants),
-        participantNames,
         note: values.note,
       });
       dialogRef.current?.close();
       router.push(`/pilates/mypage?notice=${key}`);
     } catch (error) {
-      if (
-        error instanceof AuthApiError &&
-        "errors" in error.body &&
-        error.status === 401
-      ) {
-        const e = error.body.errors;
-        const mapped: FormErrors = {
-          phone: e.phone?.[0],
-          participants: e.participants?.[0],
-          note: e.note?.[0],
-        };
-        if (Object.values(mapped).some(Boolean)) {
-          setErrors(mapped);
+      if (error instanceof AuthApiError) {
+        if (error.status === 401) {
           dialogRef.current?.close();
           router.push("/auth/pilates/login");
           return;
-        } else {
-          setSubmitError("入力内容をご確認ください。");
         }
-      } else if (error instanceof AuthApiError) {
-        setSubmitError(error.body.message);
+
+        if ("errors" in error.body) {
+          const fieldErrors = error.body.errors;
+          const mapped: FormErrors = {
+            phone: fieldErrors.phone?.[0],
+            participants: fieldErrors.participants?.[0],
+            note: fieldErrors.note?.[0],
+          };
+
+          if (Object.values(mapped).some(Boolean)) {
+            setErrors(mapped);
+            dialogRef.current?.close();
+          } else {
+            setSubmitError("入力内容をご確認ください。");
+          }
+        } else {
+          setSubmitError(error.body.message);
+        }
       } else {
         setSubmitError(
           "予約の申請に失敗しました。時間をおいて再度お試しください。",
         );
       }
+    } finally {
       setIsSubmitting(false);
     }
   };
@@ -184,9 +169,7 @@ export default function ReservationForm({
 
       <ParticipantsField
         value={values.participants}
-        participantNames={values.participantNames}
         onChange={handleParticipantsChange}
-        onNameChange={handleNameChange}
         error={errors.participants}
       />
 
@@ -220,7 +203,7 @@ export default function ReservationForm({
         onChange={handleAgreementChange}
         error={errors.agreements}
       />
-
+      {openError && <p role="alert">{openError}</p>}
       <button type="submit" id="openModal" className={styles.submitButton}>
         予約申請 確認画面へ
       </button>
@@ -238,10 +221,7 @@ export default function ReservationForm({
             日程：{detail.dateFormatted} {detail.timeFormatted}
           </p>
           <p>連絡先：{values.phone || "LINE"}</p>
-          <p>
-            参加者人数・参加者名：{values.participants}名（
-            {[confirmName, ...values.participantNames].join("、")}）
-          </p>
+          <p>参加者人数：{values.participants}名</p>
           <p>備考：{values.note}</p>
           {submitError && <p role="alert">{submitError}</p>}
         </div>

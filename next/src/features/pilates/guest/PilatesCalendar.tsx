@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   AvailabilityDateCell,
   MonthlyData,
@@ -23,46 +23,100 @@ export default function PilatesCalendar({
     useState<MonthlyData<AvailabilityDateCell> | null>(null);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [daySchedule, setDaySchedule] = useState<DaySchedule | null>(null);
+  const [calendarError, setCalendarError] = useState<string | null>(null);
+
+  const monthRequestId = useRef(0);
+  const dayRequestId = useRef(0);
 
   async function loadMonth(month: string) {
-    const response = await fetch(
-      `/api/pilates/reservation/calendar?month=${month}`,
-    );
-    if (!response.ok) {
-      console.error("calendar API error:", await response.text());
-      return;
-    }
+    const requestId = ++monthRequestId.current;
 
-    const data = await response.json();
-    setMonthData(data);
+    ++dayRequestId.current;
+    setSelectedDate(null);
+    setDaySchedule(null);
+    setCalendarError(null);
+
+    try {
+      const query = new URLSearchParams({ month });
+      const response = await fetch(
+        `/api/pilates/reservation/calendar?${query.toString()}`,
+      );
+
+      if (!response.ok) {
+        throw new Error("月別データの取得に失敗しました");
+      }
+
+      const data: MonthlyData<AvailabilityDateCell> = await response.json();
+
+      if (requestId !== monthRequestId.current) return;
+
+      // 月の読み込み中に選択された日付も解除する
+      ++dayRequestId.current;
+      setSelectedDate(null);
+      setDaySchedule(null);
+      setMonthData(data);
+    } catch {
+      if (requestId !== monthRequestId.current) return;
+
+      setCalendarError(
+        "カレンダーを取得できませんでした。時間をおいて再度お試しください。",
+      );
+    }
   }
+
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- 外部APIからの初期データ取得のため正当なEffect(react-hooks#34743で議論中の誤検出)
-    loadMonth(initialMonth);
+    void loadMonth(initialMonth);
+
+    return () => {
+      // 終了後に取得結果を反映しない
+      ++monthRequestId.current;
+      ++dayRequestId.current;
+    };
   }, [initialMonth]);
 
   function handlePrevMonth() {
-    if (monthData) loadMonth(monthData.previous);
+    if (monthData) void loadMonth(monthData.previous);
   }
 
   function handleNextMonth() {
-    if (monthData) loadMonth(monthData.next);
+    if (monthData) void loadMonth(monthData.next);
   }
 
   async function loadDaySchedule(dateString: string) {
+    const requestId = ++dayRequestId.current;
+
     setSelectedDate(dateString);
-    const response = await fetch(
-      `/api/pilates/reservation/slots?date=${dateString}`,
-    );
-    if (!response.ok) {
-      console.error("calendar API error:", await response.text());
-      return;
+    setDaySchedule(null);
+    setCalendarError(null);
+
+    try {
+      const query = new URLSearchParams({ date: dateString });
+      const response = await fetch(
+        `/api/pilates/reservation/slots?${query.toString()}`,
+      );
+
+      if (!response.ok) {
+        throw new Error("日別データの取得に失敗しました");
+      }
+
+      const data: DaySchedule = await response.json();
+
+      if (requestId !== dayRequestId.current) return;
+
+      if (data.date !== dateString) {
+        throw new Error("取得した日付が一致しません");
+      }
+
+      setDaySchedule(data);
+    } catch {
+      if (requestId !== dayRequestId.current) return;
+
+      setCalendarError(
+        "時間枠を取得できませんでした。日付を選び直してください。",
+      );
     }
-
-    const data = await response.json();
-
-    setDaySchedule(data);
   }
+
   const selectedCell = monthData?.cells.find((cell) => {
     if (cell === null) return false;
     const dateString = `${monthData.month}-${String(cell.date).padStart(2, "0")}`;
@@ -92,7 +146,9 @@ export default function PilatesCalendar({
         />
       </div>
       <div className={styles.pilatesDaySchedule}>
-        {daySchedule && (
+        {calendarError && <p role="alert">{calendarError}</p>}
+
+        {daySchedule && daySchedule.date === selectedDate && (
           <TimeSlotList
             daySchedule={daySchedule}
             status={selectedCell?.status ?? null}

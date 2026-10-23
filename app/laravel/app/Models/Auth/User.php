@@ -3,6 +3,7 @@
 namespace App\Models\Auth;
 
 use App\Models\Pilates\Client;
+use App\Models\ThinkMotion\Profile;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -71,6 +72,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function client(): HasOne
     {
         return $this->hasOne(Client::class);
+    }
+
+    public function profile():HasOne
+    {
+        return $this->hasOne(Profile::class);
     }
 
     public function canUseTrainingLog(): bool
