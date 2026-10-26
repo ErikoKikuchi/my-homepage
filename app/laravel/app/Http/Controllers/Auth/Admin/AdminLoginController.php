@@ -6,29 +6,23 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\AdminLoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class AdminLoginController extends Controller
 {
-    public function showPilatesForm(Request $request)
+    public function showLoginForm(Request $request)
     {
-        $request->session()->put('pilates_login_from', $request->query('from', 'pilates'));
-
-        return view('auth.pilates.admin-login');
+        return Inertia::render('Admin/Auth/Login');
     }
 
-    public function showThinkmotionForm(Request $request)
-    {
-        $request->session()->put('thinkmotion_login_from', $request->query('from', 'thinkmotion'));
-
-        return view('auth.thinkmotion.admin-login');
-    }
 
     public function adminLogin(AdminLoginRequest $request)
     {
         $section = $request->is('thinkmotion/*') ? 'thinkmotion' : 'pilates';
         $credentials = $request->only(['email', 'password']);
 
-        if (! Auth::guard('admin')->attempt($credentials, $request->boolean('remember'))) {
+        if (! Auth::guard('admin')->attempt($credentials)) {
             return back()
                 ->withErrors(['email' => 'ログイン情報が登録されていません'])
                 ->onlyInput('email');

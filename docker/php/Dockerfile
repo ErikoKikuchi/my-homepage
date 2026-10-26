@@ -26,7 +26,7 @@ RUN apt-get update \
     && docker-php-ext-enable redis
 
     # Node.js 20（Inertia.js / Vite ビルド用）
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
     && apt-get install -y nodejs
 
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
