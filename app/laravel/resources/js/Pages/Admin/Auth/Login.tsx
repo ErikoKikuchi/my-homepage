@@ -1,14 +1,14 @@
 import PageHeader from "@/Components/Admin/UI/PageHeader";
-import LoginForm from "@/Components/Admin/Auth/LoginForm";
+import { LoginForm } from "@/Components/Admin/Auth/LoginForm";
 import styles from "./Login.module.css";
 
-export default function LoginForm(){
+export default function AdminLogin() {
     return (
-    <>
-      <PageHeader heading="管理者ログインフォーム"></PageHeader>
-      <div className={styles.loginForm}>
-        <LoginForm></LoginForm>
-      </div>
-    </>
-  );
+        <>
+            <PageHeader heading="管理者ログインフォーム"></PageHeader>
+            <div className={styles.loginForm}>
+                <LoginForm></LoginForm>
+            </div>
+        </>
+    );
 }

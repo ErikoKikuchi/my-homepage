@@ -28,6 +28,7 @@ class AdminLoginRequest extends FormRequest
                 'email',
             ],
             'password' => ['required', 'min:12', 'string'],
+            'section' => ['required', 'string','in:pilates,thinkmotion'],
         ];
     }
 
@@ -39,6 +40,9 @@ class AdminLoginRequest extends FormRequest
             'password.required' => 'パスワードを入力してください',
             'password.min' => 'パスワードは12文字以上で入力してください',
             'password.string' => 'パスワードを正しく入力してください',
+            'section.required' => '選択してください',
+            'section.string'=> '選択してください',
+            'section.in' => '選択してください',
         ];
     }
 }

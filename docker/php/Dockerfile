@@ -14,6 +14,7 @@ RUN apt-get update \
     libonig-dev \
     libicu-dev \
     curl \
+    libbrotli1 \
     && docker-php-ext-install \
     pdo_mysql \
     zip \

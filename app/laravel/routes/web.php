@@ -16,11 +16,9 @@ Route::middleware('auth:web', 'signed')->group(function () {
     })->middleware(['auth:web', 'signed', 'throttle:6,1'])->name('verification.verify');
 });
 
-Route::middleware(['guest', 'inertia'])->group(function () {
-    Route::get('/pilates/admin/login', [AdminLoginController::class, 'showPilatesForm'])->name('pilates.admin.login');
-    Route::post('/pilates/admin/login', [AdminLoginController::class, 'adminLogin'])->name('pilates.admin.login.attempt')->middleware('throttle:login');
-    Route::get('/thinkmotion/admin/login', [AdminLoginController::class, 'showThinkmotionForm'])->name('thinkmotion.admin.login');
-    Route::post('/thinkmotion/admin/login', [AdminLoginController::class, 'adminLogin'])->name('thinkmotion.admin.login.attempt')->middleware('throttle:login');
+Route::middleware(['guest:admin', 'inertia'])->group(function () {
+    Route::get('/admin/login', [AdminLoginController::class, 'showLoginForm'])->name('admin.login');
+    Route::post('/admin/login', [AdminLoginController::class, 'adminLogin'])->name('admin.login.attempt')->middleware('throttle:login');
 });
 
 Route::prefix('pilates')->middleware(['auth:admin', 'admin.section:pilates', 'inertia'])->group(function () {

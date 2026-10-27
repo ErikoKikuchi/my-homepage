@@ -7,7 +7,7 @@ use App\Http\Requests\Auth\AdminLoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
-use Inertia\Response;
+
 
 class AdminLoginController extends Controller
 {
@@ -19,8 +19,13 @@ class AdminLoginController extends Controller
 
     public function adminLogin(AdminLoginRequest $request)
     {
-        $section = $request->is('thinkmotion/*') ? 'thinkmotion' : 'pilates';
-        $credentials = $request->only(['email', 'password']);
+        $validated = $request->validated();
+
+        $section = $validated['section'];
+        $credentials = [
+            'email' => $validated['email'],
+            'password' => $validated['password'],
+        ];
 
         if (! Auth::guard('admin')->attempt($credentials)) {
             return back()
