@@ -12,6 +12,7 @@ use BaconQrCode\Writer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PragmaRX\Google2FAQRCode\Google2FA;
+use Inertia\Inertia;
 
 class AdminTwoFactorSetupController extends Controller
 {
@@ -35,7 +36,11 @@ class AdminTwoFactorSetupController extends Controller
         $writer = new Writer($renderer);
         $qrCode = $writer->writeString($qrUrl);  // SVG文字列
 
-        return view("auth.{$section}.admin-two-factor-setup", compact('qrCode', 'section'));
+        
+        return Inertia::render("Admin/Auth/{$section}/AdminTwoFactorSetup", [
+            'qrCode' => $qrCode,
+            'section' => $section,
+        ]);
     }
 
     public function setup(AdminTwoFactorRequest $request)

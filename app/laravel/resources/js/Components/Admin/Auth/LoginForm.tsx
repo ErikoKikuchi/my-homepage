@@ -28,7 +28,7 @@ export function LoginForm() {
     }
 
     return (
-        <form onSubmit={handleSubmit} className={styles.pilatesLoginForm}>
+        <form onSubmit={handleSubmit} className={styles.loginForm}>
             <EmailInput
                 value={data.email}
                 onChange={(value) => setData("email", value)}
@@ -77,7 +77,7 @@ export function LoginForm() {
             <button
                 type="submit"
                 disabled={processing}
-                className={styles.registerButton}
+                className={styles.submitButton}
             >
                 {processing ? "ログイン中…" : "ログイン"}
             </button>

@@ -26,8 +26,7 @@
   display: flex;
   flex-direction: column;
 }
-.radioButton {
-}
+
 .announce {
   margin: 0;
   font-size: var(--text-xs);

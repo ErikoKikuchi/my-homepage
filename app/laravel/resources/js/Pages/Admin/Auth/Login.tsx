@@ -4,11 +4,11 @@ import styles from "./Login.module.css";
 
 export default function AdminLogin() {
     return (
-        <>
+        <div className={styles.main}>
             <PageHeader heading="管理者ログインフォーム"></PageHeader>
-            <div className={styles.loginForm}>
+            <div className={styles.loginFormWrapper}>
                 <LoginForm></LoginForm>
             </div>
-        </>
+        </div>
     );
 }

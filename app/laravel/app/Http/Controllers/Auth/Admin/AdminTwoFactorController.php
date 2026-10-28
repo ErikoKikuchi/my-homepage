@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\AdminTwoFactorRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PragmaRX\Google2FALaravel\Support\Authenticator;
+use Inertia\Inertia;
 
 class AdminTwoFactorController extends Controller
 {
@@ -19,7 +20,9 @@ class AdminTwoFactorController extends Controller
             return redirect()->route("{$section}.admin.two-factor.setup");
         }
 
-        return view("auth.{$section}.admin-two-factor-verify", compact('section'));
+        return Inertia::render("Admin/Auth/{$section}/AdminTwoFactorVerify", [
+            'section' => $section,
+        ]);
     }
 
     public function verify(AdminTwoFactorRequest $request)
