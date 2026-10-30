@@ -1,21 +1,17 @@
-import { Head } from "@inertiajs/react";
+import PageHeader from "@/Components/Admin/UI/PageHeader";
 
 type Props = {
     pendingReservationCount: number;
 };
 
-export default function Dashboard({
-    pendingReservationCount,
-}: Props) {
+export default function Dashboard({ pendingReservationCount }: Props) {
     return (
         <>
-            <Head title="管理画面 – からだ散歩" />
+            <PageHeader heading="管理画面 – からだ散歩"></PageHeader>
 
             <main className="min-h-screen bg-gray-50 p-8">
                 <div className="mx-auto max-w-5xl">
-                    <h1 className="text-2xl font-bold">
-                        Pilates 管理画面
-                    </h1>
+                    <h1 className="text-2xl font-bold">Pilates 管理画面</h1>
 
                     <section className="mt-6 rounded-lg bg-white p-6 shadow-sm">
                         <h2 className="text-lg font-semibold">
