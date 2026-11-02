@@ -36,7 +36,11 @@ export default function AdminPilatesTwoFactorVerify() {
                     autoComplete="one-time-code"
                     placeholder="6桁のコード"
                 ></TwoFactorInput>
-                <button type="submit" disabled={processing}>
+                <button
+                    type="submit"
+                    disabled={processing}
+                    className={styles.submitButton}
+                >
                     {processing ? "確認中…" : "認証する"}
                 </button>
             </div>

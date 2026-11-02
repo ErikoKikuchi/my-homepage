@@ -38,6 +38,6 @@ class AdminTwoFactorController extends Controller
         }
         $request->session()->regenerate();
 
-        return redirect()->route("{$section}.admin.home");
+        return redirect()->route("{$section}.admin.dashboard");
     }
 }

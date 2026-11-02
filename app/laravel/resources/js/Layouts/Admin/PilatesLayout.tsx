@@ -1,17 +1,22 @@
-import AdminPiltesSiteNav from "@/Components/Admin/Common/AdminPiltesSiteNav";
-import { Image } from "lucide-react";
+import type { ReactNode } from "react";
+import AdminPilatesSiteNav from "@/Components/Admin/Common/AdminPilatesSiteNav";
+import styles from "./PilatesLayout.module.css";
+
+type PilatesLayoutProps = {
+    children: ReactNode;
+    src?: string;
+};
 
 export default function PilatesLayout({
     children,
-}: {
-    children: React.ReactNode;
-}) {
+    src = "/images/footer-pic.png",
+}: PilatesLayoutProps) {
     return (
         <>
-            <AdminPiltesSiteNav />
+            <AdminPilatesSiteNav />
             {children}
-            <Image
-                src="/site-images/footer-pic.png"
+            <img
+                src={src}
                 alt="からだ散歩のイメージ"
                 width={120}
                 height={120}
@@ -21,8 +26,3 @@ export default function PilatesLayout({
         </>
     );
 }
-export const metadata: Metadata = {
-    openGraph: {
-        images: ["/site-images/PilatesOGP.png"],
-    },
-};

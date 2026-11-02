@@ -46,7 +46,11 @@ export default function AdminPilatesTwoFactorSetup({ qrCode }: Props) {
                     autoComplete="one-time-code"
                     placeholder="6桁のコード"
                 ></TwoFactorInput>
-                <button type="submit" disabled={processing}>
+                <button
+                    type="submit"
+                    disabled={processing}
+                    className={styles.submitButton}
+                >
                     {processing ? "確認中…" : "設定する"}
                 </button>
             </div>

@@ -37,7 +37,8 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
-            //
+            'adminAuthenticated' => fn () =>
+            auth()->guard('admin')->check(),
         ];
     }
 }

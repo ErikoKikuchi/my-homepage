@@ -1,28 +1,31 @@
 import { Link, useForm, usePage } from "@inertiajs/react";
-import styles from ./AdminPilatesSiteNav.module.css
+import styles from "./AdminThinkMotionSiteNav.module.css";
 
-export default function AdminPilatesNav() {
+export default function AdminThinkMotionNav() {
     const { props, url } = usePage<{
         adminAuthenticated: boolean;
     }>();
     const { post, processing } = useForm({});
-    const dashboardUrl = "/pilates/admin/home";
+    const dashboardUrl = "/thinkmotion/admin/dashboard";
 
     return (
-        <nav aria-label="ピラティス管理者メニュー" className={styles.adminPilatesNav}>
+        <nav
+            aria-label="ThinkMotion管理者メニュー"
+            className={styles.adminThinkMotionNav}
+        >
             <Link
                 href={props.adminAuthenticated ? dashboardUrl : "/admin/login"}
                 className={styles.link}
             >
-                からだ散歩 · 管理画面
+                ThinkMotion · 管理画面
             </Link>
             <ul className={styles.linkIndex}>
-            {props.adminAuthenticated ? (
+                {props.adminAuthenticated ? (
                     <>
                         <li>
                             <Link
                                 href={dashboardUrl}
-                                className={linkClass}
+                                className={styles.link}
                                 aria-current={
                                     url.split("?")[0] === dashboardUrl
                                         ? "page"
@@ -36,10 +39,10 @@ export default function AdminPilatesNav() {
                         <li>
                             <button
                                 type="button"
-                                className={`${linkClass} cursor-pointer disabled:cursor-wait disabled:opacity-50`}
+                                className={styles.submitButton}
                                 disabled={processing}
                                 onClick={() =>
-                                    post("/pilates/admin/logout")
+                                    post("/thinkmotion/admin/logout")
                                 }
                             >
                                 ログアウト
@@ -50,7 +53,7 @@ export default function AdminPilatesNav() {
                     <li>
                         <Link
                             href="/admin/login"
-                            className={linkClass}
+                            className={styles.submitButton}
                         >
                             ログイン
                         </Link>

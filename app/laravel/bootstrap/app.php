@@ -42,16 +42,11 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
         $middleware->statefulApi();
         $middleware->redirectGuestsTo(function (Request $request) {
-            if ($request->is('pilates/admin', 'pilates/admin/*')) {
-                return route('pilates.admin.login');
-            }
-
-            if ($request->is('thinkmotion/admin', 'thinkmotion/admin/*')) {
-                return route('thinkmotion.admin.login');
-            }
+            
             if ($request->is('api/*')) {
                 abort(401, 'Unauthenticated.');
             }
+            return route('admin.login');
         });
     })
     ->withExceptions(function (Exceptions $exceptions): void {
