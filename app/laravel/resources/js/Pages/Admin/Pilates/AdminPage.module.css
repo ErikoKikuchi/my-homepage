@@ -1,0 +1,67 @@
+.page {
+    max-width: 60rem;
+    margin: 0 auto;
+    padding: 0 1.5rem 3rem;
+    color: var(--color-forest-dark);
+}
+.stack {
+    display: grid;
+    gap: 1rem;
+}
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+}
+.bar, .card {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+.card {
+    padding: 1rem;
+    border: 1px solid color-mix(in oklab, var(--color-forest-dark) 24%, transparent);
+    border-radius: 0.5rem;
+}
+.card h2, .page h2 { font-weight: 600; }
+.form {
+    display: grid;
+    gap: 1rem;
+    margin-block: 1rem;
+}
+.form label { display: block; }
+.form input:not([type="checkbox"], [type="radio"]), .form select, .form textarea {
+    display: block;
+    width: 100%;
+    padding: 0.4rem 0.6rem;
+    border: 1px solid var(--color-muted);
+    border-radius: 0.35rem;
+}
+.form input[type="checkbox"], .form input[type="radio"] { margin-inline-end: 0.4rem; }
+.form textarea { min-height: 5rem; }
+.error { color: #9f2525; }
+.notice {
+    margin-block: 0.75rem;
+    padding: 0.65rem;
+    border: 1px solid currentColor;
+    border-radius: 0.35rem;
+}
+.danger { color: #9f2525; }
+.muted { color: var(--color-muted); }
+.dialog {
+    margin: auto;
+    max-width: min(90vw, 32rem);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    background: var(--color-paper);
+    color: var(--color-forest-dark);
+}
+.dialog::backdrop { background: rgb(0 0 0 / 45%); }
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+    gap: 1rem;
+}

@@ -9,20 +9,21 @@ use App\Models\Pilates\Reservation;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\View\View;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class ReservationConfirmationController extends Controller
 {
-    public function index(): View
+    public function index(): Response
     {
-        $reservations = Reservation::with(['lessonSlot.lessonTemplate', 'user'])
+        $reservations = Reservation::with(['lessonSlot.lessonTemplate', 'client:id,name,phone'])
             ->where('status', ReservationStatus::WaitingVenue)
             ->orderBy('created_at')
             ->get();
 
-        $locations = Location::orderBy('name')->get();
+        $locations = Location::orderBy('name')->get(['id', 'name']);
 
-        return view('pages.pilates.admin.reservations.pending', [
+        return Inertia::render('Admin/Pilates/Reservations/Pending', [
             'reservations' => $reservations,
             'locations' => $locations,
             'lineUrl' => config('services.line.url'),
@@ -39,9 +40,17 @@ class ReservationConfirmationController extends Controller
 
         $location = Location::findOrFail($validated['location_id']);
 
-        $reservation->location()->associate($location);
-        $reservation->status = ReservationStatus::Confirmed;
-        $reservation->save();
+        $confirmed = Reservation::query()
+            ->whereKey($reservation->id)
+            ->where('status', ReservationStatus::WaitingVenue)
+            ->update([
+                'location_id' => $location->id,
+                'status' => ReservationStatus::Confirmed,
+            ]);
+
+        if (! $confirmed) {
+            return back()->with('error', 'この予約はすでに会場確認待ちではありません。');
+        }
 
         return back()->with('success', '予約を確定しました');
     }

@@ -24,7 +24,7 @@ class AdminReservationAvailabilityService
             $start->format('Y-m-d'),
             $end->format('Y-m-d'),
         ])
-            ->with(['reservations.user', 'reservations.location', 'location', 'lessonTemplate'])
+            ->with(['reservations.client:id,name,phone', 'reservations.location', 'location', 'lessonTemplate'])
             ->get();
 
         return $slots->groupBy(fn ($slot) => $slot->date->format('Y-m-d'))
@@ -36,9 +36,8 @@ class AdminReservationAvailabilityService
                     ->whereNotIn('status', self::INACTIVE_STATUSES)
                     ->map(fn ($r) => [
                         'id' => $r->id,
-                        'name' => $r->user->name,
-                        'phone' => $r->user->phone,
-                        'participants' => $r->participants,
+                        'name' => $r->client->name,
+                        'phone' => $r->client->phone,
                     ])->values(),
             ])->values());
     }

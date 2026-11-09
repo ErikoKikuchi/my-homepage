@@ -37,6 +37,7 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
+            'flash' => fn () => $request->session()->only(['message', 'success', 'error']),
             'adminAuthenticated' => fn () =>
             auth()->guard('admin')->check(),
         ];

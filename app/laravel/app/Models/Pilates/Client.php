@@ -32,12 +32,14 @@ class Client extends Model
         'personality_notes',
         'relationship_note',
         'is_active',
+        'is_provisional',
         'has_unpaid_fee',
         'line_linked',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
+        'is_provisional' => 'boolean',
         'has_unpaid_fee' => 'boolean',
         'line_linked' => 'boolean',
     ];

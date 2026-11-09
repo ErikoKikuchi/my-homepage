@@ -19,6 +19,13 @@ use Illuminate\Support\Facades\Route;
 
 // 管理者
 Route::prefix('pilates/admin')->middleware(['auth:admin', 'admin.section:pilates', 'admin.2fa', 'inertia'])->group(function () {
+    Route::prefix('analytics')->name('pilates.admin.analytics.')->group(function () {
+        Route::inertia('/', 'Admin/Pilates/Analytics/Index')->name('index');
+        Route::get('reservations', [PilatesAdminReservationController::class, 'cancellations'])->name('reservations');
+        Route::inertia('accounting', 'Admin/Pilates/Analytics/Accounting/Index')->name('accounting');
+        Route::inertia('training-logs', 'Admin/Pilates/Analytics/TrainingLogs/Index')->name('training-logs');
+    });
+
     Route::resource('/lesson-templates', PilatesAdminLessonTemplateController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])->names('pilates.admin.lesson-templates');
     Route::resource('/lesson-slots', PilatesAdminLessonSlotController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])->names('pilates.admin.lesson-slots');
     Route::resource('clients.sessions', PilatesAdminSessionController::class)
@@ -29,6 +36,10 @@ Route::prefix('pilates/admin')->middleware(['auth:admin', 'admin.section:pilates
         ->shallow()->parameters(['clients' => 'client'])
         ->only(['index', 'show', 'create', 'store', 'edit', 'update'])
         ->names('pilates.admin.accounting');
+    Route::post('/clients/{client}/register', [PilatesAdminClientController::class, 'registerProvisional'])
+        ->name('pilates.admin.clients.register-provisional');
+    Route::post('/clients/{client}/account', [PilatesAdminClientController::class, 'linkAccount'])
+        ->name('pilates.admin.clients.link-account');
     Route::get('/clients/archive', [PilatesAdminClientController::class, 'archive'])->name('pilates.admin.clients.archive');
     Route::resource('/clients', PilatesAdminClientController::class)->parameters(['clients' => 'client'])->only(['index', 'show', 'create', 'store', 'edit', 'update'])->names('pilates.admin.clients');
     Route::get('/training-logs/archive', [PilatesAdminTrainingLogController::class, 'archive'])->name('pilates.admin.training-logs.archive');
@@ -42,6 +53,8 @@ Route::prefix('pilates/admin')->middleware(['auth:admin', 'admin.section:pilates
     Route::patch('/locations/{location}/restore', [PilatesAdminLocationController::class, 'restore'])
         ->name('pilates.admin.location.restore');
     Route::resource('/location', PilatesAdminLocationController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])->names('pilates.admin.location');
+    Route::get('reservations', [PilatesAdminReservationController::class, 'index'])
+        ->name('pilates.admin.reservation.history');
     Route::get('reservations/pending', [PilatesAdminReservationConfirmationController::class, 'index'])
         ->name('pilates.admin.reservation.pending');
     Route::patch('reservations/{reservation}/confirm', [PilatesAdminReservationConfirmationController::class, 'confirm'])

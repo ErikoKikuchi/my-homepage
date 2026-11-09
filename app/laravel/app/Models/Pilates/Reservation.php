@@ -37,7 +37,7 @@ class Reservation extends Model
     // リレーション
     public function lessonSlot(): BelongsTo
     {
-        return $this->belongsTo(LessonSlot::class);
+        return $this->belongsTo(LessonSlot::class)->withTrashed();
     }
 
     public function client(): BelongsTo

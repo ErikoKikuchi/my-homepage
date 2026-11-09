@@ -29,6 +29,7 @@ class StoreClientRequest extends FormRequest
                 'uuid',
                 Rule::exists('users', 'id')->where('is_pilates_user', true),
             ],
+            'name' => ['required', 'string', 'max:255'],
             'gender' => ['required', Rule::in(['male', 'female', 'other'])],
         ];
     }

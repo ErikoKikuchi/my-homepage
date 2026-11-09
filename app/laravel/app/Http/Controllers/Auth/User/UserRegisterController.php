@@ -31,6 +31,8 @@ class UserRegisterController extends Controller
         if ($user->is_pilates_user) {
             $client = $user->client()->make([
                 'name' => $credentials['name'],
+                'is_active' => false,
+                'is_provisional' => true,
             ]);
             $client->setConnection('mysql');
             $client->save();

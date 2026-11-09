@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Pilates\Admin\StoreLocationRequest;
 use App\Http\Requests\Pilates\Admin\UpdateLocationRequest;
 use App\Models\Pilates\Location;
+use Inertia\Inertia;
 
 class LocationController extends Controller
 {
@@ -15,12 +16,12 @@ class LocationController extends Controller
             ->orderBy('name')
             ->get();
 
-        return view('pages.pilates.admin.locations.index', compact('locations'));
+        return Inertia::render('Admin/Pilates/Locations/Index', compact('locations'));
     }
 
     public function create()
     {
-        return view('pages.pilates.admin.locations.create');
+        return Inertia::render('Admin/Pilates/Locations/Create');
     }
 
     public function store(StoreLocationRequest $request)
@@ -34,7 +35,7 @@ class LocationController extends Controller
 
     public function edit(Location $location)
     {
-        return view('pages.pilates.admin.locations.edit', compact('location'));
+        return Inertia::render('Admin/Pilates/Locations/Edit', compact('location'));
     }
 
     public function update(UpdateLocationRequest $request, Location $location)
@@ -61,7 +62,7 @@ class LocationController extends Controller
             ->orderBy('name')
             ->get();
 
-        return view('pages.pilates.admin.locations.archive', compact('locations'));
+        return Inertia::render('Admin/Pilates/Locations/Archive', compact('locations'));
     }
 
     public function archive(Location $location)

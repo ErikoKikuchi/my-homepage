@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Pilates\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class AccountingController extends Controller
 {
@@ -12,7 +13,7 @@ class AccountingController extends Controller
      */
     public function index()
     {
-        return view('pages.pilates.admin.accounting.index');
+        return Inertia::render('Admin/Pilates/Accounting/Index');
     }
 
     /**

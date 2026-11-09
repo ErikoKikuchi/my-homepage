@@ -60,13 +60,15 @@ class UserSeeder extends Seeder
             $user->save();
         
             if ($user->is_pilates_user) {
-                $user->client()->firstOrCreate(
+                $client = $user->client()->firstOrNew(
                     [],
-                    [
-                        'id' => (string) Str::uuid(),
-                        'name' => $data['name'],
-                    ]
+                    ['name' => $data['name']]
                 );
+                $client->is_active = true;
+                $client->save();
+
+                $user->is_client = true;
+                $user->save();
             }
         
             if ($user->is_medical) {

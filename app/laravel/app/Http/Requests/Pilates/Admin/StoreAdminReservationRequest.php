@@ -23,13 +23,10 @@ class StoreAdminReservationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['nullable', 'integer', 'exists:users,id'],
+            'client_id' => ['nullable', 'uuid', 'exists:client_db.clients,id'],
             'name' => ['required', 'string', 'max:255'],
             'phone' => ['nullable', 'string', 'max:20'],
             'relationship_note' => ['nullable', 'string', 'max:255'],
-            'participants' => ['required', 'integer', 'min:1', 'max:4'],
-            'participants_name' => ['nullable', 'string', 'max:255'],
-            'participants_phone' => ['nullable', 'string', 'max:20'],
             'note' => ['nullable', 'string', 'max:1000'],
         ];
     }
@@ -38,7 +35,6 @@ class StoreAdminReservationRequest extends FormRequest
     {
         return [
             'name.required' => '名前を入力してください',
-            'participants.required' => '参加人数を選択してください',
         ];
     }
 }

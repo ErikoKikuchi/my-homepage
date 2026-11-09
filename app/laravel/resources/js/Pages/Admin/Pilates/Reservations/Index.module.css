@@ -1,0 +1,26 @@
+.tableContainer {
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    min-width: 42rem;
+    border-collapse: collapse;
+}
+
+.table caption {
+    padding-block: 0.5rem;
+    text-align: left;
+}
+
+.table th,
+.table td {
+    padding: 0.65rem;
+    border-bottom: 1px solid color-mix(in oklab, var(--color-forest-dark) 24%, transparent);
+    text-align: left;
+    vertical-align: top;
+}
+
+.table th {
+    background-color: color-mix(in oklab, var(--color-forest) 15%, var(--color-paper));
+}

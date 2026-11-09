@@ -1,0 +1,38 @@
+.section {
+    max-width: 50rem;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    border-top: 1px solid color-mix(in oklab, var(--color-forest-dark) 12%, transparent);
+}
+
+.sectionLabel {
+    margin-bottom: 2.5rem;
+    color: var(--color-forest);
+    font-family: var(--font-gothic);
+    font-size: 0.75rem;
+    line-height: 1rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+.quickMenu {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+}
+
+.taskList {
+    display: grid;
+    gap: 0.75rem;
+    color: color-mix(in oklab, var(--color-forest-dark) 80%, transparent);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+}
+
+.taskLink {
+    text-decoration: underline;
+}
+
+.taskLink:hover {
+    color: var(--color-forest-dark);
+}

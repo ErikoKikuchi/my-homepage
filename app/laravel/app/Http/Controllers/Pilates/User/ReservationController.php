@@ -208,7 +208,7 @@ class ReservationController extends Controller
             ->past()
             ->with(['lessonSlot', 'location'])
             ->orderByDesc(
-                LessonSlot::query()
+                LessonSlot::withTrashed()
                     ->select('date')
                     ->whereColumn(
                         'lesson_slots.id',

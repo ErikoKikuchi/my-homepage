@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Pilates\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Pilates\Client;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class GoalController extends Controller
 {
@@ -15,7 +16,10 @@ class GoalController extends Controller
     {
         $goals = $client->goals;
 
-        return view('pages.pilates.admin.goals.index', compact('client', 'goals'));
+        return Inertia::render('Admin/Pilates/Goals/Index', [
+            'client' => $client->only(['id', 'name']),
+            'goals' => $goals,
+        ]);
     }
 
     /**

@@ -16,7 +16,14 @@ return new class extends Migration
             $table->foreignUuid('lesson_template_id')->constrained()->restrictOnDelete();
             $table->date('date');
             $table->foreignUuid('location_id')->nullable()->constrained();
-            $table->unique(['date', 'lesson_template_id']);
+            $table->softDeletes();
+            $table->tinyInteger('active_slot')
+                ->nullable()
+                ->storedAs('IF(deleted_at IS NULL, 1, NULL)');
+            $table->unique(
+                ['date', 'lesson_template_id', 'active_slot'],
+                'lesson_slots_active_date_template_unique'
+            );
             $table->boolean('is_bookable')->default(true);
             $table->timestamps();
         });

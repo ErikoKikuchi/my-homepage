@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Pilates\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class SessionController extends Controller
 {
@@ -12,7 +13,7 @@ class SessionController extends Controller
      */
     public function index()
     {
-        return view('pages.pilates.admin.session.index');
+        return Inertia::render('Admin/Pilates/Sessions/Index');
     }
 
     /**

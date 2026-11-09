@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Pilates\Admin\StoreLessonTemplateRequest;
 use App\Http\Requests\Pilates\Admin\UpdateLessonTemplateRequest;
 use App\Models\Pilates\LessonTemplate;
+use Inertia\Inertia;
 
 class LessonTemplateController extends Controller
 {
@@ -13,12 +14,12 @@ class LessonTemplateController extends Controller
     {
         $lessonTemplates = LessonTemplate::orderBy('start_time')->get();
 
-        return view('pages.pilates.admin.lesson-templates.index', compact('lessonTemplates'));
+        return Inertia::render('Admin/Pilates/LessonTemplates/Index', compact('lessonTemplates'));
     }
 
     public function create()
     {
-        return view('pages.pilates.admin.lesson-templates.create');
+        return Inertia::render('Admin/Pilates/LessonTemplates/Create');
     }
 
     public function store(StoreLessonTemplateRequest $request)
@@ -34,7 +35,7 @@ class LessonTemplateController extends Controller
 
     public function edit(LessonTemplate $lessonTemplate)
     {
-        return view('pages.pilates.admin.lesson-templates.edit', compact('lessonTemplate'));
+        return Inertia::render('Admin/Pilates/LessonTemplates/Edit', compact('lessonTemplate'));
     }
 
     public function update(UpdateLessonTemplateRequest $request, LessonTemplate $lessonTemplate)
@@ -51,7 +52,7 @@ class LessonTemplateController extends Controller
 
     public function destroy(LessonTemplate $lessonTemplate)
     {
-        if ($lessonTemplate->lessonSlots()->exists()) {
+        if ($lessonTemplate->lessonSlots()->withTrashed()->exists()) {
             return redirect()
                 ->route('pilates.admin.lesson-templates.index')
                 ->with('error', 'このテンプレートは使用中のため削除できません。');

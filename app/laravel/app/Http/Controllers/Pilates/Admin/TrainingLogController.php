@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Pilates\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class TrainingLogController extends Controller
 {
@@ -12,7 +13,7 @@ class TrainingLogController extends Controller
      */
     public function index()
     {
-        return view('pages.pilates.admin.training-logs.index');
+        return Inertia::render('Admin/Pilates/TrainingLogs/Index');
     }
 
     /**

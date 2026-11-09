@@ -1,0 +1,13 @@
+.bottomImage {
+    position: absolute;
+    bottom: 50;
+    right: 0;
+    width: 120px;
+    height: auto;
+}
+
+.copyright {
+    font-size: 0.68rem;
+    color: var(--color-text);
+    margin-top: 8px;
+}

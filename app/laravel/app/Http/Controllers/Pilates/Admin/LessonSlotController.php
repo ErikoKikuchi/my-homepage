@@ -11,6 +11,7 @@ use App\Models\Pilates\LessonTemplate;
 use App\Models\Pilates\Location;
 use App\Services\Pilates\AdminReservationAvailabilityService;
 use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class LessonSlotController extends Controller
 {
@@ -20,11 +21,11 @@ class LessonSlotController extends Controller
 
     public function index()
     {
-        $lessonSlots = LessonSlot::with('lessonTemplate')
+        $lessonSlots = LessonSlot::with('lessonTemplate', 'location:id,name')
             ->where('date', '>=', now()->startOfDay())
             ->orderBy('date')->get();
 
-        return view('pages.pilates.admin.lesson-slots.index', compact('lessonSlots'));
+        return Inertia::render('Admin/Pilates/LessonSlots/Index', compact('lessonSlots'));
     }
 
     public function create()
@@ -34,7 +35,7 @@ class LessonSlotController extends Controller
             ->get();
         $locations = Location::where('is_active', true)->orderBy('name')->get();
 
-        return view('pages.pilates.admin.lesson-slots.create', compact('lessonTemplates', 'locations'));
+        return Inertia::render('Admin/Pilates/LessonSlots/Create', compact('lessonTemplates', 'locations'));
     }
 
     public function store(StoreLessonSlotRequest $request)
@@ -83,7 +84,9 @@ class LessonSlotController extends Controller
             ->get();
         $locations = Location::where('is_active', true)->orderBy('name')->get();
 
-        return view('pages.pilates.admin.lesson-slots.edit', compact('lessonSlot', 'lessonTemplates', 'locations'));
+        $lessonSlot->load('lessonTemplate', 'location:id,name');
+
+        return Inertia::render('Admin/Pilates/LessonSlots/Edit', compact('lessonSlot', 'lessonTemplates', 'locations'));
     }
 
     public function update(UpdateLessonSlotRequest $request, LessonSlot $lessonSlot)
@@ -93,10 +96,8 @@ class LessonSlotController extends Controller
         $lessonTemplate = LessonTemplate::findOrFail($request->validated('lesson_template_id'));
         $lessonSlot->lessonTemplate()->associate($lessonTemplate);
 
-        if ($request->validated('location_id')) {
-            $location = Location::findOrFail($request->validated('location_id'));
-            $lessonSlot->location()->associate($location);
-        }
+        $locationId = $request->validated('location_id');
+        $lessonSlot->location()->associate($locationId ? Location::findOrFail($locationId) : null);
         $lessonSlot->save();
 
         return redirect()
@@ -106,20 +107,24 @@ class LessonSlotController extends Controller
 
     public function destroy(LessonSlot $lessonSlot)
     {
-        $hasActiveReservation = $lessonSlot->reservations()
-            ->whereNotIn('status', [
-                ReservationStatus::Canceled,
-                ReservationStatus::Rescheduled,
-            ])
-            ->exists();
+        $deleted = DB::connection('client_db')->transaction(function () use ($lessonSlot) {
+            $slot = LessonSlot::query()->lockForUpdate()->findOrFail($lessonSlot->id);
 
-        if ($hasActiveReservation) {
+            $hasActiveReservation = $slot->reservations()
+                ->whereNotIn('status', [
+                    ReservationStatus::Canceled,
+                    ReservationStatus::Rescheduled,
+                ])
+                ->exists();
+
+            return ! $hasActiveReservation && $slot->delete();
+        });
+
+        if (! $deleted) {
             return redirect()
                 ->route('pilates.admin.lesson-slots.index')
                 ->with('error', 'このレッスン枠は予約が入っているため削除できません。');
         }
-
-        $lessonSlot->delete();
 
         return redirect()
             ->route('pilates.admin.lesson-slots.index')
