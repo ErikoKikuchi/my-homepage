@@ -28,6 +28,8 @@ Route::prefix('pilates/admin')->middleware(['auth:admin', 'admin.section:pilates
 
     Route::resource('/lesson-templates', PilatesAdminLessonTemplateController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])->names('pilates.admin.lesson-templates');
     Route::resource('/lesson-slots', PilatesAdminLessonSlotController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])->names('pilates.admin.lesson-slots');
+    Route::get('sessions', [PilatesAdminSessionController::class, 'clients'])
+        ->name('pilates.admin.sessions.clients');
     Route::resource('clients.sessions', PilatesAdminSessionController::class)
         ->shallow()->parameters(['clients' => 'client'])
         ->only(['index', 'show', 'create', 'store', 'edit', 'update'])
@@ -88,4 +90,6 @@ Route::prefix('pilates/admin')->middleware(['auth:admin', 'admin.section:pilates
     Route::patch('reservations/{reservation}/noshow', [PilatesAdminReservationNoshowController::class, 'update'])
         ->name('pilates.admin.reservation.noshow');
     Route::get('/client/search', [PilatesAdminClientSearchController::class, 'search'])->name('pilates.admin.client.search');
+    Route::resource('/accounting', PilatesAdminAccountingController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])->names('pilates.admin.accounting');
+    Route::resource('/training-logs', PilatesAdminTrainingLogController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])->names('pilates.admin.training-logs');
 });

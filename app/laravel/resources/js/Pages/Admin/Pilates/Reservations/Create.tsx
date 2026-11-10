@@ -1,5 +1,5 @@
 import { useForm } from "@inertiajs/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import LinkButton from "@/Components/Admin/UI/LinkButton/LinkButton";
 import ActionButton from "@/Components/Admin/UI/ActionButton/ActionButton";
 import AdminPage, { FieldError } from "../AdminPage";
@@ -12,7 +12,26 @@ export default function ReservationsCreate({ lessonSlot }: { lessonSlot: LessonS
     const form = useForm({ client_id: "", name: "", phone: "", relationship_note: "", note: "" });
     const [results, setResults] = useState<SearchResult[]>([]);
     const [searchError, setSearchError] = useState("");
+    const [showResults, setShowResults] = useState(false);
+    const searchArea = useRef<HTMLDivElement>(null);
     const query = form.data.client_id ? "" : form.data.name.trim();
+
+    useEffect(() => {
+        if (!showResults) return;
+
+        function closeOutsideSearch(event: Event) {
+            if (event.target instanceof Node && !searchArea.current?.contains(event.target)) {
+                setShowResults(false);
+            }
+        }
+
+        document.addEventListener("pointerdown", closeOutsideSearch);
+        document.addEventListener("focusin", closeOutsideSearch);
+        return () => {
+            document.removeEventListener("pointerdown", closeOutsideSearch);
+            document.removeEventListener("focusin", closeOutsideSearch);
+        };
+    }, [showResults]);
 
     useEffect(() => {
         setResults([]);
@@ -44,13 +63,14 @@ export default function ReservationsCreate({ lessonSlot }: { lessonSlot: LessonS
                 event.preventDefault();
                 form.post(`${admin}/lesson-slots/${lessonSlot.id}/reservations`);
             }}>
-                <div>
+                <div ref={searchArea}>
                     <label htmlFor="name">お名前（必須）</label>
                     <input id="name" required autoComplete="off" placeholder="名前・フリガナ・電話番号で検索可能"
-                        value={form.data.name} onChange={(event) => {
+                        value={form.data.name} onFocus={() => setShowResults(true)} onChange={(event) => {
+                            setShowResults(true);
                             form.setData({ ...form.data, client_id: "", name: event.target.value });
                         }} />
-                    {results.length > 0 && <ul>
+                    {showResults && query && results.length > 0 && <ul>
                         {results.map((client) => <li key={client.id}>
                             <ActionButton variant="text" onClick={() => {
                                 form.setData({ ...form.data, client_id: client.id, name: client.name, phone: client.phone ?? "", relationship_note: "" });

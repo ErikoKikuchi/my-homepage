@@ -24,7 +24,13 @@ export default function ReservationsEdit({ reservation, lessonTemplates, locatio
                         <dt>日付</dt><dd>{dateInputValue(reservation.lesson_slot.date)}</dd>
                         <dt>時間帯</dt><dd>{lessonTime(reservation.lesson_slot.lesson_template)}</dd>
                         <dt>開催場所</dt><dd>{reservation.location?.name ?? "未定"}</dd>
-                        <dt>お名前</dt><dd>{reservation.client.name}</dd>
+                        <dt>お名前</dt>
+                        <dd className={styles.actions}>
+                            {reservation.client.name}
+                            <LinkButton href={`${admin}/clients/${reservation.client.id}/sessions`} variant="outline">
+                                セッション記録
+                            </LinkButton>
+                        </dd>
                     </dl>
                 </div>
             </section>

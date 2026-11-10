@@ -12,7 +12,7 @@ type Client = {
 };
 
 const links = [
-    ["goals", "ゴール設定"], ["sessions", "セッション履歴"], ["intake-forms", "初回問診情報"],
+    ["goals", "ゴール設定"], ["sessions", "セッション記録"], ["intake-forms", "初回問診情報"],
     ["accounting", "会計情報"], ["training-logs", "BodyMind緊急メッセージ"],
 ];
 

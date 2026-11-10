@@ -13,8 +13,9 @@ const quickMenu = [
     { label: "予約確認・代理予約", href: "/pilates/admin/calendar" },
     { label: "スケジュール管理", href: "/pilates/admin/lesson-slots" },
     { label: "クライアント管理", href: "/pilates/admin/clients" },
-    { label: "会計管理", href: "#" },
-    { label: "BodyMind管理", href: "#" },
+    { label: "セッション記録", href: "/pilates/admin/sessions" },
+    { label: "会計管理", href: "/pilates/admin/accounting" },
+    { label: "BodyMind管理", href: "/pilates/admin/training-logs" },
     { label: "場所管理", href: "/pilates/admin/location" },
     { label: "分析", href: "/pilates/admin/analytics" },
 ];
@@ -28,7 +29,11 @@ export default function Dashboard({ pendingReservationCount }: DashboardProps) {
                 <p className={styles.sectionLabel}>クイックメニュー</p>
                 <div className={styles.quickMenu}>
                     {quickMenu.map(({ label, href }) => (
-                        <LinkButton key={label} href={href} fullReload={href === "#"}>
+                        <LinkButton
+                            key={label}
+                            href={href}
+                            fullReload={href === "#"}
+                        >
                             {label}
                         </LinkButton>
                     ))}
@@ -48,7 +53,8 @@ export default function Dashboard({ pendingReservationCount }: DashboardProps) {
                                 href={pendingReservationsUrl}
                                 className={styles.taskLink}
                             >
-                                会場確認待ちが{pendingReservationCount}件あります
+                                会場確認待ちが{pendingReservationCount}
+                                件あります
                             </Link>
                         ) : (
                             "会場確認待ちの予約はありません"
