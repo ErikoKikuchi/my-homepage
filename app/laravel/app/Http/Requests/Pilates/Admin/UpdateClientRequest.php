@@ -25,6 +25,7 @@ class UpdateClientRequest extends FormRequest
         return [
             'name' => ['sometimes', 'required', 'string', 'max:255'],
             'line_linked' => ['sometimes', 'required', 'boolean'],
+            'has_unpaid_fee' => ['sometimes', 'required', 'boolean'],
             'is_active' => ['sometimes', 'required', 'boolean'],
         ];
     }

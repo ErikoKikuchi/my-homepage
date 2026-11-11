@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignUuid('reservation_id')->unique()->constrained()->restrictOnDelete();
             $table->dateTime('session_date');
             $table->text('notes')->nullable();
+            $table->boolean('is_draft')->default(true);
             $table->timestamps();
         });
     }

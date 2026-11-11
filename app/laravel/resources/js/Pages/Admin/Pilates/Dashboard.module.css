@@ -36,3 +36,19 @@
 .taskLink:hover {
     color: var(--color-forest-dark);
 }
+
+.sessionTasks {
+    margin-top: 1.5rem;
+}
+
+.sessionTasks h2 {
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.sessionRow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 0.75rem;
+}

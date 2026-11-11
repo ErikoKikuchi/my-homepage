@@ -1,6 +1,7 @@
 import styles from "./ActionButton.module.css";
+import type { AriaAttributes } from "react";
 
-type ActionButtonProps = {
+type ActionButtonProps = Pick<AriaAttributes, "aria-expanded" | "aria-controls"> & {
   children: React.ReactNode;
   onClick?: () => void;
   type?: "button" | "submit";
@@ -16,6 +17,8 @@ export default function ActionButton({
   variant = "primary",
   className,
   disabled = false,
+  "aria-expanded": expanded,
+  "aria-controls": controls,
 }: ActionButtonProps) {
   const classNames = `${styles.actionButton} ${styles[variant]} ${className ?? ""}`;
 
@@ -25,6 +28,8 @@ export default function ActionButton({
       className={classNames}
       onClick={onClick}
       disabled={disabled}
+      aria-expanded={expanded}
+      aria-controls={controls}
     >
       {children}
     </button>

@@ -1,0 +1,64 @@
+.clientInformation {
+    display: grid;
+    gap: 0.35rem;
+    max-width: 38rem;
+}
+
+.informationTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    line-height: 1.4;
+}
+
+.informationTable th,
+.informationTable td {
+    padding: 0.25rem 0.5rem;
+    border-bottom: 1px solid color-mix(in oklab, var(--color-forest-dark) 18%, transparent);
+    text-align: left;
+    vertical-align: top;
+    overflow-wrap: anywhere;
+}
+
+.informationTable th {
+    width: 30%;
+    background: color-mix(in oklab, var(--color-forest) 8%, transparent);
+    font-weight: 600;
+}
+
+.informationTable td {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.reservationHeading {
+    display: grid;
+    gap: 0.25rem;
+}
+
+.reservationHeading h2 {
+    font-size: 1.375rem;
+    font-weight: 700;
+}
+
+.reservationHeading p {
+    font-size: 1.125rem;
+    font-weight: 700;
+}
+
+.editableInformation td textarea {
+    min-height: 0;
+}
+
+.editableInformation td textarea + textarea {
+    margin-top: 0.5rem;
+}
+
+.exercise {
+    display: grid;
+    gap: 0.75rem;
+    min-width: 0;
+    padding: 0.75rem;
+    border: 1px solid var(--color-muted);
+    border-radius: 0.35rem;
+}

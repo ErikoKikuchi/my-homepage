@@ -19,6 +19,7 @@ class PilatesSession extends Model
 
     protected $casts = [
         'session_date' => 'datetime',
+        'is_draft' => 'boolean'
     ];
 
     public function client(): BelongsTo

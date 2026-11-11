@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Pilates\Client;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Enums\Pilates\ReservationStatus;
+use App\Http\Requests\Pilates\Admin\CreatePilatesSessionRequest;
 
 class SessionController extends Controller
 {
@@ -26,22 +28,59 @@ class SessionController extends Controller
      */
     public function index(Client $client)
     {
+        $today = today();
+        $sessions = $client->pilatesSessions()
+            ->where('session_date', '<', $today->copy()->addDay())
+            ->whereHas('reservation', fn ($query) => $query->where('client_id', $client->id))
+            ->orderByDesc('session_date')
+            ->orderBy('id')
+            ->paginate(20, ['id', 'session_date', 'is_draft']);
+
         return Inertia::render('Admin/Pilates/Sessions/Index', [
-            'client' => $client->only('id', 'name'),
-            'sessions' => $client->pilatesSessions()
-                ->whereHas('reservation', fn ($query) => $query->where('client_id', $client->id))
-                ->orderByDesc('session_date')
-                ->orderBy('id')
-                ->get(['id', 'session_date']),
+            'client' => $client->only([
+                'id', 'name', 'name_kana', 'gender', 'phone', 'occupation',
+                'personality_notes', 'relationship_note', 'has_unpaid_fee',
+            ]),
+            'sessions' => $sessions,
+            'todayUnrecorded' => $sessions->currentPage() === 1
+                ? $client->reservations()
+                    ->where('status', ReservationStatus::Confirmed)
+                    ->whereHas('lessonSlot', fn ($query) => $query->where('date', $today->toDateString()))
+                    ->whereDoesntHave('pilatesSession')
+                    ->with('lessonSlot.lessonTemplate')
+                    ->get()
+                    ->map(fn ($reservation) => [
+                        'id' => $reservation->id,
+                        'startTime' => $reservation->lessonSlot->lessonTemplate->start_time,
+                    ])
+                    ->sortBy('startTime')
+                    ->values()
+                : [],
         ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(CreatePilatesSessionRequest $request,Client $client)
     {
-        //
+        $reservation = $client->reservations()
+        ->where('status', ReservationStatus::Confirmed)
+        ->whereHas('lessonSlot', fn ($query) => $query->where('date', '<=', today()->toDateString()))
+        ->whereDoesntHave('pilatesSession')
+        ->with('lessonSlot.lessonTemplate')
+        ->findOrFail($request->validated('reservation_id'));
+
+        return Inertia::render('Admin/Pilates/Sessions/Create', [
+            'client' => $client->only('id', 'name', 'body_notes'),
+            'goals' => $client->goals()->where('is_active', true)->latest()->get(['id', 'hope', 'outlook', 'goal']),
+            'hopes' => $client->hopes()->where('is_active', true)->latest()->get(['id', 'hope']),
+            'reservation' => [
+                'id' => $reservation->id,
+                'date' => $reservation->lessonSlot->date->toDateString(),
+                'startTime' => $reservation->lessonSlot->lessonTemplate->start_time,
+            ],
+        ]);
     }
 
     /**
