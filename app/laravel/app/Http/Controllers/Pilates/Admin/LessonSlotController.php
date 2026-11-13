@@ -61,7 +61,7 @@ class LessonSlotController extends Controller
                 ->with('error', '以下の日付は既存のレッスン枠と重複しています: '.implode(', ', $conflicts));
         }
 
-        DB::transaction(function () use ($dates, $lessonTemplate, $location) {
+        DB::connection('client_db')->transaction(function () use ($dates, $lessonTemplate, $location) {
             foreach ($dates as $date) {
                 $lessonSlot = new LessonSlot(['date' => $date]);
                 $lessonSlot->lessonTemplate()->associate($lessonTemplate);

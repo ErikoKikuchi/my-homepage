@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Pilates\Admin\AccountingController as PilatesAdminAccountingController;
+use App\Http\Controllers\Pilates\Admin\ExerciseController;
 use App\Http\Controllers\Pilates\Admin\CalendarController as PilatesAdminCalendarController;
 use App\Http\Controllers\Pilates\Admin\ClientController as PilatesAdminClientController;
 use App\Http\Controllers\Pilates\Admin\ClientSearchController as PilatesAdminClientSearchController;
@@ -30,9 +31,13 @@ Route::prefix('pilates/admin')->middleware(['auth:admin', 'admin.section:pilates
     Route::resource('/lesson-slots', PilatesAdminLessonSlotController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])->names('pilates.admin.lesson-slots');
     Route::get('sessions', [PilatesAdminSessionController::class, 'clients'])
         ->name('pilates.admin.sessions.clients');
+    Route::get('exercises/{exercise}/photos/{slot}', [ExerciseController::class, 'photo'])
+        ->where('slot', '[0-2]')->name('pilates.admin.exercises.photo');
+    Route::resource('exercises', ExerciseController::class)
+        ->only(['index', 'store', 'update'])->names('pilates.admin.exercises');
     Route::resource('clients.sessions', PilatesAdminSessionController::class)
         ->shallow()->parameters(['clients' => 'client'])
-        ->only(['index', 'show', 'create', 'store', 'edit', 'update'])
+        ->only(['index', 'show', 'create', 'store', 'update'])
         ->names('pilates.admin.session');
     Route::resource('clients.accounting', PilatesAdminAccountingController::class)
         ->shallow()->parameters(['clients' => 'client'])

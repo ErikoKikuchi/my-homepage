@@ -7,6 +7,7 @@ use App\Http\Requests\Pilates\Admin\StoreClientRequest;
 use App\Http\Requests\Pilates\Admin\UpdateClientRequest;
 use App\Models\Auth\User;
 use App\Models\Pilates\Client;
+use App\Models\Pilates\LessonSlot;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -50,10 +51,33 @@ class ClientController extends Controller
 
     public function show(Client $client)
     {
-        $client->setVisible(['id', 'name', 'gender', 'line_linked', 'is_active', 'body_notes', 'personality_notes']);
+        $client->setVisible([
+            'id', 'name', 'name_kana', 'gender', 'phone', 'occupation',
+            'personality_notes', 'relationship_note', 'line_linked', 'is_active', 'body_notes',
+        ]);
+
+        $recentReservations = $client->reservations()
+            ->whereHas('lessonSlot', fn ($query) => $query->where('date', '<=', today()->toDateString()))
+            ->with(['lessonSlot.lessonTemplate', 'location:id,name'])
+            ->orderByDesc(
+                LessonSlot::withTrashed()->select('date')
+                    ->whereColumn('lesson_slots.id', 'reservations.lesson_slot_id')
+            )
+            ->latest()
+            ->orderByDesc('id')
+            ->limit(5)
+            ->get()
+            ->map(fn ($reservation) => [
+                'id' => $reservation->id,
+                'date' => $reservation->lessonSlot->date->format('Y/m/d'),
+                'startTime' => $reservation->lessonSlot->lessonTemplate?->start_time,
+                'location' => $reservation->location?->name,
+                'status' => $reservation->status->label(),
+            ]);
 
         return Inertia::render('Admin/Pilates/Clients/Show', [
             'client' => $client,
+            'recentReservations' => $recentReservations,
             'accountLinked' => $client->user_id !== null,
             'canLinkAccount' => ! $client->is_provisional && $client->user_id === null,
         ]);
@@ -215,7 +239,7 @@ class ClientController extends Controller
 
         return response()->json([
             'message' => '更新しました。',
-            'client' => $client->fresh(),
+            'client' => $client->refresh()->only(array_keys($validated)),
         ]);
     }
 

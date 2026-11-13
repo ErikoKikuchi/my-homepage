@@ -36,6 +36,7 @@ const quickMenu = [
     { label: "スケジュール管理", href: "/pilates/admin/lesson-slots" },
     { label: "クライアント管理", href: "/pilates/admin/clients" },
     { label: "セッション記録", href: "/pilates/admin/sessions" },
+    { label: "ピラティス種目管理", href: "/pilates/admin/exercises" },
     { label: "会計管理", href: "/pilates/admin/accounting" },
     { label: "BodyMind管理", href: "/pilates/admin/training-logs" },
     { label: "場所管理", href: "/pilates/admin/location" },

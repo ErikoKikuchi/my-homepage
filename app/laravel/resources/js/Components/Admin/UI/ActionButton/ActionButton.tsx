@@ -8,6 +8,7 @@ type ActionButtonProps = Pick<AriaAttributes, "aria-expanded" | "aria-controls">
   variant?: "primary" | "outline" | "text";
   className?: string;
   disabled?: boolean;
+  id?: string;
 };
 
 export default function ActionButton({
@@ -17,6 +18,7 @@ export default function ActionButton({
   variant = "primary",
   className,
   disabled = false,
+  id,
   "aria-expanded": expanded,
   "aria-controls": controls,
 }: ActionButtonProps) {
@@ -25,6 +27,7 @@ export default function ActionButton({
   return (
     <button
       type={type}
+      id={id}
       className={classNames}
       onClick={onClick}
       disabled={disabled}

@@ -1,7 +1,11 @@
-.clientInformation {
-    display: grid;
-    gap: 0.35rem;
-    max-width: 38rem;
+.clientField input,
+.clientField select,
+.clientField textarea {
+    display: block;
+    width: 100%;
+    padding: 0.35rem 0.5rem;
+    border: 1px solid var(--color-muted);
+    border-radius: 0.35rem;
 }
 
 .informationTable {
@@ -14,7 +18,8 @@
 .informationTable th,
 .informationTable td {
     padding: 0.25rem 0.5rem;
-    border-bottom: 1px solid color-mix(in oklab, var(--color-forest-dark) 18%, transparent);
+    border-bottom: 1px solid
+        color-mix(in oklab, var(--color-forest-dark) 18%, transparent);
     text-align: left;
     vertical-align: top;
     overflow-wrap: anywhere;
@@ -54,11 +59,50 @@
     margin-top: 0.5rem;
 }
 
+.exerciseList {
+    display: grid;
+    gap: 0.5rem;
+}
+
 .exercise {
     display: grid;
-    gap: 0.75rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.35rem 0.6rem;
     min-width: 0;
-    padding: 0.75rem;
+    padding: 0.35rem 0.6rem 0.5rem;
     border: 1px solid var(--color-muted);
     border-radius: 0.35rem;
+    font-size: 0.875rem;
+}
+
+.exercise label {
+    min-width: 0;
+}
+
+.exercise label textarea {
+    field-sizing: content;
+    min-height: 2rem;
+    resize: vertical;
+}
+
+.exerciseDetails {
+    grid-column: 1 / -1;
+    font-size: 0.65rem;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.exerciseActions {
+    grid-column: 1 / -1;
+    justify-self: end;
+}
+
+@media (max-width: 40rem) {
+    .exercise {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .exerciseComment {
+        grid-column: 1 / -1;
+    }
 }

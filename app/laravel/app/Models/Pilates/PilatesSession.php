@@ -5,6 +5,7 @@ namespace App\Models\Pilates;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PilatesSession extends Model
 {
@@ -32,4 +33,8 @@ class PilatesSession extends Model
         return $this->belongsTo(Reservation::class);
     }
 
+    public function exercises(): HasMany
+    {
+        return $this->hasMany(PilatesSessionExercise::class)->orderBy('position');
+    }
 }

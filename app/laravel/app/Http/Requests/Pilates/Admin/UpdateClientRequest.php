@@ -24,6 +24,12 @@ class UpdateClientRequest extends FormRequest
     {
         return [
             'name' => ['sometimes', 'required', 'string', 'max:255'],
+            'name_kana' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'gender' => ['sometimes', 'nullable', 'in:male,female,other'],
+            'phone' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'occupation' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'personality_notes' => ['sometimes', 'nullable', 'string', 'max:16000'],
+            'relationship_note' => ['sometimes', 'nullable', 'string', 'max:16000'],
             'line_linked' => ['sometimes', 'required', 'boolean'],
             'has_unpaid_fee' => ['sometimes', 'required', 'boolean'],
             'is_active' => ['sometimes', 'required', 'boolean'],

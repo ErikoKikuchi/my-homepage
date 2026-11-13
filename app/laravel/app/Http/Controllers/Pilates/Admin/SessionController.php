@@ -4,10 +4,14 @@ namespace App\Http\Controllers\Pilates\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pilates\Client;
+use App\Models\Pilates\PilatesExercise;
+use App\Models\Pilates\PilatesSession;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Enums\Pilates\ReservationStatus;
 use App\Http\Requests\Pilates\Admin\CreatePilatesSessionRequest;
+use App\Http\Requests\Pilates\Admin\StorePilatesSessionRequest;
 
 class SessionController extends Controller
 {
@@ -37,10 +41,7 @@ class SessionController extends Controller
             ->paginate(20, ['id', 'session_date', 'is_draft']);
 
         return Inertia::render('Admin/Pilates/Sessions/Index', [
-            'client' => $client->only([
-                'id', 'name', 'name_kana', 'gender', 'phone', 'occupation',
-                'personality_notes', 'relationship_note', 'has_unpaid_fee',
-            ]),
+            'client' => $client->only(['id', 'name', 'has_unpaid_fee']),
             'sessions' => $sessions,
             'todayUnrecorded' => $sessions->currentPage() === 1
                 ? $client->reservations()
@@ -72,6 +73,8 @@ class SessionController extends Controller
         ->findOrFail($request->validated('reservation_id'));
 
         return Inertia::render('Admin/Pilates/Sessions/Create', [
+            'exerciseOptions' => PilatesExercise::orderBy('name')->orderBy('id')
+                ->get(['id', 'name', 'supplement', 'precautions']),
             'client' => $client->only('id', 'name', 'body_notes'),
             'goals' => $client->goals()->where('is_active', true)->latest()->get(['id', 'hope', 'outlook', 'goal']),
             'hopes' => $client->hopes()->where('is_active', true)->latest()->get(['id', 'hope']),
@@ -86,25 +89,46 @@ class SessionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StorePilatesSessionRequest $request,Client $client)
     {
-        //
+        $sessionContents = $request->validated();
+        $reservation=$client->reservations()->where('status', ReservationStatus::Confirmed)
+        ->whereHas('lessonSlot', fn ($query) => $query->where('date', '<=', today()->toDateString()))
+        ->whereDoesntHave('pilatesSession')
+        ->with('lessonSlot.lessonTemplate')
+        ->findOrFail($request->validated('reservation_id'));
+
+        DB::connection('client_db')->transaction(function () use ($sessionContents, $reservation,$client,$request) {
+            $session = new PilatesSession([
+                'notes' => $sessionContents['notes'] ?? null,
+                'session_date' => $reservation->lessonSlot->date->copy()->setTimeFromTimeString($reservation->lessonSlot->lessonTemplate->start_time),
+            ]);
+
+            $session->client()->associate($client);
+            $session->reservation()->associate($reservation);
+            $session->is_draft = $request->boolean('is_draft');
+            $session->save();
+            $position = 1;
+            foreach ($sessionContents['exercises'] ?? [] as $exercise) {
+                $session->exercises()->create([
+                    'exercise_id'=>$exercise['exercise_id'] ?? null,
+                    'custom_name'=>$exercise['custom_name'] ?? null,
+                    'comment'=>$exercise['comment'] ?? null,
+                    'position'=>$position++,
+                ]);
+            }
+        });
+        return redirect()->route('pilates.admin.session.index', ['client' => $client]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $request,Client $client)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        return  Inertia::render('Admin/Pilates/Sessions/Show',[
+            'session'
+        ]);
     }
 
     /**
