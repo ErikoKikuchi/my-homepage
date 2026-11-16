@@ -12,6 +12,7 @@ use Inertia\Inertia;
 use App\Enums\Pilates\ReservationStatus;
 use App\Http\Requests\Pilates\Admin\CreatePilatesSessionRequest;
 use App\Http\Requests\Pilates\Admin\StorePilatesSessionRequest;
+use Inertia\Response;
 
 class SessionController extends Controller
 {
@@ -124,19 +125,57 @@ class SessionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request,Client $client)
+    public function show(PilatesSession $session):Response
     {
+        $session->load(['client','exercises','reservation.lessonSlot.lessonTemplate',]);
+
+        $client = $session->client;
+        $lessonSlot = $session->reservation->lessonSlot;
+
         return  Inertia::render('Admin/Pilates/Sessions/Show',[
-            'session'
+            'client' => $client->only('id', 'name', 'body_notes'),
+            'lesson'=> [
+                'date' => $lessonSlot->date,
+                'start_time' => $lessonSlot->lessonTemplate->start_time,
+            ],
+            'goals' => $client->goals()->where('is_active', true)->latest()->get(['id', 'hope', 'outlook', 'goal']),
+            'hopes' => $client->hopes()->where('is_active', true)->latest()->get(['id', 'hope']),
+            'sessionContents' => $session,
+            'exerciseOptions' => PilatesExercise::orderBy('name')
+            ->orderBy('id')
+            ->get(['id', 'name', 'supplement', 'precautions']),
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(StorePilatesSessionRequest $request,PilatesSession $pilatesSession)
     {
-        //
+        $sessionContents = $request->validated();
+
+        DB::connection('client_db')->transaction(function () use ($pilatesSession, $sessionContents) {
+            $pilatesSession->notes = $sessionContents['notes'] ?? null;
+            $pilatesSession->is_draft = (bool) $sessionContents['is_draft'];
+            $pilatesSession->save();
+
+            $pilatesSession->exercises()->delete();
+            $position = 1;
+
+            foreach ($sessionContents['exercises'] as $exercise) {
+                $pilatesSession->exercises()->create([
+                    'exercise_id' => $exercise['exercise_id'] ?? null,
+                    'custom_name' => $exercise['custom_name'] ?? null,
+                    'comment' => $exercise['comment'] ?? null,
+                    'position' => $position++,
+                ]);
+            }
+        }
+    );
+
+    return redirect()->route('pilates.admin.session.index', [
+        'client' => $pilatesSession->client,
+    ]);
     }
 
     /**

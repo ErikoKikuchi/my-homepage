@@ -123,6 +123,14 @@ export default function SessionsIndex({
                                             ? "下書き"
                                             : "保存済み"}
                                     </span>
+                                    <LinkButton
+                                        href={`${admin}/sessions/${session.id}`}
+                                        variant="outline"
+                                    >
+                                        {session.is_draft
+                                            ? "下書きを編集"
+                                            : "記録を見る"}
+                                    </LinkButton>
                                 </li>
                             ))}
                         </ul>
