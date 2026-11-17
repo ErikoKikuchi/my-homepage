@@ -20,7 +20,6 @@ return new class extends Migration
             $table->enum('gender', ['male', 'female', 'other'])->nullable();
             $table->string('phone')->nullable();
             $table->string('occupation')->nullable();
-            $table->text('body_notes')->nullable();
             $table->text('personality_notes')->nullable();
             $table->text('relationship_note')->nullable();
             $table->boolean('is_active')->default(false);

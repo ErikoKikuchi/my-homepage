@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignUuid('client_id')->constrained()->cascadeOnDelete();
             $table->text('goal')->nullable();
             $table->text('outlook')->nullable();
-            $table->text('hope')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

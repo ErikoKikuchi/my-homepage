@@ -3,6 +3,7 @@ import { useRef, useState, type SubmitEvent } from "react";
 import ActionButton from "@/Components/Admin/UI/ActionButton/ActionButton";
 import LinkButton from "@/Components/Admin/UI/LinkButton/LinkButton";
 import AdminPage, { FieldError } from "../AdminPage";
+import ClientInformationTable, { type ClientInformation } from "../ClientInformationTable";
 import styles from "../AdminPage.module.css";
 import sessionStyles from "./Sessions.module.css";
 import { admin, type NamedOption } from "../schedule";
@@ -38,16 +39,8 @@ type ExerciseOption = NamedOption & {
     precautions: string | null;
 };
 
-type ShowSessionProps = {
-    client: NamedOption & { body_notes: string | null };
+type ShowSessionProps = ClientInformation & {
     lesson: { date: string; start_time: string };
-    goals: {
-        id: string;
-        hope: string | null;
-        outlook: string | null;
-        goal: string | null;
-    }[];
-    hopes: { id: string; hope: string | null }[];
     sessionContents: SessionContents;
     exerciseOptions: ExerciseOption[];
 };
@@ -60,7 +53,6 @@ export default function ShowSession({
     exerciseOptions = [],
     sessionContents,
 }: ShowSessionProps) {
-    const [editingInformation, setEditingInformation] = useState(false);
     const [exerciseRows, setExerciseRows] = useState<ExerciseRow[]>(() =>
         sessionContents.exercises.length > 0
             ? sessionContents.exercises.map((exercise, rowId) => ({
@@ -131,42 +123,6 @@ export default function ShowSession({
         );
     }
 
-    const informationFields = [
-        {
-            label: "身体の特徴・初見",
-            entries: [{ name: "body_notes", value: client.body_notes }],
-        },
-        {
-            label: "希望（HOPE）",
-            entries: [
-                ...hopes.map(({ id, hope }) => ({
-                    name: `hopes[${id}][hope]`,
-                    value: hope,
-                })),
-                ...goals
-                    .filter(({ hope }) => hope)
-                    .map(({ id, hope }) => ({
-                        name: `goals[${id}][hope]`,
-                        value: hope,
-                    })),
-            ],
-        },
-        {
-            label: "見通し（Outlook）",
-            entries: goals.map(({ id, outlook }) => ({
-                name: `goals[${id}][outlook]`,
-                value: outlook,
-            })),
-        },
-        {
-            label: "ゴール設定",
-            entries: goals.map(({ id, goal }) => ({
-                name: `goals[${id}][goal]`,
-                value: goal,
-            })),
-        },
-    ];
-
     return (
         <AdminPage heading="セッション記録の編集">
             <section className={styles.stack}>
@@ -181,76 +137,19 @@ export default function ShowSession({
                         <h3 id="registered-information">
                             登録済みの身体情報・ゴール設定
                         </h3>
-                        <ActionButton
+                        <LinkButton
+                            href={`${admin}/clients/${client.id}/goals`}
                             variant="text"
-                            aria-expanded={editingInformation}
-                            aria-controls="registered-information-table"
-                            onClick={() =>
-                                setEditingInformation((editing) => !editing)
-                            }
                         >
-                            {editingInformation ? "編集を閉じる" : "編集"}
-                        </ActionButton>
+                            編集
+                        </LinkButton>
                     </div>
-                    <table
-                        id="registered-information-table"
-                        className={`${sessionStyles.informationTable} ${sessionStyles.editableInformation}`}
-                        aria-labelledby="registered-information"
-                    >
-                        <tbody>
-                            {informationFields.map(
-                                ({ label, entries }, index) => (
-                                    <tr key={label}>
-                                        <th scope="row">{label}</th>
-                                        <td>
-                                            <span hidden={editingInformation}>
-                                                {entries
-                                                    .map(({ value }) => value)
-                                                    .filter(Boolean)
-                                                    .join("\n") || "未登録"}
-                                            </span>
-                                            <div hidden={!editingInformation}>
-                                                {(entries.length
-                                                    ? entries
-                                                    : [
-                                                          {
-                                                              name: `new_information[${index}]`,
-                                                              value: null,
-                                                          },
-                                                      ]
-                                                ).map(
-                                                    (
-                                                        { name, value },
-                                                        entryIndex,
-                                                    ) => (
-                                                        <textarea
-                                                            key={name}
-                                                            name={name}
-                                                            aria-label={
-                                                                entries.length >
-                                                                1
-                                                                    ? `${label} ${entryIndex + 1}`
-                                                                    : label
-                                                            }
-                                                            rows={2}
-                                                            defaultValue={
-                                                                value ?? ""
-                                                            }
-                                                        />
-                                                    ),
-                                                )}
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ),
-                            )}
-                        </tbody>
-                    </table>
-                    {editingInformation && (
-                        <p className={styles.muted}>
-                            登録済み情報の変更を保存する機能は準備中です。
-                        </p>
-                    )}
+                    <ClientInformationTable
+                        client={client}
+                        goals={goals}
+                        hopes={hopes}
+                        labelledBy="registered-information"
+                    />
                     <section
                         className={styles.stack}
                         aria-labelledby="session-findings"

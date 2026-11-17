@@ -22,6 +22,8 @@ class LessonTemplate extends Model
 
     protected $casts = [
         'is_active' => 'boolean',
+        'start_time' => 'datetime',
+        'end_time' => 'datetime',
     ];
     public function lessonSlots(): HasMany
     {

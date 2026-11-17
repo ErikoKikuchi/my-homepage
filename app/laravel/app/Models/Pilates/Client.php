@@ -63,6 +63,10 @@ class Client extends Model
     {
         return $this->hasMany(ClientHope::class);
     }
+    public function bodyNotes(): HasMany
+{
+    return $this->hasMany(ClientBodyNote::class);
+}
 
     public function trainingLogs(): HasMany
     {

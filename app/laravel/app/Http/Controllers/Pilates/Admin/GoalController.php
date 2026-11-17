@@ -14,11 +14,11 @@ class GoalController extends Controller
      */
     public function index(Client $client)
     {
-        $goals = $client->goals;
-
         return Inertia::render('Admin/Pilates/Goals/Index', [
-            'client' => $client->only(['id', 'name']),
-            'goals' => $goals,
+            'client'=>$client,
+            'body_note' => $client->bodyNotes()->get(['body_note','observed_on']),
+            'goals' => $client->goals()->where('is_active', true)->latest()->get([ 'outlook', 'goal']),
+            'hopes' => $client->hopes()->where('is_active', true)->latest()->get(['hope']),
         ]);
     }
 

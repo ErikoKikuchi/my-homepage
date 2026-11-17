@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 // 管理者
 Route::prefix('pilates/admin')->middleware(['auth:admin', 'admin.section:pilates', 'admin.2fa', 'inertia'])->group(function () {
+    //分析
     Route::prefix('analytics')->name('pilates.admin.analytics.')->group(function () {
         Route::inertia('/', 'Admin/Pilates/Analytics/Index')->name('index');
         Route::get('reservations', [PilatesAdminReservationController::class, 'cancellations'])->name('reservations');
@@ -27,8 +28,11 @@ Route::prefix('pilates/admin')->middleware(['auth:admin', 'admin.section:pilates
         Route::inertia('training-logs', 'Admin/Pilates/Analytics/TrainingLogs/Index')->name('training-logs');
     });
 
+    //スケジュール
     Route::resource('/lesson-templates', PilatesAdminLessonTemplateController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])->names('pilates.admin.lesson-templates');
     Route::resource('/lesson-slots', PilatesAdminLessonSlotController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])->names('pilates.admin.lesson-slots');
+
+    //セッション記録・ピラティス登録
     Route::get('sessions', [PilatesAdminSessionController::class, 'clients'])
         ->name('pilates.admin.sessions.clients');
     Route::get('exercises/{exercise}/photos/{slot}', [ExerciseController::class, 'photo'])
@@ -39,27 +43,37 @@ Route::prefix('pilates/admin')->middleware(['auth:admin', 'admin.section:pilates
         ->shallow()->parameters(['clients' => 'client'])
         ->only(['index', 'show', 'create', 'store', 'update'])
         ->names('pilates.admin.session');
+
+    //会計
     Route::resource('clients.accounting', PilatesAdminAccountingController::class)
         ->shallow()->parameters(['clients' => 'client'])
         ->only(['index', 'show', 'create', 'store', 'edit', 'update'])
         ->names('pilates.admin.accounting');
+
+    //クライアント管理
     Route::post('/clients/{client}/register', [PilatesAdminClientController::class, 'registerProvisional'])
         ->name('pilates.admin.clients.register-provisional');
     Route::post('/clients/{client}/account', [PilatesAdminClientController::class, 'linkAccount'])
         ->name('pilates.admin.clients.link-account');
     Route::get('/clients/archive', [PilatesAdminClientController::class, 'archive'])->name('pilates.admin.clients.archive');
     Route::resource('/clients', PilatesAdminClientController::class)->parameters(['clients' => 'client'])->only(['index', 'show', 'create', 'store', 'edit', 'update'])->names('pilates.admin.clients');
+
+    // 自主トレログ
     Route::get('/training-logs/archive', [PilatesAdminTrainingLogController::class, 'archive'])->name('pilates.admin.training-logs.archive');
     Route::resource('clients.training-logs', PilatesAdminTrainingLogController::class)
         ->shallow()->parameters(['clients' => 'client'])
         ->only(['index', 'show', 'create', 'store', 'edit', 'update'])
         ->names('pilates.admin.training-logs');
+
+    //場所管理
     Route::get('/locations/archive', [PilatesAdminLocationController::class, 'show'])->name('pilates.admin.location.show');
     Route::patch('/locations/{location}/archive', [PilatesAdminLocationController::class, 'archive'])
         ->name('pilates.admin.location.archive');
     Route::patch('/locations/{location}/restore', [PilatesAdminLocationController::class, 'restore'])
         ->name('pilates.admin.location.restore');
     Route::resource('/location', PilatesAdminLocationController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])->names('pilates.admin.location');
+
+    //予約管理
     Route::get('reservations', [PilatesAdminReservationController::class, 'index'])
         ->name('pilates.admin.reservation.history');
     Route::get('reservations/pending', [PilatesAdminReservationConfirmationController::class, 'index'])
@@ -70,18 +84,22 @@ Route::prefix('pilates/admin')->middleware(['auth:admin', 'admin.section:pilates
         ->shallow()
         ->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])
         ->names('pilates.admin.reservation');
+
+//ゴール設定
     Route::patch('/goals/{goal}/toggle-active', [PilatesAdminGoalController::class, 'toggleActive'])
         ->name('pilates.admin.goal.toggle-active');
+    Route::get('/clients/{client}/goals', [PilatesAdminGoalController::class, 'index'])
+        ->name('pilates.admin.goal.index');
+    Route::patch('/clients/{client}/goals', [PilatesAdminGoalController::class, 'update'])
+        ->name('pilates.admin.goal.update');
     Route::resource('clients.goals', PilatesAdminGoalController::class)
         ->shallow()->parameters(['clients' => 'client'])
-        ->only(['index', 'show', 'create', 'store', 'edit', 'update'])
+        ->only([ 'create', 'store', 'edit'])
         ->names('pilates.admin.goal');
     Route::patch('/hopes/{hope}/toggle-active', [PilatesAdminHopeController::class, 'toggleActive'])
         ->name('pilates.admin.hope.toggle-active');
-    Route::resource('clients.hopes', PilatesAdminHopeController::class)
-        ->shallow()->parameters(['clients' => 'client'])
-        ->only(['index', 'show', 'create', 'store', 'edit', 'update'])
-        ->names('pilates.admin.hope');
+
+    //問診表
     Route::resource('clients.intake-forms', PilatesAdminIntakeFormController::class)
         ->shallow()->parameters(['clients' => 'client'])
         ->only(['index', 'show', 'create', 'store', 'edit', 'update'])
@@ -92,9 +110,10 @@ Route::prefix('pilates/admin')->middleware(['auth:admin', 'admin.section:pilates
     // カレンダー用イベントデータ取得(JS側でfetchする想定)
     Route::get('/calendar/events', [PilatesAdminCalendarController::class, 'index'])
         ->name('pilates.admin.calendar.events');
+
+    //その他
     Route::patch('reservations/{reservation}/noshow', [PilatesAdminReservationNoshowController::class, 'update'])
         ->name('pilates.admin.reservation.noshow');
     Route::get('/client/search', [PilatesAdminClientSearchController::class, 'search'])->name('pilates.admin.client.search');
-    Route::resource('/accounting', PilatesAdminAccountingController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])->names('pilates.admin.accounting');
-    Route::resource('/training-logs', PilatesAdminTrainingLogController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])->names('pilates.admin.training-logs');
+
 });
