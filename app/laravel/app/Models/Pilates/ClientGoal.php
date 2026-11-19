@@ -17,7 +17,6 @@ class ClientGoal extends Model
     protected $fillable = [
         'goal',
         'outlook',
-        'hope',
         'is_active'
     ];
 

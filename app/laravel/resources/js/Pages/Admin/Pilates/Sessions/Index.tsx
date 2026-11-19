@@ -5,7 +5,7 @@ import AdminPage, { FieldError } from "../AdminPage";
 import styles from "../AdminPage.module.css";
 import { admin, type NamedOption } from "../schedule";
 
-type Session = { id: string; session_date: string; is_draft: boolean };
+type Session = { id: string; session_date: string | null; is_draft: boolean };
 type SessionPage = {
     data: Session[];
     current_page: number;
@@ -28,9 +28,11 @@ export default function SessionsIndex({
     client,
     sessions,
     todayUnrecorded,
+    firstUpcoming,
 }: {
     client: Client;
     sessions: SessionPage;
+    firstUpcoming: { id: string; date: string; startTime: string } | null;
     todayUnrecorded: { id: string; startTime: string }[];
 }) {
     const clientUrl = `${admin}/clients/${client.id}`;
@@ -90,10 +92,24 @@ export default function SessionsIndex({
                 <section className={styles.stack}>
                     <h2>{client.name}さんのセッション記録</h2>
                     {sessions.data.length === 0 &&
-                    todayUnrecorded.length === 0 ? (
+                    todayUnrecorded.length === 0 &&
+                    !firstUpcoming ? (
                         <p>セッション記録はありません。</p>
                     ) : (
                         <ul className={styles.stack}>
+                            {firstUpcoming && (
+                                <li className={styles.card}>
+                                    <span>
+                                        初回予約 {firstUpcoming.date} {firstUpcoming.startTime.slice(0, 5)}
+                                    </span>
+                                    <LinkButton
+                                        href={`${clientUrl}/sessions/create?reservation_id=${encodeURIComponent(firstUpcoming.id)}`}
+                                        variant="outline"
+                                    >
+                                        下書きを作成
+                                    </LinkButton>
+                                </li>
+                            )}
                             {todayUnrecorded.map((reservation) => (
                                 <li
                                     key={reservation.id}
@@ -113,11 +129,15 @@ export default function SessionsIndex({
                             ))}
                             {sessions.data.map((session) => (
                                 <li key={session.id} className={styles.card}>
-                                    <time dateTime={session.session_date}>
-                                        {sessionDate.format(
-                                            new Date(session.session_date),
-                                        )}
-                                    </time>
+                                    {session.session_date ? (
+                                        <time dateTime={session.session_date}>
+                                            {sessionDate.format(
+                                                new Date(session.session_date),
+                                            )}
+                                        </time>
+                                    ) : (
+                                        <span>予約情報がありません</span>
+                                    )}
                                     <span>
                                         {session.is_draft
                                             ? "下書き"

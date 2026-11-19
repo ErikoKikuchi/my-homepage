@@ -68,6 +68,16 @@ class Client extends Model
     return $this->hasMany(ClientBodyNote::class);
 }
 
+    public function sessionInformation(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'body_notes' => $this->bodyNotes()->latest()->orderByDesc('id')->value('body_note')
+                ?? $this->body_notes,
+        ];
+    }
+
     public function trainingLogs(): HasMany
     {
         return $this->hasMany(TrainingLog::class);

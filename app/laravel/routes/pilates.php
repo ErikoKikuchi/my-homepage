@@ -6,7 +6,6 @@ use App\Http\Controllers\Pilates\Admin\CalendarController as PilatesAdminCalenda
 use App\Http\Controllers\Pilates\Admin\ClientController as PilatesAdminClientController;
 use App\Http\Controllers\Pilates\Admin\ClientSearchController as PilatesAdminClientSearchController;
 use App\Http\Controllers\Pilates\Admin\GoalController as PilatesAdminGoalController;
-use App\Http\Controllers\Pilates\Admin\HopeController as PilatesAdminHopeController;
 use App\Http\Controllers\Pilates\Admin\IntakeFormController as PilatesAdminIntakeFormController;
 use App\Http\Controllers\Pilates\Admin\LessonSlotController as PilatesAdminLessonSlotController;
 use App\Http\Controllers\Pilates\Admin\LessonTemplateController as PilatesAdminLessonTemplateController;
@@ -45,6 +44,8 @@ Route::prefix('pilates/admin')->middleware(['auth:admin', 'admin.section:pilates
         ->names('pilates.admin.session');
 
     //会計
+    Route::get('accounting', [PilatesAdminAccountingController::class, 'clients'])
+        ->name('pilates.admin.accounting.clients');
     Route::resource('clients.accounting', PilatesAdminAccountingController::class)
         ->shallow()->parameters(['clients' => 'client'])
         ->only(['index', 'show', 'create', 'store', 'edit', 'update'])
@@ -86,18 +87,10 @@ Route::prefix('pilates/admin')->middleware(['auth:admin', 'admin.section:pilates
         ->names('pilates.admin.reservation');
 
 //ゴール設定
-    Route::patch('/goals/{goal}/toggle-active', [PilatesAdminGoalController::class, 'toggleActive'])
-        ->name('pilates.admin.goal.toggle-active');
     Route::get('/clients/{client}/goals', [PilatesAdminGoalController::class, 'index'])
         ->name('pilates.admin.goal.index');
     Route::patch('/clients/{client}/goals', [PilatesAdminGoalController::class, 'update'])
         ->name('pilates.admin.goal.update');
-    Route::resource('clients.goals', PilatesAdminGoalController::class)
-        ->shallow()->parameters(['clients' => 'client'])
-        ->only([ 'create', 'store', 'edit'])
-        ->names('pilates.admin.goal');
-    Route::patch('/hopes/{hope}/toggle-active', [PilatesAdminHopeController::class, 'toggleActive'])
-        ->name('pilates.admin.hope.toggle-active');
 
     //問診表
     Route::resource('clients.intake-forms', PilatesAdminIntakeFormController::class)

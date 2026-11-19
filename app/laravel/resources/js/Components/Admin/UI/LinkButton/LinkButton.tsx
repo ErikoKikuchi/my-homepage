@@ -10,6 +10,7 @@ interface LinkButtonProps {
     fullReload?: boolean;
     variant?: LinkButtonVariant;
     className?: string;
+    "aria-current"?: "page";
 }
 
 export default function LinkButton({
@@ -19,10 +20,12 @@ export default function LinkButton({
     fullReload = false,
     variant = "primary",
     className,
+    "aria-current": ariaCurrent,
 }: LinkButtonProps) {
     const classNames = `${styles.linkButton} ${styles[variant]} ${className ?? ""}`;
     return external || fullReload ? (
         <a
+            aria-current={ariaCurrent}
             href={href}
             className={classNames}
             target={external ? "_blank" : undefined}
@@ -31,7 +34,7 @@ export default function LinkButton({
             {children}
         </a>
     ) : (
-        <Link href={href} className={classNames}>
+        <Link href={href} className={classNames} aria-current={ariaCurrent}>
             {children}
         </Link>
     );

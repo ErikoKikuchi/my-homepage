@@ -47,7 +47,13 @@ function reservationTime(reservation: ReservationRow) {
     return reservation.lesson_slot.lesson_template.start_time.slice(0, 5);
 }
 
-function SessionRow({ schedule, clientId, clientName, status, reservationId }: {
+function SessionRow({
+    schedule,
+    clientId,
+    clientName,
+    status,
+    reservationId,
+}: {
     schedule: string;
     clientId: string;
     clientName: string;
@@ -62,7 +68,9 @@ function SessionRow({ schedule, clientId, clientName, status, reservationId }: {
 
     return (
         <li className={styles.sessionRow}>
-            <span>{schedule}　{clientName}</span>
+            <span>
+                {schedule}　{clientName}
+            </span>
             {status && <span>{status}</span>}
             <Link
                 href={href}
@@ -75,23 +83,49 @@ function SessionRow({ schedule, clientId, clientName, status, reservationId }: {
     );
 }
 
-export default function Dashboard({ pendingReservationCount, todayReservations, draftSession, unFilledSession }: DashboardProps) {
-    const todayUnrecorded = todayReservations.filter(({ pilates_session }) => pilates_session === null);
-    const todayDrafts = todayReservations.filter(({ pilates_session }) => pilates_session?.is_draft);
+export default function Dashboard({
+    pendingReservationCount,
+    todayReservations,
+    draftSession,
+    unFilledSession,
+}: DashboardProps) {
+    const todayUnrecorded = todayReservations.filter(
+        ({ pilates_session }) => pilates_session === null,
+    );
+    const todayDrafts = todayReservations.filter(
+        ({ pilates_session }) => pilates_session?.is_draft,
+    );
     const sessionTasks = [
-        { label: "今日の未記録", canCreate: true, rows: todayUnrecorded.map((reservation) => ({
-            ...reservation, schedule: reservationTime(reservation),
-        })) },
-        { label: "今日の下書き", rows: todayDrafts.map((reservation) => ({
-            ...reservation, schedule: reservationTime(reservation),
-        })) },
-        { label: "過去の未記録", canCreate: true, rows: unFilledSession.map((reservation) => ({
-            ...reservation,
-            schedule: `${dateInputValue(reservation.lesson_slot.date)} ${reservationTime(reservation)}`,
-        })) },
-        { label: "過去の下書き", rows: draftSession.map((session) => ({
-            ...session, schedule: dateInputValue(session.session_date),
-        })) },
+        {
+            label: "今日の未記録",
+            canCreate: true,
+            rows: todayUnrecorded.map((reservation) => ({
+                ...reservation,
+                schedule: reservationTime(reservation),
+            })),
+        },
+        {
+            label: "今日の下書き",
+            rows: todayDrafts.map((reservation) => ({
+                ...reservation,
+                schedule: reservationTime(reservation),
+            })),
+        },
+        {
+            label: "過去の未記録",
+            canCreate: true,
+            rows: unFilledSession.map((reservation) => ({
+                ...reservation,
+                schedule: `${dateInputValue(reservation.lesson_slot.date)} ${reservationTime(reservation)}`,
+            })),
+        },
+        {
+            label: "過去の下書き",
+            rows: draftSession.map((session) => ({
+                ...session,
+                schedule: dateInputValue(session.session_date),
+            })),
+        },
     ];
 
     return (
@@ -125,9 +159,13 @@ export default function Dashboard({ pendingReservationCount, todayReservations, 
                                 schedule={reservationTime(reservation)}
                                 clientId={reservation.client_id}
                                 clientName={reservation.client.name}
-                                status={reservation.pilates_session === null
-                                    ? "未記録"
-                                    : reservation.pilates_session.is_draft ? "下書き" : "保存済み"}
+                                status={
+                                    reservation.pilates_session === null
+                                        ? "未記録"
+                                        : reservation.pilates_session.is_draft
+                                          ? "下書き"
+                                          : "保存済み"
+                                }
                             />
                         ))}
                     </ul>
@@ -152,23 +190,33 @@ export default function Dashboard({ pendingReservationCount, todayReservations, 
                     </li>
                 </ul>
                 {sessionTasks.every(({ rows }) => rows.length === 0) ? (
-                    <p className={styles.sessionTasks}>未完了のセッション記録はありません。</p>
-                ) : sessionTasks.filter(({ rows }) => rows.length > 0).map(({ label, rows, canCreate }) => (
-                    <div key={label} className={styles.sessionTasks}>
-                        <h2>{label}（{rows.length}件）</h2>
-                        <ul className={styles.taskList}>
-                            {rows.map((row) => (
-                                <SessionRow
-                                    key={row.id}
-                                    schedule={row.schedule}
-                                    clientId={row.client_id}
-                                    clientName={row.client.name}
-                                    reservationId={canCreate ? row.id : undefined}
-                                />
-                            ))}
-                        </ul>
-                    </div>
-                ))}
+                    <p className={styles.sessionTasks}>
+                        未完了のセッション記録はありません。
+                    </p>
+                ) : (
+                    sessionTasks
+                        .filter(({ rows }) => rows.length > 0)
+                        .map(({ label, rows, canCreate }) => (
+                            <div key={label} className={styles.sessionTasks}>
+                                <h2>
+                                    {label}（{rows.length}件）
+                                </h2>
+                                <ul className={styles.taskList}>
+                                    {rows.map((row) => (
+                                        <SessionRow
+                                            key={row.id}
+                                            schedule={row.schedule}
+                                            clientId={row.client_id}
+                                            clientName={row.client.name}
+                                            reservationId={
+                                                canCreate ? row.id : undefined
+                                            }
+                                        />
+                                    ))}
+                                </ul>
+                            </div>
+                        ))
+                )}
             </section>
 
             <section className={styles.section}>

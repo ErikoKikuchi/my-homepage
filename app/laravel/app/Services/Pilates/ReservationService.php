@@ -127,6 +127,18 @@ class ReservationService
                 $oldReservation->status = ReservationStatus::Rescheduled;
                 $oldReservation->save();
 
+                $draft = $oldReservation->pilatesSession()
+                    ->where('is_draft', true)
+                    ->lockForUpdate()
+                    ->first();
+
+                if ($draft) {
+                    $draft->reservation()->associate($newReservation);
+                    $draft->session_date = $newSlot->date->copy()
+                        ->setTimeFromTimeString($lessonTemplate->start_time);
+                    $draft->save();
+                }
+
                 return $newReservation;
             }
         );

@@ -3,7 +3,7 @@ import { useRef, useState, type SubmitEvent } from "react";
 import ActionButton from "@/Components/Admin/UI/ActionButton/ActionButton";
 import LinkButton from "@/Components/Admin/UI/LinkButton/LinkButton";
 import AdminPage, { FieldError } from "../AdminPage";
-import ClientInformationTable, { type ClientInformation } from "../ClientInformationTable";
+import ClientInformationTable, { type ClientInformation } from "@/Components/Admin/Pilates/ClientInformationTable";
 import styles from "../AdminPage.module.css";
 import sessionStyles from "./Sessions.module.css";
 import { admin, type NamedOption } from "../schedule";
@@ -40,8 +40,10 @@ type ExerciseOption = NamedOption & {
 };
 
 type ShowSessionProps = ClientInformation & {
-    lesson: { date: string; start_time: string };
+    lesson: { date: string; start_time: string } | null;
     sessionContents: SessionContents;
+    draftOnly: boolean;
+    reservationConfirmed: boolean;
     exerciseOptions: ExerciseOption[];
 };
 
@@ -50,6 +52,8 @@ export default function ShowSession({
     lesson,
     goals,
     hopes,
+    draftOnly,
+    reservationConfirmed,
     exerciseOptions = [],
     sessionContents,
 }: ShowSessionProps) {
@@ -129,7 +133,9 @@ export default function ShowSession({
                 <header className={sessionStyles.reservationHeading}>
                     <h2>{client.name}</h2>
                     <p>
-                        {lesson.date} {lesson.start_time.slice(0, 5)}
+                        {lesson
+                            ? `${lesson.date} ${lesson.start_time.slice(0, 5)}`
+                            : "予約情報がありません"}
                     </p>
                 </header>
                 <form className={styles.form} onSubmit={saveSession}>
@@ -307,14 +313,22 @@ export default function ShowSession({
                         >
                             下書き保存
                         </ActionButton>
-                        <ActionButton
-                            type="submit"
-                            name="save_mode"
-                            value="confirmed"
-                            disabled={saving}
-                        >
-                            確定保存
-                        </ActionButton>
+                        {draftOnly ? (
+                            <p className={styles.muted}>
+                                {reservationConfirmed
+                                    ? "確定保存は予約当日からできます。"
+                                    : "確定保存には確定済みの予約が必要です。"}
+                            </p>
+                        ) : (
+                            <ActionButton
+                                type="submit"
+                                name="save_mode"
+                                value="confirmed"
+                                disabled={saving}
+                            >
+                                確定保存
+                            </ActionButton>
+                        )}
                     </div>
                 </form>
                 <div className={styles.actions}>
