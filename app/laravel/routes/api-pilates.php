@@ -3,6 +3,8 @@
 use App\Http\Controllers\Auth\User\CurrentPilatesUserController;
 use App\Http\Controllers\Auth\User\UserLoginController;
 use App\Http\Controllers\Pilates\Guest\GuestController as PilatesGuestController;
+use App\Http\Controllers\Pilates\User\AccountSettingsController;
+use App\Http\Controllers\Pilates\User\AccountTwoFactorController;
 use App\Http\Controllers\Pilates\User\CancellationController as PilatesCancellationController;
 use App\Http\Controllers\Pilates\User\MyPageController as PilatesMyPageController;
 use App\Http\Controllers\Pilates\User\ReservationController as PilatesReservationController;
@@ -28,7 +30,16 @@ Route::get('/user', CurrentPilatesUserController::class)
 
 // ログイン後
 Route::middleware(['auth:web', 'verified', 'section:pilates','auth:sanctum'])->group(function () {
+    Route::get('/mypage/settings', [AccountSettingsController::class, 'show']);
+    Route::patch('/mypage/settings', [AccountSettingsController::class, 'update']);
+    Route::post('/mypage/settings/password-reset', [AccountSettingsController::class, 'sendResetLink'])->middleware('throttle:3,1');
+    Route::post('/mypage/settings/two-factor/{operation}', [AccountTwoFactorController::class, 'update'])
+        ->whereIn('operation', ['setup', 'confirm', 'recovery', 'disable'])->middleware('throttle:12,1');
     Route::get('/mypage', [PilatesMyPageController::class, 'index'])->name('pilates.mypage');
+    Route::get('/mypage/hopes', [PilatesMyPageController::class, 'hopes']);
+    Route::post('/mypage/hopes', [PilatesMyPageController::class, 'storeHope']);
+    Route::patch('/mypage/hopes/{hope}', [PilatesMyPageController::class, 'updateHope'])->whereUuid('hope');
+    Route::patch('/mypage/hopes/{hope}/achieve', [PilatesMyPageController::class, 'achieveHope'])->whereUuid('hope');
     Route::get('/archive', [PilatesReservationController::class, 'archive'])->name('pilates.past.reservation');
     Route::get('/tickets', [PilatesTicketsController::class, 'index'])->name('pilates.tickets');
     Route::patch('/reservations/{reservation}/cancel', [PilatesCancellationController::class, 'cancel'])->name('pilates.user.reservation.cancel');

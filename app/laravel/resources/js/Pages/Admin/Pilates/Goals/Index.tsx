@@ -11,7 +11,7 @@ import ClientInformationTable, {
 import { admin } from "../schedule";
 
 type Goal = ClientInformation["goals"][number] & { id: string; created_at: string };
-type Hope = ClientInformation["hopes"][number] & { id: string; created_at: string };
+type Hope = ClientInformation["hopes"][number] & { id: string; created_at: string; achieved_at: string | null };
 type BodyNote = { id: string; body_note: string; observed_on: string | null };
 
 type Props = Omit<ClientInformation, "goals" | "hopes"> & {
@@ -54,7 +54,7 @@ function groupHistory({ bodyHistory, hopeHistory, goalHistory, legacyBodyNote }:
     add(null, "身体の特徴・所見", legacyBodyNote);
 
     for (const hope of hopeHistory) {
-        add(hope.created_at, "希望（HOPE）", hope.hope);
+        add(hope.created_at, hope.achieved_at ? "希望（HOPE） ✓ 達成済み" : "希望（HOPE）", hope.hope);
     }
     for (const goal of goalHistory) {
         add(goal.created_at, "見通し", goal.outlook);
@@ -70,6 +70,7 @@ export default function GoalsIndex({
     const history = groupHistory({ bodyHistory, hopeHistory, goalHistory, legacyBodyNote });
     const [editing, setEditing] = useState(false);
     const clientUrl = `${admin}/clients/${client.id}`;
+    const achievement = useForm({});
     const form = useForm({
         body_note: "",
         new_hope: "",
@@ -186,10 +187,25 @@ export default function GoalsIndex({
                     </form>
                 ) : (
                     <div className={styles.actions}>
-                        <ActionButton onClick={beginEditing}>
+                        <ActionButton disabled={achievement.processing} onClick={beginEditing}>
                             {client.body_notes || hopes.length || goals.length ? "編集・追記" : "登録"}
                         </ActionButton>
                     </div>
+                )}
+                {!editing && hopes.length > 0 && (
+                    <section className={styles.stack}>
+                        <h3>HOPEの達成を記録</h3>
+                        {hopes.map(({ id, hope }) => (
+                            <div key={id} className={styles.card}>
+                                <p>{hope}</p>
+                                <ActionButton variant="outline" disabled={achievement.processing} onClick={() => {
+                                    if (window.confirm("このHOPEを達成済みにしますか？")) {
+                                        achievement.patch(`${clientUrl}/goals/hopes/${id}/achieve`, { preserveScroll: true });
+                                    }
+                                }}>達成済みにする</ActionButton>
+                            </div>
+                        ))}
+                    </section>
                 )}
                 {history.length > 0 && (
                     <details>

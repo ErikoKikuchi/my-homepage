@@ -11,7 +11,9 @@ use App\Models\Pilates\LessonSlot;
 use App\Models\Pilates\LessonTemplate;
 use App\Models\Pilates\Location;
 use App\Models\Pilates\Reservation;
+use App\Models\Pilates\ReservationClosure;
 use App\Services\Pilates\PhoneNumberNormalizerService;
+use App\Services\Pilates\ReservationAvailabilityService;
 use App\Services\Pilates\ReservationService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -98,10 +100,14 @@ class ReservationController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(LessonSlot $lessonSlot)
+    public function create(LessonSlot $lessonSlot, ReservationAvailabilityService $availabilityService)
     {
+        $lessonSlot->load('lessonTemplate');
+        $period = ReservationClosure::find($lessonSlot->date->toDateString())?->period;
+
         return Inertia::render('Admin/Pilates/Reservations/Create', [
-            'lessonSlot' => $lessonSlot->load('lessonTemplate'),
+            'lessonSlot' => $lessonSlot,
+            'blockedPeriod' => $availabilityService->isSlotBlocked($lessonSlot, $period) ? $period : null,
         ]);
     }
 
@@ -112,14 +118,19 @@ class ReservationController extends Controller
         try {
             DB::connection('client_db')->transaction(function () use ($data, $lessonSlot) {
                 $slot = LessonSlot::query()->lockForUpdate()->findOrFail($lessonSlot->id);
+                $phone = $this->phoneNormalizer->normalize($data['phone'] ?? null);
                 $client = empty($data['client_id'])
                     ? Client::create([
                         'name' => $data['name'],
                         'is_active' => false,
                         'is_provisional' => true,
-                        'phone' => $this->phoneNormalizer->normalize($data['phone'] ?? null),
+                        'phone' => $phone,
                     ])
                     : Client::query()->lockForUpdate()->findOrFail($data['client_id']);
+
+                if ($phone !== null && $client->phone !== $phone) {
+                    $client->update(['phone' => $phone]);
+                }
 
                 if (! empty($data['relationship_note'])) {
                     $prefix = $client->relationship_note ? $client->relationship_note."\n" : '';

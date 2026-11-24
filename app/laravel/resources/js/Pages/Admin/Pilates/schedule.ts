@@ -1,5 +1,13 @@
 export const admin = "/pilates/admin";
 
+export const closurePeriodLabels = {
+    all_day: "終日不可",
+    morning: "午前不可",
+    afternoon: "午後不可",
+};
+
+export type ClosurePeriod = keyof typeof closurePeriodLabels;
+
 export type NamedOption = { id: string; name: string };
 export type LessonTemplate = { id: string; start_time: string; end_time: string; is_active: boolean };
 export type LessonSlot = {

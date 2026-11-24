@@ -1,13 +1,36 @@
-.qrCode {
-  margin: 20px;
-}
 .lineGroup {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 8rem) minmax(0, 1fr);
   align-items: center;
-  gap: 20px;
+  gap: clamp(0.5rem, 3vw, 1.25rem);
 }
-.linkButton {
-  display: flex;
-  align-items: center;
+
+.qrCode {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.lineGroup .linkButton {
+  justify-self: start;
   align-self: center;
+  min-width: 0;
+  padding-inline: clamp(0.5rem, 3vw, 1.5rem);
+  overflow-wrap: anywhere;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .lineGroup {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+  }
+
+  .qrCode {
+    max-width: 8rem;
+  }
+
+  .lineGroup .linkButton {
+    justify-self: center;
+  }
 }

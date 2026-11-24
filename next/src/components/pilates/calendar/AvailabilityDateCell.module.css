@@ -24,3 +24,8 @@
 .status {
   font-weight: bold;
 }
+.period {
+  display: block;
+  font-size: 0.75rem;
+  margin-bottom: 0.25rem;
+}

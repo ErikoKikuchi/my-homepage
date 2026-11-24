@@ -1,6 +1,6 @@
 import "server-only";
 import { cookies } from "next/headers";
-import { MypageData } from "@/types/pilates/mypage";
+import type { AccountSettingsData, HopeHistoryEntry, MypageData } from "@/types/pilates/mypage";
 
 function requireEnv(name: string): string {
   const value = process.env[name];
@@ -10,13 +10,13 @@ function requireEnv(name: string): string {
   return value;
 }
 
-export async function getMypageData(): Promise<MypageData> {
+async function getMypageResource<T>(path = ""): Promise<T> {
   const backendUrl = requireEnv("BACKEND_URL");
   const origin = requireEnv("APP_ORIGIN");
 
   const cookieStore = await cookies();
 
-  const response = await fetch(`${backendUrl}/api/pilates/mypage`, {
+  const response = await fetch(`${backendUrl}/api/pilates/mypage${path}`, {
     headers: {
       Accept: "application/json",
       Cookie: cookieStore.toString(),
@@ -29,11 +29,22 @@ export async function getMypageData(): Promise<MypageData> {
   if (!response.ok) {
     console.error("マイページ取得エラー", {
       status: response.status,
-      body: await response.text(),
     });
 
     throw new Error("マイページの取得に失敗しました");
   }
 
   return response.json();
+}
+
+export function getMypageData() {
+  return getMypageResource<MypageData>();
+}
+
+export function getAccountSettings() {
+  return getMypageResource<AccountSettingsData>("/settings");
+}
+
+export function getHopeHistory() {
+  return getMypageResource<{ hopes: HopeHistoryEntry[]; hasClient: boolean }>("/hopes");
 }

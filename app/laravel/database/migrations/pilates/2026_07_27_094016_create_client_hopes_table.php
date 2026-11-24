@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignUuid('client_id')->constrained()->restrictOnDelete();
             $table->text('hope')->nullable();
             $table->boolean('is_active')->default(true);
+            $table->timestamp('achieved_at')->nullable();
             $table->timestamps();
         });
     }

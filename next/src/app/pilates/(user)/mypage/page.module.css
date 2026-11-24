@@ -79,6 +79,12 @@
   margin: 0;
 }
 
+.hopes {
+  list-style: disc;
+  padding-inline-start: 1.25rem;
+  white-space: pre-wrap;
+}
+
 .reservation + .anotherLinkButton {
   margin-top: 20px;
 }

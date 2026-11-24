@@ -19,3 +19,9 @@
     overflow-wrap: anywhere;
 }
 .slot + .slot { border-top: 1px solid var(--color-muted); }
+
+.closure {
+    border-inline-start: 0.2rem solid currentColor;
+    padding-inline-start: 0.4rem;
+    font-weight: 600;
+}

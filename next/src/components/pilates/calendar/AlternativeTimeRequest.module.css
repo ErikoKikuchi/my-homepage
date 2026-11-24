@@ -1,0 +1,56 @@
+.request {
+  display: grid;
+  gap: 0.75rem;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border: 1px solid color-mix(in srgb, var(--color-forest-dark) 25%, transparent);
+  border-radius: 0.75rem;
+  background-color: var(--color-paper);
+}
+
+.request h3 {
+  color: var(--color-forest-dark);
+  font-weight: 700;
+}
+
+.timeField,
+.preview {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.timeField label,
+.preview h4 {
+  font-weight: 600;
+}
+
+.timeInput {
+  width: fit-content;
+  min-width: 8rem;
+  min-height: 2.75rem;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--color-muted);
+  border-radius: 0.375rem;
+}
+
+.hint {
+  font-size: var(--text-sm);
+}
+
+.preview {
+  margin-top: 0.25rem;
+}
+
+.message {
+  padding: 0.85rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--color-forest-dark) 25%, transparent);
+  border-radius: 0.5rem;
+  background-color: color-mix(in srgb, var(--color-forest-dark) 5%, var(--color-paper));
+  line-height: 1.7;
+  user-select: text;
+}
+
+.copy {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}

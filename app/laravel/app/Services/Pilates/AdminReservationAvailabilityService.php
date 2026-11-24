@@ -15,7 +15,11 @@ class AdminReservationAvailabilityService
         ReservationStatus::Rescheduled,
     ];
 
-    public function adminBuildWeekMap(string $weekStart): Collection
+    public function __construct(
+        private ReservationAvailabilityService $availabilityService,
+    ) {}
+
+    public function adminBuildWeekMap(string $weekStart, Collection $closures): Collection
     {
         $start = Carbon::parse($weekStart)->startOfDay();
         $end = $start->copy()->addDays(6);
@@ -28,10 +32,11 @@ class AdminReservationAvailabilityService
             ->get();
 
         return $slots->groupBy(fn ($slot) => $slot->date->format('Y-m-d'))
-            ->map(fn ($daySlots) => $daySlots->map(fn ($slot) => [
+            ->map(fn ($daySlots, $date) => $daySlots->map(fn ($slot) => [
                 'id' => $slot->id,
                 'time' => $slot->lessonTemplate->start_time.'-'.$slot->lessonTemplate->end_time,
                 'location' => $this->resolveSlotLocation($slot),
+                'isBlocked' => $this->availabilityService->isSlotBlocked($slot, $closures->get($date)),
                 'reservations' => $slot->reservations
                     ->whereNotIn('status', self::INACTIVE_STATUSES)
                     ->map(fn ($r) => [

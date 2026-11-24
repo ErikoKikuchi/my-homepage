@@ -13,6 +13,7 @@ export default function ReservationPage() {
       <div className={styles.explanation}>
         <p className={styles.mark}>〇：空きあり</p>
         <p className={styles.mark}>満：公開枠は満席</p>
+        <p className={styles.mark}>－：公開枠なし（日付を選んで時間を相談できます）</p>
         <p className={styles.mark}>△：直接お問い合わせ</p>
         <p className={styles.mark}>受付不可：予約・ご相談の受付なし</p>
       </div>

@@ -80,6 +80,18 @@ export async function register(
   return response.json() as Promise<RegisterSuccessResponse>;
 }
 
+async function readPasswordResponse<T>(response: Response): Promise<T> {
+  const body = await response.json().catch(() => null);
+  if (!response.ok || !body) {
+    const message = response.status === 419
+      ? "ページを開き直してから、もう一度お試しください。"
+      : "パスワード再設定の処理に失敗しました。";
+    throw new AuthApiError(response.status, body ?? { message });
+  }
+
+  return body;
+}
+
 export async function forgotPassword(
   credentials: ForgotPasswordCredentials,
 ): Promise<ForgotPasswordSuccessResponse> {
@@ -95,12 +107,7 @@ export async function forgotPassword(
     },
     body: JSON.stringify(credentials),
   });
-  if (!response.ok) {
-    const errorBody = await response.json();
-    throw new AuthApiError(response.status, errorBody);
-  }
-
-  return response.json() as Promise<ForgotPasswordSuccessResponse>;
+  return readPasswordResponse<ForgotPasswordSuccessResponse>(response);
 }
 
 export async function resetPassword(
@@ -123,12 +130,7 @@ export async function resetPassword(
       password_confirmation: passwordConfirmation,
     }),
   });
-  if (!response.ok) {
-    const errorBody = await response.json();
-    throw new AuthApiError(response.status, errorBody);
-  }
-
-  return response.json() as Promise<ResetPasswordSuccessResponse>;
+  return readPasswordResponse<ResetPasswordSuccessResponse>(response);
 }
 
 export async function resendVerificationEmail() {

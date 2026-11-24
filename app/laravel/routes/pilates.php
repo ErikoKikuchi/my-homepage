@@ -11,6 +11,7 @@ use App\Http\Controllers\Pilates\Admin\LessonSlotController as PilatesAdminLesso
 use App\Http\Controllers\Pilates\Admin\LessonTemplateController as PilatesAdminLessonTemplateController;
 use App\Http\Controllers\Pilates\Admin\LocationController as PilatesAdminLocationController;
 use App\Http\Controllers\Pilates\Admin\ReservationConfirmationController as PilatesAdminReservationConfirmationController;
+use App\Http\Controllers\Pilates\Admin\ReservationClosureController;
 use App\Http\Controllers\Pilates\Admin\ReservationController as PilatesAdminReservationController;
 use App\Http\Controllers\Pilates\Admin\ReservationNoshowController as PilatesAdminReservationNoshowController;
 use App\Http\Controllers\Pilates\Admin\SessionController as PilatesAdminSessionController;
@@ -28,6 +29,8 @@ Route::prefix('pilates/admin')->middleware(['auth:admin', 'admin.section:pilates
     });
 
     //スケジュール
+    Route::post('reservation-closures', [ReservationClosureController::class, 'store']);
+    Route::delete('reservation-closures/{closure}', [ReservationClosureController::class, 'destroy']);
     Route::resource('/lesson-templates', PilatesAdminLessonTemplateController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])->names('pilates.admin.lesson-templates');
     Route::resource('/lesson-slots', PilatesAdminLessonSlotController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])->names('pilates.admin.lesson-slots');
 
@@ -91,6 +94,8 @@ Route::prefix('pilates/admin')->middleware(['auth:admin', 'admin.section:pilates
         ->name('pilates.admin.goal.index');
     Route::patch('/clients/{client}/goals', [PilatesAdminGoalController::class, 'update'])
         ->name('pilates.admin.goal.update');
+    Route::patch('/clients/{client}/goals/hopes/{hope}/achieve', [PilatesAdminGoalController::class, 'achieve'])
+        ->whereUuid('hope')->name('pilates.admin.goal.hopes.achieve');
 
     //問診表
     Route::resource('clients.intake-forms', PilatesAdminIntakeFormController::class)

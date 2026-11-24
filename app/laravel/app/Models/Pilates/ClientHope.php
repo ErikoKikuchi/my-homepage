@@ -15,11 +15,26 @@ class ClientHope extends Model
     protected $fillable = [
         'hope',
         'is_active',
+        'achieved_at',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
+        'achieved_at' => 'datetime',
     ];
+
+    public function revise(?string $text): void
+    {
+        if ($text === $this->hope) {
+            return;
+        }
+
+        $this->update(['is_active' => false]);
+
+        if ($text !== null) {
+            $this->client->hopes()->create(['hope' => $text]);
+        }
+    }
 
     public function client(): BelongsTo
     {

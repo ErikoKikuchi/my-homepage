@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Pilates\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pilates\Client;
+use App\Services\Pilates\HopeAchievementService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -17,7 +18,7 @@ class GoalController extends Controller
         $goals = $client->goals()->latest()->orderByDesc('id')
             ->get(['id', 'outlook', 'goal', 'is_active', 'created_at']);
         $hopes = $client->hopes()->latest()->orderByDesc('id')
-            ->get(['id', 'hope', 'is_active', 'created_at']);
+            ->get(['id', 'hope', 'is_active', 'created_at', 'achieved_at']);
 
         return Inertia::render('Admin/Pilates/Goals/Index', [
             'client' => [
@@ -32,6 +33,16 @@ class GoalController extends Controller
             'hopes' => $hopes->where('is_active', true)->values(),
             'hopeHistory' => $hopes->where('is_active', false)->values(),
         ]);
+    }
+
+    public function achieve(Client $client, string $hope, HopeAchievementService $achievement)
+    {
+        $updated = $achievement->mark($client, $hope);
+
+        return redirect()->route('pilates.admin.goal.index', ['client' => $client])->with(
+            $updated ? 'message' : 'error',
+            $updated ? 'HOPEを達成済みにしました。' : 'このHOPEはすでに編集され、履歴に移っています。',
+        );
     }
 
     public function update(Request $request, Client $client)
@@ -61,13 +72,8 @@ class GoalController extends Controller
 
             foreach ($client->hopes()->where('is_active', true)->get() as $hope) {
                 $edits = $data['hopes'] ?? [];
-                if (! array_key_exists($hope->id, $edits) || $edits[$hope->id] === $hope->hope) {
-                    continue;
-                }
-
-                $hope->update(['is_active' => false]);
-                if ($edits[$hope->id] !== null) {
-                    $client->hopes()->create(['hope' => $edits[$hope->id]]);
+                if (array_key_exists($hope->id, $edits)) {
+                    $hope->revise($edits[$hope->id]);
                 }
             }
 

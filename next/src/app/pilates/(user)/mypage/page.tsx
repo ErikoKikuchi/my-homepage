@@ -10,16 +10,21 @@ import PilatesReservation from "@/components/pilates/top/PilatesReservation";
 
 export default async function MyPage() {
   const {
+    clientName,
     notLineLinkedClient,
     nextReservationInfo,
     remainingTicketCounts,
     upcomingReservations,
+    hopes,
   } = await getMypageData();
 
   return (
     <>
       <div className={styles.main}>
-        <PageHeader heading="マイページ" />
+        <PageHeader
+          heading="マイページ"
+          lead={clientName ? `${clientName}さんのページにログイン中` : "ログイン中"}
+        />
         <div className={styles.anotherLinkButton}>
           <LinkButton href="/pilates/mypage/settings" variant="text">
             アカウント設定
@@ -115,9 +120,16 @@ export default async function MyPage() {
           labelClassName={styles.sectionLabelDecorated}
           animationDelay="0.2s"
         >
+          <div className={styles.reservation}>
+            {hopes.length > 0 ? (
+              <ul className={styles.hopes}>
+                {hopes.map((hope) => <li key={hope.id}>{hope.hope}</li>)}
+              </ul>
+            ) : <p>現在の目標はありません。</p>}
+          </div>
           <div className={styles.anotherLinkButton}>
             <LinkButton href="/pilates/mypage/goals" variant="primary">
-              からだの目標
+              からだの目標を編集する
             </LinkButton>
           </div>
         </Section>

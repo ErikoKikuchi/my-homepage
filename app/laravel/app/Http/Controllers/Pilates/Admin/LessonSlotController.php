@@ -9,6 +9,7 @@ use App\Http\Requests\Pilates\Admin\UpdateLessonSlotRequest;
 use App\Models\Pilates\LessonSlot;
 use App\Models\Pilates\LessonTemplate;
 use App\Models\Pilates\Location;
+use App\Models\Pilates\ReservationClosure;
 use App\Services\Pilates\AdminReservationAvailabilityService;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -25,7 +26,9 @@ class LessonSlotController extends Controller
             ->where('date', '>=', now()->startOfDay())
             ->orderBy('date')->get();
 
-        return Inertia::render('Admin/Pilates/LessonSlots/Index', compact('lessonSlots'));
+        $closures = ReservationClosure::where('date', '>=', now()->toDateString())->orderBy('date')->get();
+
+        return Inertia::render('Admin/Pilates/LessonSlots/Index', compact('lessonSlots', 'closures'));
     }
 
     public function create()

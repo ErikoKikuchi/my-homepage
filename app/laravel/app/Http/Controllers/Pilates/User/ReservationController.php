@@ -8,6 +8,8 @@ use App\Http\Requests\Pilates\User\StoreReservationRequest;
 use App\Models\Pilates\Client;
 use App\Models\Pilates\LessonSlot;
 use App\Models\Pilates\Reservation;
+use App\Models\Pilates\ReservationClosure;
+use App\Services\Pilates\ReservationAvailabilityService;
 use App\Services\Pilates\ReservationService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -17,7 +19,8 @@ use Illuminate\Support\Facades\Gate;
 class ReservationController extends Controller
 {
     public function __construct(
-        private ReservationService $reservationService
+        private ReservationService $reservationService,
+        private ReservationAvailabilityService $availabilityService,
     ) {}
 
     public function index(Request $request)
@@ -69,6 +72,9 @@ class ReservationController extends Controller
             )
             ->firstOrFail();
 
+        $period = ReservationClosure::find($validated['date'])?->period;
+        abort_if($this->availabilityService->isSlotBlocked($slot, $period), 409, 'この時間帯は受付不可です');
+
         $startsAt = $slot->date->copy()->setTimeFromTimeString(
             $slot->lessonTemplate->start_time
         );
@@ -106,6 +112,9 @@ class ReservationController extends Controller
                     ->lockForUpdate()
                     ->firstOrFail();
 
+                $period = ReservationClosure::whereKey($data['date'])->lockForUpdate()->first()?->period;
+                abort_if($this->availabilityService->isSlotBlocked($slot, $period), 409, 'この時間帯は受付不可です');
+
                 if (! $slot->is_bookable) {
                     abort(409, 'この枠は予約受付を停止しています');
                 }
@@ -139,7 +148,8 @@ class ReservationController extends Controller
                     $client,
                     ['note' => $data['note'] ?? null],
                 );
-            }
+            },
+            3
         );
 
         $request->session()->forget([

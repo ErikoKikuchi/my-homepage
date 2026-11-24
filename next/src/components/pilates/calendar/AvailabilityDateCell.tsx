@@ -18,10 +18,7 @@ export default function AvailabilityDateCellButton({
     full: "満",
     unavailable: "受付不可",
   };
-  const isClickable =
-    cell.status === "available" ||
-    cell.status === "contact_only" ||
-    cell.status === "full";
+  const isClickable = cell.canSelect;
 
   return (
     <button
@@ -36,6 +33,8 @@ export default function AvailabilityDateCellButton({
           {cell.status === null ? "－" : statusIcons[cell.status]}
         </span>
       </div>
+      {cell.closedPeriod === "morning" && <span className={styles.period}>午前不可</span>}
+      {cell.closedPeriod === "afternoon" && <span className={styles.period}>午後不可</span>}
     </button>
   );
 }
